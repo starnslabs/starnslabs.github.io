@@ -5,66 +5,73 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="google-site-verification" content="zithUNEgDt5lC0WO9KJ7SUHbogiFOoP5a8695-GOq2k" />
     <meta property="og:title" content="Starns Labs Ltd">
-    <meta property="og:description" content="Transforming your ideas into powerful software solutions.">
+    <meta property="og:description" content="35+ years engineering innovation. Embedded systems, EV platforms, fleet telemetry, and energy analytics.">
     <meta property="og:image" content="https://starnslabs.github.io/logo.png">
     <title>Starns Labs Ltd</title>
     <link rel="icon" href="logo-alt.png" type="image/png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
         *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
         :root {
             --primary: #2E5FD4;
             --primary-dark: #1E4AB8;
-            --bg-dark: #1a1a2e;
-            --bg-darker: #12121f;
-            --bg-card: #222240;
-            --text: #e8e8ec;
-            --text-muted: #9ca3af;
-            --accent: #0097d7;
+            --primary-glow: rgba(46,95,212,0.25);
+            --bg-dark: #0a0e1a;
+            --bg-section: #0f1424;
+            --bg-card: #151b30;
+            --bg-card-hover: #1a2240;
+            --text: #e8eaf0;
+            --text-muted: #8a91a8;
+            --text-dim: #5a6180;
+            --accent-cyan: #00c8ff;
+            --accent-green: #00d68f;
+            --accent-amber: #ffb800;
+            --border: rgba(255,255,255,0.06);
+            --border-hover: rgba(46,95,212,0.4);
         }
 
+        html { scroll-behavior: smooth; }
+
         body {
-            font-family: 'Lato', Helvetica, Arial, sans-serif;
-            background: var(--bg-darker);
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: var(--bg-dark);
             color: var(--text);
             line-height: 1.6;
             overflow-x: hidden;
         }
 
+        /* UTILITIES */
+        .container { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
+        .gradient-text {
+            background: linear-gradient(135deg, var(--primary), var(--accent-cyan));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
         /* NAV */
         nav {
-            position: fixed;
-            top: 0;
-            width: 100%;
-            z-index: 100;
-            background: rgba(18, 18, 31, 0.95);
-            backdrop-filter: blur(10px);
-            border-bottom: 1px solid rgba(255,255,255,0.06);
+            position: fixed; top: 0; width: 100%; z-index: 100;
+            background: rgba(10, 14, 26, 0.92);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
             padding: 0 40px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
+            display: flex; align-items: center; justify-content: space-between;
             height: 64px;
         }
         .nav-brand {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            text-decoration: none;
-            color: var(--text);
-            font-weight: 700;
-            font-size: 1.2em;
+            display: flex; align-items: center; gap: 12px;
+            text-decoration: none; color: var(--text);
+            font-weight: 700; font-size: 1.15em;
         }
-        .nav-brand img { height: 36px; width: auto; }
-        .nav-links { display: flex; gap: 32px; list-style: none; }
+        .nav-brand img { height: 34px; width: auto; }
+        .nav-links { display: flex; gap: 28px; list-style: none; }
         .nav-links a {
-            color: var(--text-muted);
-            text-decoration: none;
-            font-size: 0.95em;
-            font-weight: 400;
+            color: var(--text-muted); text-decoration: none;
+            font-size: 0.9em; font-weight: 500;
             transition: color 0.2s;
         }
         .nav-links a:hover { color: var(--text); }
@@ -72,181 +79,255 @@
         /* HERO */
         .hero {
             min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            display: flex; align-items: center; justify-content: center;
             text-align: center;
             padding: 120px 24px 80px;
-            background: radial-gradient(ellipse at 50% 20%, rgba(46,95,212,0.12) 0%, transparent 60%),
-                        var(--bg-darker);
+            position: relative;
+            overflow: hidden;
         }
-        .hero-content { max-width: 720px; }
-        .hero h1 {
-            font-size: clamp(2.2em, 5vw, 3.6em);
-            font-weight: 900;
-            line-height: 1.15;
-            margin-bottom: 20px;
+        .hero::before {
+            content: '';
+            position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
+            background: radial-gradient(circle at 50% 60%, var(--primary-glow) 0%, transparent 50%),
+                        radial-gradient(circle at 30% 30%, rgba(0,200,255,0.06) 0%, transparent 40%),
+                        radial-gradient(circle at 70% 80%, rgba(0,214,143,0.04) 0%, transparent 40%);
+            animation: pulse 8s ease-in-out infinite alternate;
         }
-        .hero h1 span { color: var(--primary); }
-        .hero p {
-            font-size: 1.2em;
-            color: var(--text-muted);
-            margin-bottom: 36px;
-            font-weight: 300;
+        @keyframes pulse {
+            0% { opacity: 0.7; transform: scale(1); }
+            100% { opacity: 1; transform: scale(1.05); }
         }
-        .btn {
+        .hero-content { position: relative; z-index: 1; max-width: 780px; }
+        .hero-badge {
             display: inline-block;
-            padding: 14px 36px;
-            background: var(--primary);
-            color: #fff;
-            text-decoration: none;
-            border-radius: 6px;
-            font-weight: 700;
-            font-size: 1em;
-            transition: background 0.2s, transform 0.15s;
-            border: none;
-            cursor: pointer;
-        }
-        .btn:hover { background: var(--primary-dark); transform: translateY(-1px); }
-
-        /* SECTIONS */
-        section { padding: 80px 24px; }
-        .section-title {
-            text-align: center;
-            font-size: 2em;
-            font-weight: 700;
-            margin-bottom: 48px;
-        }
-        .section-title span { color: var(--primary); }
-
-        /* FEATURES */
-        .features {
-            background: var(--bg-dark);
-        }
-        .features-grid {
-            max-width: 1000px;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 28px;
-        }
-        .feature-card {
-            background: var(--bg-card);
-            border-radius: 12px;
-            padding: 32px 28px;
-            border: 1px solid rgba(255,255,255,0.06);
-            transition: transform 0.2s, border-color 0.2s;
-        }
-        .feature-card:hover {
-            transform: translateY(-4px);
-            border-color: var(--primary);
-        }
-        .feature-icon {
-            width: 48px;
-            height: 48px;
+            padding: 6px 16px;
             background: rgba(46,95,212,0.15);
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 18px;
-            font-size: 1.4em;
+            border: 1px solid rgba(46,95,212,0.3);
+            border-radius: 20px;
+            font-size: 0.85em;
+            color: var(--accent-cyan);
+            font-weight: 500;
+            margin-bottom: 24px;
         }
-        .feature-card h3 {
-            font-size: 1.15em;
-            margin-bottom: 10px;
-            font-weight: 700;
+        .hero h1 {
+            font-size: clamp(2.4em, 5.5vw, 3.8em);
+            font-weight: 900; line-height: 1.1;
+            margin-bottom: 20px;
+            letter-spacing: -0.02em;
         }
-        .feature-card p {
-            color: var(--text-muted);
-            font-size: 0.95em;
-            line-height: 1.6;
+        .hero p {
+            font-size: 1.15em; color: var(--text-muted);
+            margin-bottom: 36px; font-weight: 300;
+            max-width: 560px; margin-left: auto; margin-right: auto;
+        }
+        .hero-buttons { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+        .btn {
+            display: inline-flex; align-items: center; gap: 8px;
+            padding: 14px 32px;
+            border-radius: 8px; font-weight: 600; font-size: 0.95em;
+            text-decoration: none; transition: all 0.2s; border: none; cursor: pointer;
+        }
+        .btn-primary {
+            background: var(--primary); color: #fff;
+            box-shadow: 0 4px 20px rgba(46,95,212,0.3);
+        }
+        .btn-primary:hover { background: var(--primary-dark); transform: translateY(-1px); }
+        .btn-outline {
+            background: transparent; color: var(--text);
+            border: 1px solid var(--border);
+        }
+        .btn-outline:hover { border-color: var(--border-hover); background: rgba(46,95,212,0.06); }
+
+        /* STATS BAR */
+        .stats {
+            padding: 48px 24px;
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+            background: var(--bg-section);
+        }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 32px; text-align: center;
+        }
+        .stat-number {
+            font-size: 2.2em; font-weight: 800;
+            letter-spacing: -0.02em;
+        }
+        .stat-label { color: var(--text-muted); font-size: 0.85em; margin-top: 4px; font-weight: 500; }
+
+        /* SECTION */
+        section { padding: 100px 24px; }
+        .section-header { text-align: center; margin-bottom: 56px; }
+        .section-label {
+            font-size: 0.8em; font-weight: 600; letter-spacing: 0.12em;
+            text-transform: uppercase; color: var(--primary); margin-bottom: 12px;
+        }
+        .section-title {
+            font-size: clamp(1.8em, 3vw, 2.4em);
+            font-weight: 800; letter-spacing: -0.02em;
+        }
+        .section-subtitle {
+            color: var(--text-muted); font-size: 1.05em;
+            max-width: 560px; margin: 12px auto 0; font-weight: 300;
         }
 
-        /* ABOUT */
-        .about { max-width: 800px; margin: 0 auto; }
-        .about-text {
-            text-align: center;
-            font-size: 1.1em;
+        /* PRODUCTS */
+        .products { background: var(--bg-dark); }
+        .product-card {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 48px;
+            align-items: center;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 40px;
+            margin-bottom: 32px;
+            transition: border-color 0.3s;
+        }
+        .product-card:hover { border-color: var(--border-hover); }
+        .product-card.reverse { direction: rtl; }
+        .product-card.reverse > * { direction: ltr; }
+        .product-icon {
+            width: 48px; height: 48px; border-radius: 12px;
+            object-fit: contain; margin-bottom: 16px;
+        }
+        .product-tag {
+            display: inline-block; padding: 4px 10px;
+            border-radius: 4px; font-size: 0.75em; font-weight: 600;
+            letter-spacing: 0.05em; text-transform: uppercase;
+            margin-bottom: 16px;
+        }
+        .tag-energy { background: rgba(0,214,143,0.12); color: var(--accent-green); }
+        .tag-fleet { background: rgba(0,200,255,0.12); color: var(--accent-cyan); }
+        .tag-auto { background: rgba(255,184,0,0.12); color: var(--accent-amber); }
+        .tag-compliance { background: rgba(46,95,212,0.12); color: var(--primary); }
+        .tag-defence { background: rgba(255,80,80,0.12); color: #ff6b6b; }
+        .tag-vr { background: rgba(180,120,255,0.12); color: #b478ff; }
+        .product-card h3 { font-size: 1.5em; font-weight: 700; margin-bottom: 12px; }
+        .product-card p { color: var(--text-muted); line-height: 1.7; margin-bottom: 16px; }
+        .product-features {
+            list-style: none; display: flex; flex-wrap: wrap; gap: 8px;
+        }
+        .product-features li {
+            padding: 4px 12px;
+            background: rgba(255,255,255,0.04);
+            border-radius: 4px;
+            font-size: 0.8em;
             color: var(--text-muted);
-            line-height: 1.8;
+        }
+        .product-screenshot {
+            width: 100%; border-radius: 12px;
+            border: 1px solid var(--border);
+            box-shadow: 0 8px 40px rgba(0,0,0,0.4);
+        }
+
+        /* BIO */
+        .bio { background: var(--bg-section); }
+        .bio-grid {
+            display: grid; grid-template-columns: 300px 1fr;
+            gap: 48px; align-items: start;
+        }
+        .bio-sidebar {
+            text-align: center;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 32px 24px;
+        }
+        .bio-avatar {
+            width: 120px; height: 120px; border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary), var(--accent-cyan));
+            display: flex; align-items: center; justify-content: center;
+            margin: 0 auto 16px;
+            font-size: 2.4em; font-weight: 800; color: #fff;
+        }
+        .bio-name { font-size: 1.3em; font-weight: 700; margin-bottom: 4px; }
+        .bio-role { color: var(--primary); font-size: 0.9em; font-weight: 500; margin-bottom: 16px; }
+        .bio-links { display: flex; flex-direction: column; gap: 8px; margin-top: 16px; }
+        .bio-links a {
+            color: var(--text-muted); text-decoration: none; font-size: 0.85em;
+            padding: 8px 12px; border-radius: 8px;
+            background: rgba(255,255,255,0.03);
+            transition: all 0.2s;
+        }
+        .bio-links a:hover { color: var(--text); background: rgba(255,255,255,0.06); }
+        .bio-content h3 { font-size: 1.2em; font-weight: 700; margin: 24px 0 12px; color: var(--text); }
+        .bio-content h3:first-child { margin-top: 0; }
+        .bio-content p { color: var(--text-muted); line-height: 1.8; margin-bottom: 12px; }
+        .bio-highlights {
+            display: grid; grid-template-columns: 1fr 1fr;
+            gap: 12px; margin-top: 20px;
+        }
+        .bio-highlight {
+            padding: 16px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+        }
+        .bio-highlight strong { display: block; color: var(--text); font-size: 0.95em; margin-bottom: 4px; }
+        .bio-highlight span { color: var(--text-muted); font-size: 0.82em; line-height: 1.5; }
+        .oem-list {
+            display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px;
+        }
+        .oem-list span {
+            padding: 4px 12px; background: rgba(255,255,255,0.04);
+            border-radius: 4px; font-size: 0.8em; color: var(--text-muted);
         }
 
         /* TESTIMONIAL */
-        .testimonial {
-            background: var(--bg-dark);
-        }
+        .testimonial { background: var(--bg-dark); }
         .testimonial-card {
-            max-width: 700px;
-            margin: 0 auto;
+            max-width: 720px; margin: 0 auto;
             background: var(--bg-card);
-            border-radius: 12px;
-            padding: 36px 32px 60px;
-            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 16px;
+            padding: 40px 36px 64px;
+            border: 1px solid var(--border);
             position: relative;
             overflow: hidden;
         }
         .testimonial-card::before {
-            content: "\201C";
-            font-size: 4em;
-            color: var(--primary);
-            position: absolute;
-            top: 12px;
-            left: 24px;
-            line-height: 1;
-            opacity: 0.3;
+            content: "\201C"; font-size: 4em; color: var(--primary);
+            position: absolute; top: 12px; left: 24px;
+            line-height: 1; opacity: 0.3;
         }
         .testimonial-card::after {
-            content: "\201D";
-            font-size: 4em;
-            color: var(--primary);
-            position: absolute;
-            bottom: 24px;
-            right: 24px;
-            line-height: 1;
-            opacity: 0.3;
+            content: "\201D"; font-size: 4em; color: var(--primary);
+            position: absolute; bottom: 24px; right: 24px;
+            line-height: 1; opacity: 0.3;
         }
         .testimonial-card p {
-            font-style: italic;
-            color: var(--text-muted);
-            line-height: 1.8;
-            margin-bottom: 20px;
-            padding-top: 16px;
+            font-style: italic; color: var(--text-muted);
+            line-height: 1.8; margin-bottom: 20px; padding-top: 16px;
         }
-        .testimonial-author {
-            font-weight: 700;
-            color: var(--text);
-        }
-        .testimonial-role {
-            color: var(--text-muted);
-            font-size: 0.9em;
-        }
+        .testimonial-author { font-weight: 700; color: var(--text); }
+        .testimonial-role { color: var(--text-muted); font-size: 0.9em; }
 
         /* CONTACT */
-        .contact { text-align: center; }
-        .contact p {
-            color: var(--text-muted);
-            margin-bottom: 28px;
-            font-size: 1.05em;
-        }
+        .contact { background: var(--bg-section); text-align: center; }
+        .contact p { color: var(--text-muted); margin-bottom: 28px; font-size: 1.05em; }
 
         /* FOOTER */
         footer {
-            text-align: center;
-            padding: 32px 24px;
-            border-top: 1px solid rgba(255,255,255,0.06);
-            color: var(--text-muted);
-            font-size: 0.85em;
+            text-align: center; padding: 32px 24px;
+            border-top: 1px solid var(--border);
+            color: var(--text-dim); font-size: 0.82em;
         }
-        footer a { color: var(--text-muted); text-decoration: none; }
-        footer a:hover { color: var(--text); }
+        footer a { color: var(--text-dim); text-decoration: none; }
+        footer a:hover { color: var(--text-muted); }
 
-        /* MOBILE */
-        @media (max-width: 600px) {
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
             nav { padding: 0 16px; }
-            .nav-links { gap: 20px; }
-            section { padding: 60px 16px; }
-            .testimonial-card { padding: 28px 20px; }
+            .nav-links { gap: 16px; }
+            .nav-links a { font-size: 0.82em; }
+            section { padding: 64px 16px; }
+            .product-card { grid-template-columns: 1fr; padding: 24px; }
+            .product-card.reverse { direction: ltr; }
+            .bio-grid { grid-template-columns: 1fr; }
+            .bio-highlights { grid-template-columns: 1fr; }
+            .stats-grid { grid-template-columns: repeat(2, 1fr); gap: 24px; }
         }
     </style>
 </head>
@@ -258,61 +339,267 @@
         Starns Labs
     </a>
     <ul class="nav-links">
-        <li><a href="#home">Home</a></li>
+        <li><a href="#products">Products</a></li>
+        <li><a href="#about">About</a></li>
         <li><a href="#contact">Contact</a></li>
         <li><a href="privacy.html">Privacy</a></li>
     </ul>
 </nav>
 
+<!-- HERO -->
 <section class="hero" id="home">
     <div class="hero-content">
-        <h1>Building Your <span>Digital Future</span></h1>
-        <p>Transforming your ideas into powerful software solutions.</p>
-        <a href="#contact" class="btn">Consult Now</a>
-    </div>
-</section>
-
-<section class="features">
-    <h2 class="section-title">What We <span>Do</span></h2>
-    <div class="features-grid">
-        <div class="feature-card">
-            <div class="feature-icon">&#9881;</div>
-            <h3>Custom Software Solutions</h3>
-            <p>Tailored software development to meet your unique business needs.</p>
-        </div>
-        <div class="feature-card">
-            <div class="feature-icon">&#9889;</div>
-            <h3>Innovative Development</h3>
-            <p>We bring your ideas to life with cutting-edge technology and creative solutions.</p>
-        </div>
-        <div class="feature-card">
-            <div class="feature-icon">&#9878;</div>
-            <h3>Scalable & Reliable</h3>
-            <p>Building software that grows with your business and performs consistently.</p>
+        <div class="hero-badge">35+ Years of Engineering Innovation</div>
+        <h1>Software That <span class="gradient-text">Moves Industries</span></h1>
+        <p>From electric vehicle platforms to fleet telemetry, energy analytics to defence systems &mdash; we build the software behind the hardware.</p>
+        <div class="hero-buttons">
+            <a href="#products" class="btn btn-primary">View Our Work</a>
+            <a href="#contact" class="btn btn-outline">Get In Touch</a>
         </div>
     </div>
 </section>
 
-<section>
-    <h2 class="section-title">Collaborating for <span>Success</span></h2>
-    <div class="about">
-        <p class="about-text">We believe that collaboration is key to successful software development. We work closely with our clients throughout the entire process, from initial consultation to final deployment, ensuring that your voice is heard and your needs are met.</p>
+<!-- STATS -->
+<div class="stats">
+    <div class="container">
+        <div class="stats-grid">
+            <div>
+                <div class="stat-number gradient-text">29+</div>
+                <div class="stat-label">Products Shipped</div>
+            </div>
+            <div>
+                <div class="stat-number gradient-text">£126M+</div>
+                <div class="stat-label">Enterprise Value Created</div>
+            </div>
+            <div>
+                <div class="stat-number gradient-text">35+</div>
+                <div class="stat-label">Years at Board Level</div>
+            </div>
+            <div>
+                <div class="stat-number gradient-text">ISO 26262</div>
+                <div class="stat-label">Safety-Critical Certified</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- PRODUCTS -->
+<section class="products" id="products">
+    <div class="container">
+        <div class="section-header">
+            <div class="section-label">Portfolio</div>
+            <h2 class="section-title">Products & Platforms</h2>
+            <p class="section-subtitle">Production-grade systems deployed across energy, automotive, fleet management, and defence.</p>
+        </div>
+
+        <!-- OctoGraph -->
+        <div class="product-card">
+            <div>
+                <img src="img/octograph_icon.png" alt="OctoGraph" class="product-icon">
+                <span class="product-tag tag-energy">Energy Analytics</span>
+                <h3>OctoGraph</h3>
+                <p>Real-time energy monitoring app for Octopus Energy customers. Visualises electricity and gas consumption, forecasts costs, compares tariffs, and correlates usage with weather data. Available on Android.</p>
+                <ul class="product-features">
+                    <li>10+ Analytics Tabs</li>
+                    <li>Cost Forecasting</li>
+                    <li>Agile Tariff Comparison</li>
+                    <li>Smart Meter Integration</li>
+                    <li>Met Office Weather Data</li>
+                </ul>
+            </div>
+            <div>
+                <img src="img/octograph_usage.png" alt="OctoGraph Dashboard" class="product-screenshot">
+            </div>
+        </div>
+
+        <!-- AmpTrak -->
+        <div class="product-card reverse">
+            <div>
+                <img src="img/amptrak_icon.png" alt="AmpTrak" class="product-icon">
+                <span class="product-tag tag-fleet">Fleet Telemetry</span>
+                <h3>AmpTrak</h3>
+                <p>Enterprise fleet telemetry platform for electric and hydrogen vehicles. Real-time MQTT streaming from vehicle telematics gateways, CAN bus signal analysis, automated drive-cycle reports, OTA firmware updates, and predictive maintenance alerts.</p>
+                <ul class="product-features">
+                    <li>105+ Live Signals</li>
+                    <li>MQTT / CAN Bus</li>
+                    <li>OTA Firmware</li>
+                    <li>Automated Reports</li>
+                    <li>Alert Engine</li>
+                    <li>Remote Console</li>
+                </ul>
+            </div>
+            <div>
+                <img src="img/octograph_forecast.png" alt="AmpTrak Telemetry" class="product-screenshot">
+            </div>
+        </div>
+
+        <!-- DriveFoundry -->
+        <div class="product-card">
+            <div>
+                <span class="product-tag tag-auto">Automotive Engineering</span>
+                <h3>DriveFoundry</h3>
+                <p>Automotive simulation and CAN protocol analysis platform. AI-assisted battery signal decoding, vehicle dynamics simulation, DBC file processing, and WLTP energy modelling. Used across EV driveline development programmes.</p>
+                <ul class="product-features">
+                    <li>BMS Signal Decoder</li>
+                    <li>Vehicle Physics Sim</li>
+                    <li>CAN Bus Fuzzing</li>
+                    <li>AI Signal Correlation</li>
+                    <li>DBC Import/Export</li>
+                </ul>
+            </div>
+            <div>
+                <img src="img/vodascope_graphs.png" alt="DriveFoundry Analysis" class="product-screenshot">
+            </div>
+        </div>
+
+        <!-- Cybersecurity Products -->
+        <div class="product-card reverse">
+            <div>
+                <span class="product-tag tag-defence">Automotive Cybersecurity</span>
+                <h3>CAR GUARDIAN / CAR SHIELD / VAN SENTINEL</h3>
+                <p>Suite of vehicle cybersecurity products. CAR GUARDIAN provides protocol-agnostic CAN encryption. CAR SHIELD is a legacy network firewall for intrusion prevention. VAN SENTINEL uses AI-driven ECU interfacing for vehicle de-weaponisation (counter-terror applications).</p>
+                <ul class="product-features">
+                    <li>CAN Encryption</li>
+                    <li>Intrusion Prevention</li>
+                    <li>AI-Driven ECU Interface</li>
+                    <li>Anti-Terror Systems</li>
+                    <li>Protocol-Agnostic</li>
+                </ul>
+            </div>
+            <div>
+                <img src="img/vodascope.png" alt="Security Analytics" class="product-screenshot">
+            </div>
+        </div>
+
+        <!-- VodaScope / BattScope -->
+        <div class="product-card">
+            <div>
+                <span class="product-tag tag-vr">3D Visualisation & VR</span>
+                <h3>VodaScope / BattScope</h3>
+                <p>3D VR data visualisation tools for telecom infrastructure and battery health analytics. Multi-layered graphical analysis with GPS/time-synced datasets, anomaly detection, and interactive 3D exploration of equipment performance data.</p>
+                <ul class="product-features">
+                    <li>VR Exploration</li>
+                    <li>Battery Health</li>
+                    <li>Telecom Analytics</li>
+                    <li>3D Visualisation</li>
+                    <li>Anomaly Detection</li>
+                </ul>
+            </div>
+            <div>
+                <img src="img/octograph_mobile.png" alt="Data Visualisation" class="product-screenshot">
+            </div>
+        </div>
+
+        <!-- COMSAT -->
+        <div class="product-card reverse">
+            <div>
+                <img src="img/starns_labs_logo.png" alt="COMSAT" class="product-icon">
+                <span class="product-tag tag-compliance">Supply Chain Compliance</span>
+                <h3>COMSAT</h3>
+                <p>Conflict minerals compliance verification system. Parses Bills of Materials, cross-references against CMRT databases and smelter lists, identifies 3TG minerals (Tin, Tantalum, Tungsten, Gold), and generates colour-coded compliance reports with automated supplier notifications.</p>
+                <ul class="product-features">
+                    <li>BOM Parser</li>
+                    <li>CMRT Database</li>
+                    <li>3TG Mineral Detection</li>
+                    <li>Automated Reports</li>
+                    <li>Supplier Alerts</li>
+                </ul>
+            </div>
+            <div style="display:flex;align-items:center;justify-content:center;">
+                <img src="img/starns_labs_logo.png" alt="S.T.A.R.N.S. Laboratories" style="max-width:260px;opacity:0.8;">
+            </div>
+        </div>
     </div>
 </section>
 
+<!-- BIO -->
+<section class="bio" id="about">
+    <div class="container">
+        <div class="section-header">
+            <div class="section-label">Founder</div>
+            <h2 class="section-title">Greg Starns</h2>
+            <p class="section-subtitle">CTO &middot; Embedded Systems Architect &middot; Automotive Technology Innovator</p>
+        </div>
+
+        <div class="bio-grid">
+            <div class="bio-sidebar">
+                <div class="bio-avatar">GS</div>
+                <div class="bio-name">Greg Starns</div>
+                <div class="bio-role">CTO & Founder</div>
+                <div style="color:var(--text-muted);font-size:0.82em;line-height:1.6;">
+                    West Sussex, UK<br>
+                    HND Computer Science (High Merit)
+                </div>
+                <div class="bio-links">
+                    <a href="https://linkedin.com/in/greg-starns-1985a14" target="_blank">LinkedIn Profile</a>
+                    <a href="mailto:starnslabs@gmail.com">starnslabs@gmail.com</a>
+                </div>
+            </div>
+
+            <div class="bio-content">
+                <h3>35+ Years Building the Future</h3>
+                <p>Technology leader with over 35 years delivering disruptive innovations across electrification, embedded systems, and advanced automotive technologies. From architecting Malaysia's first hybrid monorail to pioneering ISO 26262 adoption in the UK, Greg has led global teams of 4-34 staff and launched award-winning products across international markets.</p>
+
+                <p>Principal inventor of commercially successful technologies generating over &pound;126 million in enterprise value. Recognised for strategic foresight, technical excellence, and the ability to scale R&D operations into high-performing commercial ventures. Frequent industry speaker and trusted advisor to OEMs and governments.</p>
+
+                <h3>Key Innovations</h3>
+                <div class="bio-highlights">
+                    <div class="bio-highlight">
+                        <strong>EV Drivelines</strong>
+                        <span>BLDC motor controllers at 97.8% efficiency. Digital differentials, torque vectoring, proprietary BMS with Li-Po &amp; NMC.</span>
+                    </div>
+                    <div class="bio-highlight">
+                        <strong>Hybrid Monorail</strong>
+                        <span>Architected Malaysia's 24-wheel hybrid monorail platform including powertrain, control systems, and ticketing.</span>
+                    </div>
+                    <div class="bio-highlight">
+                        <strong>Cybersecurity</strong>
+                        <span>CAR GUARDIAN CAN encryption, CAR SHIELD firewall, VAN SENTINEL anti-terror ECU systems, DARTS-IOT telemetry.</span>
+                    </div>
+                    <div class="bio-highlight">
+                        <strong>HMI & Clusters</strong>
+                        <span>Unity3D digital meter clusters with CAN/DBC backend. &pound;150K annual license savings. Hardened Android builds.</span>
+                    </div>
+                </div>
+
+                <h3>Awards</h3>
+                <p>Multiple UK Future Car Challenge winner: Best Range Extended EV (2010), Best Overall Extended Range &amp; Most Energy Efficient Multi-Purpose Vehicle (2011). Led the only hybrid taxi to complete TFL fleet trials at 131 MPG.</p>
+
+                <h3>OEM & Industry Partners</h3>
+                <div class="oem-list">
+                    <span>BMW</span><span>Audi</span><span>Ford</span><span>PSA</span>
+                    <span>Proton</span><span>Morgan Cars</span><span>DNATA</span><span>Amazon</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- TESTIMONIAL -->
 <section class="testimonial">
-    <h2 class="section-title">Client <span>Reviews</span></h2>
-    <div class="testimonial-card">
-        <p>On a side note, I just wanted to put on record on behalf of myself and Nick how refreshing it was last week to complete the vehicle inspection with you. The professionalism and thought leadership on display &mdash; it is clear to see what seems like an entire OEM's knowledge condensed into such a small team. We were equally impressed with the critical thinking methods used during the inspection in order to rectify a potential failure against the functional safety requirements; so credit to you both for your professionalism in diligence.</p>
-        <div class="testimonial-author">James H</div>
-        <div class="testimonial-role">Principle Certification Engineer</div>
+    <div class="container">
+        <div class="section-header">
+            <div class="section-label">Testimonial</div>
+            <h2 class="section-title">Client <span class="gradient-text">Reviews</span></h2>
+        </div>
+        <div class="testimonial-card">
+            <p>On a side note, I just wanted to put on record on behalf of myself and Nick how refreshing it was last week to complete the vehicle inspection with you. The professionalism and thought leadership on display &mdash; it is clear to see what seems like an entire OEM's knowledge condensed into such a small team. We were equally impressed with the critical thinking methods used during the inspection in order to rectify a potential failure against the functional safety requirements; so credit to you both for your professionalism in diligence.</p>
+            <div class="testimonial-author">James H</div>
+            <div class="testimonial-role">Principle Certification Engineer</div>
+        </div>
     </div>
 </section>
 
+<!-- CONTACT -->
 <section class="contact" id="contact">
-    <h2 class="section-title">Get In <span>Touch</span></h2>
-    <p>Ready to start your project? We'd love to hear from you.</p>
-    <a href="mailto:starnslabs@gmail.com" class="btn">Contact Us</a>
+    <div class="container">
+        <div class="section-header">
+            <div class="section-label">Contact</div>
+            <h2 class="section-title">Let's Build Something</h2>
+            <p class="section-subtitle">Ready to discuss your next project? We'd love to hear from you.</p>
+        </div>
+        <a href="mailto:starnslabs@gmail.com" class="btn btn-primary">Contact Us</a>
+    </div>
 </section>
 
 <footer>
