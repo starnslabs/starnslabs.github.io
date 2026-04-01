@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-Content-Type-Options" content="nosniff">
+    <meta http-equiv="X-Frame-Options" content="DENY">
+    <meta name="referrer" content="strict-origin-when-cross-origin">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; script-src 'none'; frame-ancestors 'none';">
+    <title>Gallery - Starns Labs Ltd</title>
+    <link rel="icon" href="logo-alt.png" type="image/png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --primary: #2E5FD4;
+            --primary-dark: #1E4AB8;
+            --primary-glow: rgba(46,95,212,0.25);
+            --bg-dark: #0a0e1a;
+            --bg-section: #0f1424;
+            --bg-card: #151b30;
+            --text: #e8eaf0;
+            --text-muted: #8a91a8;
+            --text-dim: #5a6180;
+            --accent-cyan: #00c8ff;
+            --border: rgba(255,255,255,0.06);
+            --border-hover: rgba(46,95,212,0.4);
+        }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: var(--bg-dark); color: var(--text); line-height: 1.6;
+        }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+        .gradient-text {
+            background: linear-gradient(135deg, var(--primary), var(--accent-cyan));
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+        }
+
+        /* NAV */
+        nav {
+            position: fixed; top: 0; width: 100%; z-index: 100;
+            background: rgba(10, 14, 26, 0.92); backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border); padding: 0 40px;
+            display: flex; align-items: center; justify-content: space-between; height: 64px;
+        }
+        .nav-brand {
+            display: flex; align-items: center; gap: 12px;
+            text-decoration: none; color: var(--text); font-weight: 700; font-size: 1.15em;
+        }
+        .nav-brand img { height: 34px; width: auto; }
+        .nav-links { display: flex; gap: 28px; list-style: none; }
+        .nav-links a {
+            color: var(--text-muted); text-decoration: none; font-size: 0.9em; font-weight: 500; transition: color 0.2s;
+        }
+        .nav-links a:hover { color: var(--text); }
+
+        /* HEADER */
+        .page-header {
+            padding: 120px 24px 48px; text-align: center;
+        }
+        .section-label {
+            font-size: 0.8em; font-weight: 600; letter-spacing: 0.12em;
+            text-transform: uppercase; color: var(--primary); margin-bottom: 12px;
+        }
+        .section-title {
+            font-size: clamp(1.8em, 3vw, 2.4em); font-weight: 800; letter-spacing: -0.02em;
+        }
+        .section-subtitle {
+            color: var(--text-muted); font-size: 1.05em;
+            max-width: 600px; margin: 12px auto 0; font-weight: 300;
+        }
+
+        /* FILTER — CSS-only with radio inputs */
+        .gallery-wrapper { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+        .filter-radio { display: none; }
+        .filter-tabs {
+            display: flex; flex-wrap: wrap; justify-content: center; gap: 8px;
+            padding: 0 24px 32px;
+        }
+        .filter-tab {
+            padding: 6px 16px; border-radius: 20px; font-size: 0.82em; font-weight: 500;
+            color: var(--text-muted); background: var(--bg-card); border: 1px solid var(--border);
+            cursor: pointer; transition: all 0.2s; user-select: none;
+        }
+        .filter-tab:hover { color: var(--text); border-color: var(--border-hover); }
+        /* Highlight active tab */
+        #filter-all:checked ~ .filter-tabs label[for="filter-all"],
+        #filter-vehicles:checked ~ .filter-tabs label[for="filter-vehicles"],
+        #filter-performance:checked ~ .filter-tabs label[for="filter-performance"],
+        #filter-trucks:checked ~ .filter-tabs label[for="filter-trucks"],
+        #filter-monorail:checked ~ .filter-tabs label[for="filter-monorail"],
+        #filter-software:checked ~ .filter-tabs label[for="filter-software"],
+        #filter-analytics:checked ~ .filter-tabs label[for="filter-analytics"],
+        #filter-defence:checked ~ .filter-tabs label[for="filter-defence"] {
+            color: var(--accent-cyan); border-color: var(--primary); background: rgba(46,95,212,0.12);
+        }
+        /* Hide non-matching items when a filter is active */
+        #filter-vehicles:checked ~ .gallery-grid .gallery-item:not(.cat-vehicles),
+        #filter-performance:checked ~ .gallery-grid .gallery-item:not(.cat-performance),
+        #filter-trucks:checked ~ .gallery-grid .gallery-item:not(.cat-trucks),
+        #filter-monorail:checked ~ .gallery-grid .gallery-item:not(.cat-monorail),
+        #filter-software:checked ~ .gallery-grid .gallery-item:not(.cat-software),
+        #filter-analytics:checked ~ .gallery-grid .gallery-item:not(.cat-analytics),
+        #filter-defence:checked ~ .gallery-grid .gallery-item:not(.cat-defence) {
+            display: none;
+        }
+
+        /* GALLERY GRID */
+        .gallery-grid {
+            columns: 4; column-gap: 16px; padding: 0 0 80px;
+        }
+        .gallery-item {
+            break-inside: avoid; margin-bottom: 16px;
+            border-radius: 12px; overflow: hidden;
+            border: 1px solid var(--border);
+            transition: transform 0.3s, border-color 0.3s, box-shadow 0.3s;
+            position: relative;
+        }
+        .gallery-item:hover {
+            transform: scale(1.02);
+            border-color: var(--border-hover);
+            box-shadow: 0 8px 40px rgba(0,0,0,0.5);
+            z-index: 2;
+        }
+        .gallery-item img {
+            width: 100%; display: block;
+        }
+        .gallery-caption {
+            padding: 10px 14px;
+            background: var(--bg-card);
+            font-size: 0.78em;
+            color: var(--text-muted);
+            line-height: 1.4;
+        }
+        .gallery-caption strong {
+            display: block; color: var(--text); font-size: 0.9em; margin-bottom: 2px;
+        }
+
+        /* FOOTER */
+        footer {
+            text-align: center; padding: 32px 24px;
+            border-top: 1px solid var(--border);
+            color: var(--text-dim); font-size: 0.82em;
+        }
+        footer a { color: var(--text-dim); text-decoration: none; }
+        footer a:hover { color: var(--text-muted); }
+
+        @media (max-width: 1024px) { .gallery-grid { columns: 3; } }
+        @media (max-width: 768px) {
+            nav { padding: 0 16px; }
+            .nav-links { gap: 16px; }
+            .nav-links a { font-size: 0.82em; }
+            .gallery-grid { columns: 2; column-gap: 10px; }
+            .gallery-item { margin-bottom: 10px; }
+        }
+        @media (max-width: 480px) { .gallery-grid { columns: 1; } }
+    </style>
+</head>
+<body>
+
+<nav>
+    <a href="index.html" class="nav-brand">
+        <img src="logo-alt.png" alt="Starns Labs">
+        Starns Labs
+    </a>
+    <ul class="nav-links">
+        <li><a href="index.html#products">Products</a></li>
+        <li><a href="index.html#timeline">Timeline</a></li>
+        <li><a href="index.html#about">About</a></li>
+        <li><a href="gallery.html" style="color: var(--text);">Gallery</a></li>
+        <li><a href="index.html#contact">Contact</a></li>
+    </ul>
+</nav>
+
+<div class="page-header">
+    <div class="section-label">Portfolio</div>
+    <h1 class="section-title">Project <span class="gradient-text">Gallery</span></h1>
+    <p class="section-subtitle">40 years of vehicles, platforms, software, and innovations &mdash; from Solar Baby to drone simulators.</p>
+</div>
+
+<div class="gallery-wrapper">
+    <input type="radio" name="filter" id="filter-all" class="filter-radio" checked>
+    <input type="radio" name="filter" id="filter-vehicles" class="filter-radio">
+    <input type="radio" name="filter" id="filter-performance" class="filter-radio">
+    <input type="radio" name="filter" id="filter-trucks" class="filter-radio">
+    <input type="radio" name="filter" id="filter-monorail" class="filter-radio">
+    <input type="radio" name="filter" id="filter-software" class="filter-radio">
+    <input type="radio" name="filter" id="filter-analytics" class="filter-radio">
+    <input type="radio" name="filter" id="filter-defence" class="filter-radio">
+
+    <div class="filter-tabs">
+        <label for="filter-all" class="filter-tab">All</label>
+        <label for="filter-vehicles" class="filter-tab">Vehicles</label>
+        <label for="filter-performance" class="filter-tab">Performance</label>
+        <label for="filter-trucks" class="filter-tab">Trucks &amp; Commercial</label>
+        <label for="filter-monorail" class="filter-tab">Monorail</label>
+        <label for="filter-software" class="filter-tab">Software &amp; HMI</label>
+        <label for="filter-analytics" class="filter-tab">Analytics &amp; VR</label>
+        <label for="filter-defence" class="filter-tab">Defence</label>
+    </div>
+
+    <div class="gallery-grid">
+
+        <!-- Namir -->
+        <div class="gallery-item cat-performance cat-vehicles">
+            <img src="img/namir.png" alt="Namir at Goodwood">
+            <div class="gallery-caption"><strong>Namir at Goodwood 2009</strong>4WD REEV supercar, 300kph. Giugiaro design.</div>
+        </div>
+
+        <!-- Namir show -->
+        <div class="gallery-item cat-performance cat-vehicles">
+            <img src="img/namir_show.png" alt="Namir at motor show">
+            <div class="gallery-caption"><strong>Namir at Motor Show</strong>Scissor doors, orange livery, green-lit alloys.</div>
+        </div>
+
+        <!-- Namir cockpit -->
+        <div class="gallery-item cat-performance cat-software">
+            <img src="img/gallery_image15.jpeg" alt="Namir cockpit">
+            <div class="gallery-caption"><strong>Namir Cockpit</strong>Hand gesture control, multi-pod dashboard, 360-degree video screens.</div>
+        </div>
+
+        <!-- Bullet exterior -->
+        <div class="gallery-item cat-performance cat-vehicles">
+            <img src="img/gallery_image21.jpeg" alt="Bullet exterior">
+            <div class="gallery-caption"><strong>Bristol Bullet</strong>Handcrafted roadster. ICE performance car.</div>
+        </div>
+
+        <!-- Bullet interior -->
+        <div class="gallery-item cat-performance cat-software">
+            <img src="img/bullet.png" alt="Bullet interior">
+            <div class="gallery-caption"><strong>Bullet Interior</strong>Bespoke tan leather, hand-stitched. Our digital cluster and HMI.</div>
+        </div>
+
+        <!-- Bullet dashboard -->
+        <div class="gallery-item cat-performance cat-software">
+            <img src="img/gallery_image23.jpeg" alt="Bullet dashboard">
+            <div class="gallery-caption"><strong>Bullet Dashboard</strong>Digital display integration, custom Bristol instruments.</div>
+        </div>
+
+        <!-- Bullet rear -->
+        <div class="gallery-item cat-performance cat-vehicles">
+            <img src="img/gallery_image24.jpeg" alt="Bullet rear view">
+            <div class="gallery-caption"><strong>Bullet Rear Profile</strong>Sculpted aluminium bodywork, twin exhausts.</div>
+        </div>
+
+        <!-- Bullet prototype testing -->
+        <div class="gallery-item cat-performance cat-vehicles">
+            <img src="img/gallery_image25.jpeg" alt="Bullet prototype at Goodwood">
+            <div class="gallery-caption"><strong>Bullet Prototype Testing</strong>Camo-wrapped prototype at Goodwood Festival of Speed.</div>
+        </div>
+
+        <!-- Morgan EV3 -->
+        <div class="gallery-item cat-vehicles cat-performance">
+            <img src="img/morgan_ev3.png" alt="Morgan EV3">
+            <div class="gallery-caption"><strong>Morgan EV3</strong>Three-wheeled electric Morgan. 2017.</div>
+        </div>
+
+
+        <!-- Pinnacle chassis -->
+        <div class="gallery-item cat-performance cat-vehicles">
+            <img src="img/gallery_image18.png" alt="Pinnacle chassis">
+            <div class="gallery-caption"><strong>Pinnacle Chassis</strong>Carbon fibre monocoque, 4WD REEV. 200mph+ target. Red race seats.</div>
+        </div>
+
+        <!-- Olympic road train -->
+        <div class="gallery-item cat-vehicles">
+            <img src="img/metrocab_old.jpeg" alt="Olympic road train">
+            <div class="gallery-caption"><strong>Olympic Road Train &mdash; Sydney 2000</strong>12WD EV people movers with Olympic branding.</div>
+        </div>
+
+        <!-- Road train / early vehicles -->
+        <div class="gallery-item cat-vehicles">
+            <img src="img/road_train.png" alt="Early EV vehicle">
+            <div class="gallery-caption"><strong>Early EV Platform</strong>Utility vehicle from the Solar Baby era, late 1990s.</div>
+        </div>
+
+        <!-- Solar bus -->
+        <div class="gallery-item cat-vehicles">
+            <img src="img/solar_bus.png" alt="Solar bus">
+            <div class="gallery-caption"><strong>Solar Bus 1996</strong>Solar-assisted electric minibus.</div>
+        </div>
+
+        <!-- Zero Emission Bus -->
+        <div class="gallery-item cat-vehicles cat-trucks">
+            <img src="img/rex_bus.png" alt="Zero Emission bus">
+            <div class="gallery-caption"><strong>Zero Emission Capable Bus</strong>Carbon fibre low-floor REEV bus, 2016. Bristol livery.</div>
+        </div>
+
+        <!-- Monorail on track -->
+        <div class="gallery-item cat-monorail">
+            <img src="img/monorail.png" alt="Monorail on track">
+            <div class="gallery-caption"><strong>Rex Monorail 2001</strong>Full-scale 24-wheel hybrid monorail, Malaysia.</div>
+        </div>
+
+        <!-- Monorail testing -->
+        <div class="gallery-item cat-monorail">
+            <img src="img/gallery_image40.jpeg" alt="Monorail on test track">
+            <div class="gallery-caption"><strong>Monorail Test Track</strong>On elevated rail during commissioning, Malaysia.</div>
+        </div>
+
+        <!-- Monorail underside -->
+        <div class="gallery-item cat-monorail">
+            <img src="img/gallery_image41.jpeg" alt="Monorail undercarriage">
+            <div class="gallery-caption"><strong>Monorail Integration</strong>24-wheel bogie and drive system visible during installation.</div>
+        </div>
+
+        <!-- Monorail controls -->
+        <div class="gallery-item cat-monorail">
+            <img src="img/gallery_image37.jpeg" alt="Monorail control desk">
+            <div class="gallery-caption"><strong>Monorail Control Systems</strong>On-site commissioning with glass cockpit displays.</div>
+        </div>
+
+        <!-- Monorail cockpit operator -->
+        <div class="gallery-item cat-monorail">
+            <img src="img/gallery_image38.jpeg" alt="Monorail driver controls">
+            <div class="gallery-caption"><strong>Monorail Driver Station</strong>Testing the cab display and control systems on-site.</div>
+        </div>
+
+        <!-- Monorail cabin -->
+        <div class="gallery-item cat-monorail">
+            <img src="img/gallery_image39.jpeg" alt="Monorail cabin displays">
+            <div class="gallery-caption"><strong>Monorail Cabin</strong>Passenger information and control displays.</div>
+        </div>
+
+        <!-- Proton Exora dyno -->
+        <div class="gallery-item cat-vehicles">
+            <img src="img/gallery_image46.jpeg" alt="Proton Exora on dyno">
+            <div class="gallery-caption"><strong>Proton Exora &mdash; Dyno Testing</strong>Fleet test vehicle on rolling road, emissions and power validation.</div>
+        </div>
+
+        <!-- Future Car Challenge -->
+        <div class="gallery-item cat-vehicles">
+            <img src="img/gallery_image51.png" alt="Future Car Challenge award">
+            <div class="gallery-caption"><strong>Future Car Challenge Winner</strong>Proton Exora Extended Range EV wins Best in Category, 2010.</div>
+        </div>
+
+        <!-- DNATA truck -->
+        <div class="gallery-item cat-trucks">
+            <img src="img/ev_truck_40t.png" alt="DNATA EV truck">
+            <div class="gallery-caption"><strong>DNATA Airport Truck</strong>40T EV truck for airport ground handling operations.</div>
+        </div>
+
+        <!-- EV truck testing -->
+        <div class="gallery-item cat-trucks">
+            <img src="img/gallery_image44.jpeg" alt="EV truck testing">
+            <div class="gallery-caption"><strong>EV Truck Platform Testing</strong>Flatbed EV truck on test at proving ground.</div>
+        </div>
+
+        <!-- Emobyus van -->
+        <div class="gallery-item cat-trucks cat-vehicles">
+            <img src="img/emobyus_van.png" alt="Emobyus van">
+            <div class="gallery-caption"><strong>Emobyus In-Wheel Motor Van</strong>Mercedes Sprinter REEV retrofit with in-wheel motors, 2020.</div>
+        </div>
+
+        <!-- MVD Sprinter -->
+        <div class="gallery-item cat-trucks cat-vehicles">
+            <img src="img/gallery_image68.png" alt="MVD Sprinter white">
+            <div class="gallery-caption"><strong>MVD Sprinter &mdash; Homologation</strong>Production-ready in-wheel motor LCV, ready for type approval.</div>
+        </div>
+
+        <!-- Sprinter powertrain -->
+        <div class="gallery-item cat-trucks">
+            <img src="img/gallery_image69.png" alt="Sprinter powertrain">
+            <div class="gallery-caption"><strong>Sprinter Powertrain Integration</strong>HV battery and motor controller fitment on the flatbed chassis.</div>
+        </div>
+
+        <!-- Aurobay Sprinter -->
+        <div class="gallery-item cat-trucks cat-vehicles">
+            <img src="img/gallery_image67.png" alt="Aurobay Sprinter">
+            <div class="gallery-caption"><strong>Aurobay 907 Sprinter</strong>Methanol REX demonstration vehicle in the workshop, 2024.</div>
+        </div>
+
+        <!-- Bristol Demo cluster -->
+        <div class="gallery-item cat-software">
+            <img src="img/gallery_image59.png" alt="Digital instrument cluster">
+            <div class="gallery-caption"><strong>Unity3D Digital Cluster</strong>Bristol Demo &mdash; sports mode, reverse camera, real-time gauges. Hardened Android.</div>
+        </div>
+
+        <!-- BattScope VR -->
+        <div class="gallery-item cat-analytics">
+            <img src="img/gallery_image71.png" alt="BattScope 3D visualisation">
+            <div class="gallery-caption"><strong>BattScope &mdash; 3D Battery Analytics</strong>Big data visualisation with ROBS regression sort. Terrain-mapped anomaly detection.</div>
+        </div>
+
+        <!-- Force directed diagram -->
+        <div class="gallery-item cat-analytics">
+            <img src="img/gallery_image72.png" alt="Force directed diagram">
+            <div class="gallery-caption"><strong>Force Directed Network</strong>Connectome visualisation showing data set commonalities and gene expression strengths.</div>
+        </div>
+
+        <!-- GEV data vis -->
+        <div class="gallery-item cat-analytics">
+            <img src="img/gallery_image73.png" alt="GEV data visualisation">
+            <div class="gallery-caption"><strong>G.E.V. &mdash; Gene Expression Visualiser</strong>3D data landscape with regression-sorted nodes. XLife Sciences collaboration.</div>
+        </div>
+
+        <!-- GEV data vis 2 -->
+        <div class="gallery-item cat-analytics">
+            <img src="img/gallery_image74.png" alt="GEV data visualisation overhead">
+            <div class="gallery-caption"><strong>G.E.V. Overhead View</strong>Gene Expression Visualiser &mdash; colour-coded outlier detection across thousands of data points.</div>
+        </div>
+
+        <!-- VodaScope -->
+        <div class="gallery-item cat-analytics">
+            <img src="img/vodascope_3d.png" alt="VodaScope 3D">
+            <div class="gallery-caption"><strong>VodaScope &mdash; Telecom Analytics</strong>3D VR visualisation of cell tower infrastructure and power usage.</div>
+        </div>
+
+        <!-- VodaScope network -->
+        <div class="gallery-item cat-analytics">
+            <img src="img/vodascope_network.png" alt="VodaScope network map">
+            <div class="gallery-caption"><strong>VodaScope Network Map</strong>Thousands of cell towers rendered in 3D with signal strength colour mapping.</div>
+        </div>
+
+        <!-- Van Sentinel -->
+        <div class="gallery-item cat-defence">
+            <img src="img/van_sentinel.png" alt="Van Sentinel simulator">
+            <div class="gallery-caption"><strong>Car Sentinel / Van Sentinel</strong>Anti-terror vehicle de-weaponisation simulator. GPS-based ECU control.</div>
+        </div>
+
+        <!-- Drone sim -->
+        <div class="gallery-item cat-defence">
+            <img src="img/drone_sim.png" alt="Drone simulator">
+            <div class="gallery-caption"><strong>SL Drone Controller</strong>Swarm and navigation AI with satellite mapping, real terrain, and multi-camera views.</div>
+        </div>
+
+        <!-- OctoGraph -->
+        <div class="gallery-item cat-software">
+            <img src="img/octograph_usage.png" alt="OctoGraph dashboard">
+            <div class="gallery-caption"><strong>OctoGraph</strong>Real-time energy monitoring and cost forecasting for Octopus Energy customers.</div>
+        </div>
+
+        <!-- OctoGraph mobile -->
+        <div class="gallery-item cat-software">
+            <img src="img/octograph_mobile.png" alt="OctoGraph mobile">
+            <div class="gallery-caption"><strong>OctoGraph Mobile</strong>Android app with 10+ analytics tabs, smart meter integration.</div>
+        </div>
+
+        <!-- AmpTrak -->
+        <div class="gallery-item cat-software cat-trucks">
+            <img src="img/amptrak_dashboard.png" alt="AmpTrak dashboard">
+            <div class="gallery-caption"><strong>AmpTrak Fleet Telemetry</strong>Real-time CAN data analytics across 54+ vehicle types.</div>
+        </div>
+
+        <!-- DriveFoundry -->
+        <div class="gallery-item cat-software">
+            <img src="img/drivefoundry_3d.png" alt="DriveFoundry 3D">
+            <div class="gallery-caption"><strong>DriveFoundry</strong>3D vehicle physics simulation with real-time CAN/DBC decode.</div>
+        </div>
+
+        <!-- DriveFoundry decode -->
+        <div class="gallery-item cat-software">
+            <img src="img/drivefoundry_decode.png" alt="DriveFoundry decode">
+            <div class="gallery-caption"><strong>DriveFoundry &mdash; CAN Decode</strong>Signal-level parameter extraction and visualisation.</div>
+        </div>
+
+        <!-- KS Drone -->
+        <div class="gallery-item cat-defence">
+            <img src="img/ksdrone_3d.png" alt="KS Drone 3D">
+            <div class="gallery-caption"><strong>KS Drone</strong>Autonomous drone platform with terrain-following and obstacle avoidance.</div>
+        </div>
+
+        <!-- KS Drone SA -->
+        <div class="gallery-item cat-defence">
+            <img src="img/ksdrone_sa.png" alt="KS Drone situational awareness">
+            <div class="gallery-caption"><strong>KS Drone &mdash; Situational Awareness</strong>Multi-sensor fusion display with threat assessment.</div>
+        </div>
+
+    </div>
+</div>
+</div>
+
+<footer>
+    <p>&copy; 2025 Starns Labs Ltd. All Rights Reserved.</p>
+    <p style="margin-top: 8px;"><a href="index.html">Home</a> &middot; <a href="privacy.html">Privacy Policy</a></p>
+</footer>
+
+</body>
+</html>
