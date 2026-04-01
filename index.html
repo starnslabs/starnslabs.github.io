@@ -418,6 +418,20 @@
             z-index: 2;
             top: 20px;
         }
+        .tl-thumbs {
+            display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px;
+        }
+        .tl-thumb {
+            width: 52px; height: 36px; border-radius: 6px;
+            object-fit: cover; border: 1px solid var(--border);
+            opacity: 0.85; transition: opacity 0.2s, transform 0.2s;
+            cursor: pointer;
+        }
+        .tl-thumb:hover {
+            opacity: 1; transform: scale(1.8);
+            z-index: 10; position: relative;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.6);
+        }
         .tl-spacer { width: 44%; }
         @media (max-width: 768px) {
             .timeline-track::before { left: 20px; }
@@ -477,6 +491,7 @@
         <li><a href="#products">Products</a></li>
         <li><a href="#timeline">Timeline</a></li>
         <li><a href="#about">About</a></li>
+        <li><a href="gallery.html">Gallery</a></li>
         <li><a href="#contact">Contact</a></li>
         <li><a href="privacy.html">Privacy</a></li>
     </ul>
@@ -501,8 +516,8 @@
     <div class="container">
         <div class="stats-grid">
             <div>
-                <div class="stat-number gradient-text">29+</div>
-                <div class="stat-label">Products Shipped</div>
+                <div class="stat-number gradient-text">58+</div>
+                <div class="stat-label">Vehicle Drivelines</div>
             </div>
             <div>
                 <div class="stat-number gradient-text">£265M+</div>
@@ -757,9 +772,13 @@
 
             <div class="tl-item">
                 <div class="tl-content">
-                    <div class="tl-year">Late 1990s</div>
-                    <div class="tl-title">RFID &amp; Solar Baby EV</div>
-                    <div class="tl-desc">Self-powered RFID tag reader with VHDL chip design. Solar Baby EV with world's first 4WD controller, patented thermal model, digital differential, and torque vectoring algorithms.</div>
+                    <div class="tl-year">1991&ndash;98</div>
+                    <div class="tl-title">Solar Baby EV &amp; Early Vehicles</div>
+                    <div class="tl-desc">Solar Baby 4WD EV (1991) &mdash; world's first 4WD controller, patented thermal model, digital differential, torque vectoring. Then golf carts, EV mopeds, go-karts, Road Runner, Marathon filming lorry, and Commonwealth Games vehicle sets. Self-powered RFID tag reader with VHDL chip design.</div>
+                    <div class="tl-thumbs">
+                        <img src="img/road_train.png" alt="Solar Baby era vehicle" class="tl-thumb">
+                        <img src="img/solar_bus.png" alt="Solar bus 1996" class="tl-thumb">
+                    </div>
                 </div>
                 <div class="tl-dot"></div>
                 <div class="tl-spacer"></div>
@@ -767,9 +786,14 @@
 
             <div class="tl-item">
                 <div class="tl-content">
-                    <div class="tl-year">~1997</div>
-                    <div class="tl-title">Board Level &amp; Monorails</div>
-                    <div class="tl-desc">Joined the board. Architected Malaysia's 24-wheel hybrid monorail: BLDC controllers at 3.5x base speed, generator controllers, glass cockpit displays, and full passenger simulation.</div>
+                    <div class="tl-year">1999&ndash;2002</div>
+                    <div class="tl-title">Olympics, Monorails &amp; Board Level</div>
+                    <div class="tl-desc">Joined the board. Olympic road train (12WD EV), firetrucks, ambulances, DHL vehicles, mini police trucks for Sydney 2000. Full-scale 24-wheel hybrid monorail for Malaysia. Biel expo public taxi. City car EV.</div>
+                    <div class="tl-thumbs">
+                        <img src="img/metrocab_old.jpeg" alt="Olympic road train Sydney 2000" class="tl-thumb">
+                        <img src="img/solar_baby.png" alt="Road train" class="tl-thumb">
+                        <img src="img/monorail.png" alt="Rex Monorail 2001" class="tl-thumb">
+                    </div>
                 </div>
                 <div class="tl-dot"></div>
                 <div class="tl-spacer"></div>
@@ -787,9 +811,9 @@
 
             <div class="tl-item">
                 <div class="tl-content">
-                    <div class="tl-year">2003</div>
-                    <div class="tl-title">CMFD &amp; eCall Pioneer</div>
-                    <div class="tl-desc">Colour Multi-Function Display with SMS SOS alert &mdash; the eCall concept, 15 years before the EU mandate. CD/radio/satnav/voice recognition in GAPIDRAW/WinCE.</div>
+                    <div class="tl-year">2003&ndash;06</div>
+                    <div class="tl-title">CMFD, eCall &amp; International OEMs</div>
+                    <div class="tl-desc">eCall concept 15 years before EU mandate. NASA vehicles (2003, 2004). Proton Wira, Saga, Exora for Malaysian market. Malaysian police car and double-decker bus. ATV (8WD EV). CMFD with CD/radio/satnav/voice recognition.</div>
                 </div>
                 <div class="tl-dot"></div>
                 <div class="tl-spacer"></div>
@@ -797,9 +821,13 @@
 
             <div class="tl-item">
                 <div class="tl-content">
-                    <div class="tl-year">2004&ndash;08</div>
-                    <div class="tl-title">DARTS, BMS &amp; Glass Cockpits</div>
-                    <div class="tl-desc">Data Acquisition &amp; Real-time Telemetry. Li-Po battery management. Among the world's first automotive glass cockpit displays. 97.8% efficient BLDC motor controllers (SVM/SSVC/FOC).</div>
+                    <div class="tl-year">2007&ndash;09</div>
+                    <div class="tl-title">Namir, Trucks &amp; High Performance</div>
+                    <div class="tl-desc">Namir 4WD REEV supercar (300kph, Goodwood 2009). 30T and 40T REEV trucks. Low-floor bus. Android V1 integration (2007, one year before general release). 97.8% efficient BLDC controllers. DARTS telemetry. Glass cockpit displays.</div>
+                    <div class="tl-thumbs">
+                        <img src="img/namir.png" alt="Namir at Goodwood 2009" class="tl-thumb">
+                        <img src="img/namir_show.png" alt="Namir at motor show" class="tl-thumb">
+                    </div>
                 </div>
                 <div class="tl-dot"></div>
                 <div class="tl-spacer"></div>
@@ -807,9 +835,13 @@
 
             <div class="tl-item">
                 <div class="tl-content">
-                    <div class="tl-year">2010&ndash;11</div>
-                    <div class="tl-title">Future Car Challenge Winner</div>
-                    <div class="tl-desc">Best Range Extended EV (2010), Best Overall Extended Range &amp; Most Energy Efficient MPV (2011). Only hybrid taxi to complete TFL fleet trials at 131 MPG.</div>
+                    <div class="tl-year">2010&ndash;13</div>
+                    <div class="tl-title">Awards, MetroCab &amp; Performance EVs</div>
+                    <div class="tl-desc">Future Car Challenge winner: Best Range Extended EV (2010), Best Overall &amp; Most Efficient MPV (2011). MetroCab hybrid taxi (131 MPG at TFL trials). Bullet ICE, Pinnacle REEV (200mph+). Jaguar XJ 4WD EV retro-fit. DNATA truck. 8WD EV lorry.</div>
+                    <div class="tl-thumbs">
+                        <img src="img/bullet.png" alt="Bullet interior" class="tl-thumb">
+                        <img src="img/ev_truck_40t.png" alt="DNATA truck" class="tl-thumb">
+                    </div>
                 </div>
                 <div class="tl-dot"></div>
                 <div class="tl-spacer"></div>
@@ -817,9 +849,13 @@
 
             <div class="tl-item">
                 <div class="tl-content">
-                    <div class="tl-year">2012&ndash;15</div>
-                    <div class="tl-title">Unity3D &amp; Cybersecurity</div>
-                    <div class="tl-desc">Pioneered Unity3D for automotive HMI &mdash; meter clusters and CMFD saving &pound;150K/year. CAR GUARDIAN CAN encryption, CAR SHIELD firewall, VAN SENTINEL anti-terror ECU. Custom hardened Android with SE Linux.</div>
+                    <div class="tl-year">2013&ndash;16</div>
+                    <div class="tl-title">Unity3D, Cybersecurity &amp; Carbon Bus</div>
+                    <div class="tl-desc">Pioneered Unity3D for automotive HMI saving &pound;150K/year. CAR GUARDIAN, CAR SHIELD, VAN SENTINEL cybersecurity suite. Carbon fibre low-floor REEV bus. Ford Edge REV. Jaguar XJL EV. Metrovan REEV. Hardened Android with SE Linux.</div>
+                    <div class="tl-thumbs">
+                        <img src="img/rex_bus.png" alt="Zero Emission bus" class="tl-thumb">
+                        <img src="img/van_sentinel.png" alt="Van Sentinel simulator" class="tl-thumb">
+                    </div>
                 </div>
                 <div class="tl-dot"></div>
                 <div class="tl-spacer"></div>
@@ -827,9 +863,12 @@
 
             <div class="tl-item">
                 <div class="tl-content">
-                    <div class="tl-year">2015&ndash;18</div>
-                    <div class="tl-title">VR Analytics &amp; ISO 26262</div>
-                    <div class="tl-desc">BattScope and VodaScope: 3D VR data visualisation for battery health and telecom infrastructure. Introduced ISO 26262 functional safety, built safety and quality teams.</div>
+                    <div class="tl-year">2017&ndash;18</div>
+                    <div class="tl-title">Morgan, Amazon &amp; VR Analytics</div>
+                    <div class="tl-desc">Morgan EV3 and EV4. Amazon 7.5T REEV truck. Perdana luxury limo. BattScope and VodaScope 3D VR data visualisation. ISO 26262 functional safety adoption, safety and quality teams built.</div>
+                    <div class="tl-thumbs">
+                        <img src="img/morgan_ev3.png" alt="Morgan EV3" class="tl-thumb">
+                    </div>
                 </div>
                 <div class="tl-dot"></div>
                 <div class="tl-spacer"></div>
@@ -838,8 +877,11 @@
             <div class="tl-item">
                 <div class="tl-content">
                     <div class="tl-year">2019&ndash;25</div>
-                    <div class="tl-title">Peerium OS &amp; Fleet Telemetry</div>
-                    <div class="tl-desc">173,500+ line embedded C operating system (STM32 Cortex-M7). 6 CAN buses, 435 message IDs, 54+ vehicle types. AmpTrak fleet telemetry platform.</div>
+                    <div class="tl-title">Peerium OS, Fleet Telemetry &amp; OEM Platforms</div>
+                    <div class="tl-desc">Peerium OS: 173,500+ line embedded C (STM32 Cortex-M7). Mercedes Sprinter REEV retrofit. 40T EV airport truck. Steyr prototype LCV. Aurobay methanol REX demo. Ocado REX in-wheel-motor van. AmpTrak fleet telemetry. 58 drivelines total (75 with variants).</div>
+                    <div class="tl-thumbs">
+                        <img src="img/emobyus_van.png" alt="Emobyus in-wheel motor van" class="tl-thumb">
+                    </div>
                 </div>
                 <div class="tl-dot"></div>
                 <div class="tl-spacer"></div>
@@ -860,6 +902,9 @@
                     <div class="tl-year">2026</div>
                     <div class="tl-title">Drone Simulator &amp; Defence Protocol Frameworks</div>
                     <div class="tl-desc">Advanced drone simulation platform with realistic flight physics, sensor models, and swarm behaviours. Defence communications protocol frameworks including DDS encryption, MAVLink integration, STANAG-style authority levels, and EMCON comms-silent autonomous operation modes.</div>
+                    <div class="tl-thumbs">
+                        <img src="img/drone_sim.png" alt="Drone simulator" class="tl-thumb">
+                    </div>
                 </div>
                 <div class="tl-dot"></div>
                 <div class="tl-spacer"></div>
@@ -870,6 +915,9 @@
                     <div class="tl-year">2026</div>
                     <div class="tl-title">AI-Enhanced Fleet Telemetry</div>
                     <div class="tl-desc">Next-generation AmpTrak fleet telemetry platform augmented with AI for predictive analytics, anomaly detection, and intelligent CAN data interpretation across 54+ vehicle types and 435 message IDs.</div>
+                    <div class="tl-thumbs">
+                        <img src="img/amptrak_dashboard.png" alt="AmpTrak telemetry dashboard" class="tl-thumb">
+                    </div>
                 </div>
                 <div class="tl-dot"></div>
                 <div class="tl-spacer"></div>
