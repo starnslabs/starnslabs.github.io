@@ -256,11 +256,15 @@
             padding: 32px 24px;
         }
         .bio-avatar {
-            width: 120px; height: 120px; border-radius: 50%;
-            background: linear-gradient(135deg, var(--primary), var(--accent-cyan));
-            display: flex; align-items: center; justify-content: center;
+            width: 140px; height: 140px; border-radius: 50%;
             margin: 0 auto 16px;
-            font-size: 2.4em; font-weight: 800; color: #fff;
+            overflow: hidden;
+            border: 3px solid var(--primary);
+            box-shadow: 0 0 20px var(--primary-glow);
+        }
+        .bio-avatar img {
+            width: 100%; height: 100%; object-fit: cover;
+            object-position: center 10%;
         }
         .bio-name { font-size: 1.3em; font-weight: 700; margin-bottom: 4px; }
         .bio-role { color: var(--primary); font-size: 0.9em; font-weight: 500; margin-bottom: 16px; }
@@ -336,6 +340,84 @@
         footer a { color: var(--text-dim); text-decoration: none; }
         footer a:hover { color: var(--text-muted); }
 
+        /* TIMELINE */
+        .timeline-section { background: var(--bg-section); }
+        .timeline-track {
+            position: relative;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px 0;
+        }
+        .timeline-track::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            top: 0; bottom: 0;
+            width: 3px;
+            background: linear-gradient(180deg, var(--primary), var(--accent-cyan), var(--accent-green));
+        }
+        .tl-item {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 24px;
+            position: relative;
+        }
+        .tl-item:nth-child(odd) { flex-direction: row-reverse; }
+        .tl-item:nth-child(odd) .tl-content { text-align: right; }
+        .tl-content {
+            width: 44%;
+            padding: 16px 20px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            transition: border-color 0.3s, transform 0.3s;
+        }
+        .tl-content:hover {
+            border-color: var(--border-hover);
+            transform: translateY(-2px);
+        }
+        .tl-year {
+            font-size: 0.75em;
+            font-weight: 700;
+            color: var(--accent-cyan);
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            margin-bottom: 4px;
+        }
+        .tl-title {
+            font-size: 0.95em;
+            font-weight: 700;
+            color: var(--text);
+            margin-bottom: 4px;
+        }
+        .tl-desc {
+            font-size: 0.8em;
+            color: var(--text-muted);
+            line-height: 1.5;
+        }
+        .tl-dot {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 14px; height: 14px;
+            border-radius: 50%;
+            background: var(--primary);
+            border: 3px solid var(--bg-section);
+            box-shadow: 0 0 8px var(--primary-glow);
+            z-index: 2;
+            top: 20px;
+        }
+        .tl-spacer { width: 44%; }
+        @media (max-width: 768px) {
+            .timeline-track::before { left: 20px; }
+            .tl-item, .tl-item:nth-child(odd) { flex-direction: row; padding-left: 48px; }
+            .tl-item:nth-child(odd) .tl-content { text-align: left; }
+            .tl-content { width: 100%; }
+            .tl-spacer { display: none; }
+            .tl-dot { left: 20px; }
+        }
+
         /* GLOW ACCENTS */
         .stats-grid > div {
             padding: 20px 12px;
@@ -383,6 +465,7 @@
     </a>
     <ul class="nav-links">
         <li><a href="#products">Products</a></li>
+        <li><a href="#timeline">Timeline</a></li>
         <li><a href="#about">About</a></li>
         <li><a href="#contact">Contact</a></li>
         <li><a href="privacy.html">Privacy</a></li>
@@ -631,6 +714,160 @@
     </div>
 </section>
 
+<!-- TIMELINE -->
+<section class="timeline-section" id="timeline">
+    <div class="container">
+        <div class="section-header">
+            <div class="section-label">Career</div>
+            <h2 class="section-title">40 Years of <span class="gradient-text">Innovation</span></h2>
+            <p class="section-subtitle">From ASM8086 to AI-augmented engineering &mdash; four decades of shipped products.</p>
+        </div>
+        <div class="timeline-track">
+
+            <div class="tl-item">
+                <div class="tl-content">
+                    <div class="tl-year">1985&ndash;86</div>
+                    <div class="tl-title">AI &amp; Neural Networks</div>
+                    <div class="tl-desc">Neural networks and fuzzy logic project &mdash; decades before the current AI wave. Pattern recognition and intelligent decision systems.</div>
+                </div>
+                <div class="tl-dot"></div>
+                <div class="tl-spacer"></div>
+            </div>
+
+            <div class="tl-item">
+                <div class="tl-content">
+                    <div class="tl-year">1990&ndash;96</div>
+                    <div class="tl-title">Prayer Clock &amp; Early Embedded</div>
+                    <div class="tl-desc">ADPCM audio compression in C/ASM8086. Custom astronomy math routines 100x faster than standard libraries. Many versions over the years, later adding low bit-rate MP3 decoder (1997). Millions of units sold worldwide.</div>
+                </div>
+                <div class="tl-dot"></div>
+                <div class="tl-spacer"></div>
+            </div>
+
+            <div class="tl-item">
+                <div class="tl-content">
+                    <div class="tl-year">Late 1990s</div>
+                    <div class="tl-title">RFID &amp; Solar Baby EV</div>
+                    <div class="tl-desc">Self-powered RFID tag reader with VHDL chip design. Solar Baby EV with world's first 4WD controller, patented thermal model, digital differential, and torque vectoring algorithms.</div>
+                </div>
+                <div class="tl-dot"></div>
+                <div class="tl-spacer"></div>
+            </div>
+
+            <div class="tl-item">
+                <div class="tl-content">
+                    <div class="tl-year">~1997</div>
+                    <div class="tl-title">Board Level &amp; Monorails</div>
+                    <div class="tl-desc">Joined the board. Architected Malaysia's 24-wheel hybrid monorail: BLDC controllers at 3.5x base speed, generator controllers, glass cockpit displays, and full passenger simulation.</div>
+                </div>
+                <div class="tl-dot"></div>
+                <div class="tl-spacer"></div>
+            </div>
+
+            <div class="tl-item">
+                <div class="tl-content">
+                    <div class="tl-year">2000</div>
+                    <div class="tl-title">AMPS &mdash; Time-Triggered Protocol</div>
+                    <div class="tl-desc">Automotive Multiplexed Power System: complete body controller network. World's first time-triggered protocol &mdash; Bosch recommended it for all automotive products 8 years later.</div>
+                </div>
+                <div class="tl-dot"></div>
+                <div class="tl-spacer"></div>
+            </div>
+
+            <div class="tl-item">
+                <div class="tl-content">
+                    <div class="tl-year">2003</div>
+                    <div class="tl-title">CMFD &amp; eCall Pioneer</div>
+                    <div class="tl-desc">Colour Multi-Function Display with SMS SOS alert &mdash; the eCall concept, 15 years before the EU mandate. CD/radio/satnav/voice recognition in GAPIDRAW/WinCE.</div>
+                </div>
+                <div class="tl-dot"></div>
+                <div class="tl-spacer"></div>
+            </div>
+
+            <div class="tl-item">
+                <div class="tl-content">
+                    <div class="tl-year">2004&ndash;08</div>
+                    <div class="tl-title">DARTS, BMS &amp; Glass Cockpits</div>
+                    <div class="tl-desc">Data Acquisition &amp; Real-time Telemetry. Li-Po battery management. Among the world's first automotive glass cockpit displays. 97.8% efficient BLDC motor controllers (SVM/SSVC/FOC).</div>
+                </div>
+                <div class="tl-dot"></div>
+                <div class="tl-spacer"></div>
+            </div>
+
+            <div class="tl-item">
+                <div class="tl-content">
+                    <div class="tl-year">2010&ndash;11</div>
+                    <div class="tl-title">Future Car Challenge Winner</div>
+                    <div class="tl-desc">Best Range Extended EV (2010), Best Overall Extended Range &amp; Most Energy Efficient MPV (2011). Only hybrid taxi to complete TFL fleet trials at 131 MPG.</div>
+                </div>
+                <div class="tl-dot"></div>
+                <div class="tl-spacer"></div>
+            </div>
+
+            <div class="tl-item">
+                <div class="tl-content">
+                    <div class="tl-year">2012&ndash;15</div>
+                    <div class="tl-title">Unity3D &amp; Cybersecurity</div>
+                    <div class="tl-desc">Pioneered Unity3D for automotive HMI &mdash; meter clusters and CMFD saving &pound;150K/year. CAR GUARDIAN CAN encryption, CAR SHIELD firewall, VAN SENTINEL anti-terror ECU. Custom hardened Android with SE Linux.</div>
+                </div>
+                <div class="tl-dot"></div>
+                <div class="tl-spacer"></div>
+            </div>
+
+            <div class="tl-item">
+                <div class="tl-content">
+                    <div class="tl-year">2015&ndash;18</div>
+                    <div class="tl-title">VR Analytics &amp; ISO 26262</div>
+                    <div class="tl-desc">BattScope and VodaScope: 3D VR data visualisation for battery health and telecom infrastructure. Introduced ISO 26262 functional safety, built safety and quality teams.</div>
+                </div>
+                <div class="tl-dot"></div>
+                <div class="tl-spacer"></div>
+            </div>
+
+            <div class="tl-item">
+                <div class="tl-content">
+                    <div class="tl-year">2019&ndash;25</div>
+                    <div class="tl-title">Peerium OS &amp; Fleet Telemetry</div>
+                    <div class="tl-desc">173,500+ line embedded C operating system (STM32 Cortex-M7). 6 CAN buses, 435 message IDs, 54+ vehicle types. AmpTrak fleet telemetry platform.</div>
+                </div>
+                <div class="tl-dot"></div>
+                <div class="tl-spacer"></div>
+            </div>
+
+            <div class="tl-item">
+                <div class="tl-content">
+                    <div class="tl-year">2026</div>
+                    <div class="tl-title">MISRA Zero, Dry-Run Testing &amp; AI-Augmented Engineering</div>
+                    <div class="tl-desc">269,570 MISRA violations to zero in 10 days. Invented the Dry-Run Testing methodology &mdash; tracing code execution with hypothetical user data across full codebases using parallel AI agents, reviving techniques from 1980s batch computing. Found 35+ bugs in a single session that would have shipped. OctoGraph energy analytics on Android.</div>
+                </div>
+                <div class="tl-dot"></div>
+                <div class="tl-spacer"></div>
+            </div>
+
+            <div class="tl-item">
+                <div class="tl-content">
+                    <div class="tl-year">2026</div>
+                    <div class="tl-title">Drone Simulator &amp; Defence Protocol Frameworks</div>
+                    <div class="tl-desc">Advanced drone simulation platform with realistic flight physics, sensor models, and swarm behaviours. Defence communications protocol frameworks including DDS encryption, MAVLink integration, STANAG-style authority levels, and EMCON comms-silent autonomous operation modes.</div>
+                </div>
+                <div class="tl-dot"></div>
+                <div class="tl-spacer"></div>
+            </div>
+
+            <div class="tl-item">
+                <div class="tl-content">
+                    <div class="tl-year">2026</div>
+                    <div class="tl-title">AI-Enhanced Fleet Telemetry</div>
+                    <div class="tl-desc">Next-generation AmpTrak fleet telemetry platform augmented with AI for predictive analytics, anomaly detection, and intelligent CAN data interpretation across 54+ vehicle types and 435 message IDs.</div>
+                </div>
+                <div class="tl-dot"></div>
+                <div class="tl-spacer"></div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
 <!-- BIO -->
 <section class="bio" id="about">
     <div class="container">
@@ -642,7 +879,7 @@
 
         <div class="bio-grid">
             <div class="bio-sidebar">
-                <div class="bio-avatar">GS</div>
+                <div class="bio-avatar"><img src="img/greg_headshot.jpg" alt="Greg Starns"></div>
                 <div class="bio-name">Greg Starns</div>
                 <div class="bio-role">CTO & Founder</div>
                 <div style="color:var(--text-muted);font-size:0.82em;line-height:1.6;">
