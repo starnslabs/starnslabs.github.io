@@ -4,24 +4,310 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="google-site-verification" content="zithUNEgDt5lC0WO9KJ7SUHbogiFOoP5a8695-GOq2k" />
-    <title>Starns Labs</title>
+    <meta property="og:title" content="Starns Labs Ltd">
+    <meta property="og:description" content="Transforming your ideas into powerful software solutions.">
+    <meta property="og:image" content="https://starnslabs.github.io/logo.png">
+    <title>Starns Labs Ltd</title>
+    <link rel="icon" href="logo-alt.png" type="image/png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&display=swap" rel="stylesheet">
     <style>
-        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #0B0F1A; color: #E8E8EC; margin: 0; padding: 40px 20px; }
-        .container { max-width: 600px; margin: 0 auto; text-align: center; }
-        h1 { color: #FFD900; font-size: 2em; }
-        a { color: #2E5FD4; text-decoration: none; }
-        a:hover { text-decoration: underline; }
-        .links { margin-top: 40px; }
-        .links a { display: block; margin: 12px 0; font-size: 1.1em; }
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --primary: #f21b3f;
+            --primary-dark: #c8162f;
+            --bg-dark: #1a1a2e;
+            --bg-darker: #12121f;
+            --bg-card: #222240;
+            --text: #e8e8ec;
+            --text-muted: #9ca3af;
+            --accent: #0097d7;
+        }
+
+        body {
+            font-family: 'Lato', Helvetica, Arial, sans-serif;
+            background: var(--bg-darker);
+            color: var(--text);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* NAV */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 100;
+            background: rgba(18, 18, 31, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255,255,255,0.06);
+            padding: 0 40px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 64px;
+        }
+        .nav-brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            color: var(--text);
+            font-weight: 700;
+            font-size: 1.2em;
+        }
+        .nav-brand img { height: 36px; width: auto; }
+        .nav-links { display: flex; gap: 32px; list-style: none; }
+        .nav-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.95em;
+            font-weight: 400;
+            transition: color 0.2s;
+        }
+        .nav-links a:hover { color: var(--text); }
+
+        /* HERO */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 120px 24px 80px;
+            background: radial-gradient(ellipse at 50% 20%, rgba(242,27,63,0.12) 0%, transparent 60%),
+                        var(--bg-darker);
+        }
+        .hero-content { max-width: 720px; }
+        .hero h1 {
+            font-size: clamp(2.2em, 5vw, 3.6em);
+            font-weight: 900;
+            line-height: 1.15;
+            margin-bottom: 20px;
+        }
+        .hero h1 span { color: var(--primary); }
+        .hero p {
+            font-size: 1.2em;
+            color: var(--text-muted);
+            margin-bottom: 36px;
+            font-weight: 300;
+        }
+        .btn {
+            display: inline-block;
+            padding: 14px 36px;
+            background: var(--primary);
+            color: #fff;
+            text-decoration: none;
+            border-radius: 6px;
+            font-weight: 700;
+            font-size: 1em;
+            transition: background 0.2s, transform 0.15s;
+            border: none;
+            cursor: pointer;
+        }
+        .btn:hover { background: var(--primary-dark); transform: translateY(-1px); }
+
+        /* SECTIONS */
+        section { padding: 80px 24px; }
+        .section-title {
+            text-align: center;
+            font-size: 2em;
+            font-weight: 700;
+            margin-bottom: 48px;
+        }
+        .section-title span { color: var(--primary); }
+
+        /* FEATURES */
+        .features {
+            background: var(--bg-dark);
+        }
+        .features-grid {
+            max-width: 1000px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 28px;
+        }
+        .feature-card {
+            background: var(--bg-card);
+            border-radius: 12px;
+            padding: 32px 28px;
+            border: 1px solid rgba(255,255,255,0.06);
+            transition: transform 0.2s, border-color 0.2s;
+        }
+        .feature-card:hover {
+            transform: translateY(-4px);
+            border-color: var(--primary);
+        }
+        .feature-icon {
+            width: 48px;
+            height: 48px;
+            background: rgba(242,27,63,0.15);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 18px;
+            font-size: 1.4em;
+        }
+        .feature-card h3 {
+            font-size: 1.15em;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+        .feature-card p {
+            color: var(--text-muted);
+            font-size: 0.95em;
+            line-height: 1.6;
+        }
+
+        /* ABOUT */
+        .about { max-width: 800px; margin: 0 auto; }
+        .about-text {
+            text-align: center;
+            font-size: 1.1em;
+            color: var(--text-muted);
+            line-height: 1.8;
+        }
+
+        /* TESTIMONIAL */
+        .testimonial {
+            background: var(--bg-dark);
+        }
+        .testimonial-card {
+            max-width: 700px;
+            margin: 0 auto;
+            background: var(--bg-card);
+            border-radius: 12px;
+            padding: 36px 32px;
+            border: 1px solid rgba(255,255,255,0.06);
+            position: relative;
+        }
+        .testimonial-card::before {
+            content: "\201C";
+            font-size: 4em;
+            color: var(--primary);
+            position: absolute;
+            top: 12px;
+            left: 24px;
+            line-height: 1;
+            opacity: 0.4;
+        }
+        .testimonial-card p {
+            font-style: italic;
+            color: var(--text-muted);
+            line-height: 1.8;
+            margin-bottom: 20px;
+            padding-top: 16px;
+        }
+        .testimonial-author {
+            font-weight: 700;
+            color: var(--text);
+        }
+        .testimonial-role {
+            color: var(--text-muted);
+            font-size: 0.9em;
+        }
+
+        /* CONTACT */
+        .contact { text-align: center; }
+        .contact p {
+            color: var(--text-muted);
+            margin-bottom: 28px;
+            font-size: 1.05em;
+        }
+
+        /* FOOTER */
+        footer {
+            text-align: center;
+            padding: 32px 24px;
+            border-top: 1px solid rgba(255,255,255,0.06);
+            color: var(--text-muted);
+            font-size: 0.85em;
+        }
+        footer a { color: var(--text-muted); text-decoration: none; }
+        footer a:hover { color: var(--text); }
+
+        /* MOBILE */
+        @media (max-width: 600px) {
+            nav { padding: 0 16px; }
+            .nav-links { gap: 20px; }
+            section { padding: 60px 16px; }
+            .testimonial-card { padding: 28px 20px; }
+        }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Starns Labs</h1>
-        <p>Engineering software that matters.</p>
-        <div class="links">
-            <a href="privacy.html">OctoGraph Privacy Policy</a>
+
+<nav>
+    <a href="#" class="nav-brand">
+        <img src="logo-alt.png" alt="Starns Labs">
+        Starns Labs
+    </a>
+    <ul class="nav-links">
+        <li><a href="#home">Home</a></li>
+        <li><a href="#contact">Contact</a></li>
+        <li><a href="privacy.html">Privacy</a></li>
+    </ul>
+</nav>
+
+<section class="hero" id="home">
+    <div class="hero-content">
+        <h1>Building Your <span>Digital Future</span></h1>
+        <p>Transforming your ideas into powerful software solutions.</p>
+        <a href="#contact" class="btn">Consult Now</a>
+    </div>
+</section>
+
+<section class="features">
+    <h2 class="section-title">What We <span>Do</span></h2>
+    <div class="features-grid">
+        <div class="feature-card">
+            <div class="feature-icon">&#9881;</div>
+            <h3>Custom Software Solutions</h3>
+            <p>Tailored software development to meet your unique business needs.</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon">&#9889;</div>
+            <h3>Innovative Development</h3>
+            <p>We bring your ideas to life with cutting-edge technology and creative solutions.</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon">&#9878;</div>
+            <h3>Scalable & Reliable</h3>
+            <p>Building software that grows with your business and performs consistently.</p>
         </div>
     </div>
+</section>
+
+<section>
+    <h2 class="section-title">Collaborating for <span>Success</span></h2>
+    <div class="about">
+        <p class="about-text">We believe that collaboration is key to successful software development. We work closely with our clients throughout the entire process, from initial consultation to final deployment, ensuring that your voice is heard and your needs are met.</p>
+    </div>
+</section>
+
+<section class="testimonial">
+    <h2 class="section-title">Client <span>Reviews</span></h2>
+    <div class="testimonial-card">
+        <p>On a side note, I just wanted to put on record on behalf of myself and Nick how refreshing it was last week to complete the vehicle inspection with you. The professionalism and thought leadership on display &mdash; it is clear to see what seems like an entire OEM's knowledge condensed into such a small team. We were equally impressed with the critical thinking methods used during the inspection in order to rectify a potential failure against the functional safety requirements; so credit to you both for your professionalism in diligence.</p>
+        <div class="testimonial-author">James H</div>
+        <div class="testimonial-role">Principle Certification Engineer</div>
+    </div>
+</section>
+
+<section class="contact" id="contact">
+    <h2 class="section-title">Get In <span>Touch</span></h2>
+    <p>Ready to start your project? We'd love to hear from you.</p>
+    <a href="mailto:starnslabs@gmail.com" class="btn">Contact Us</a>
+</section>
+
+<footer>
+    <p>&copy; 2025 Starns Labs Ltd. All Rights Reserved.</p>
+    <p style="margin-top: 8px;"><a href="privacy.html">Privacy Policy</a></p>
+</footer>
+
 </body>
 </html>
