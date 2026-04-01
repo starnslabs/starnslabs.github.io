@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="google-site-verification" content="zithUNEgDt5lC0WO9KJ7SUHbogiFOoP5a8695-GOq2k" />
     <meta property="og:title" content="Starns Labs Ltd">
-    <meta property="og:description" content="35+ years engineering innovation. Embedded systems, EV platforms, fleet telemetry, and energy analytics.">
+    <meta property="og:description" content="40 years engineering innovation. Embedded systems, EV platforms, AI, fleet telemetry, defence, and energy analytics. 29 shipped products, £265M+ enterprise value.">
     <meta property="og:image" content="https://starnslabs.github.io/logo.png">
     <title>Starns Labs Ltd</title>
     <link rel="icon" href="logo-alt.png" type="image/png">
@@ -92,6 +92,21 @@
                         radial-gradient(circle at 30% 30%, rgba(0,200,255,0.06) 0%, transparent 40%),
                         radial-gradient(circle at 70% 80%, rgba(0,214,143,0.04) 0%, transparent 40%);
             animation: pulse 8s ease-in-out infinite alternate;
+        }
+        .hero::after {
+            content: '';
+            position: absolute; inset: 0;
+            background-image:
+                linear-gradient(rgba(46,95,212,0.07) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(46,95,212,0.07) 1px, transparent 1px);
+            background-size: 60px 60px;
+            mask-image: radial-gradient(ellipse 80% 70% at 50% 50%, black 30%, transparent 70%);
+            -webkit-mask-image: radial-gradient(ellipse 80% 70% at 50% 50%, black 30%, transparent 70%);
+            animation: gridShift 20s linear infinite;
+        }
+        @keyframes gridShift {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(60px, 60px); }
         }
         @keyframes pulse {
             0% { opacity: 0.7; transform: scale(1); }
@@ -317,6 +332,30 @@
         footer a { color: var(--text-dim); text-decoration: none; }
         footer a:hover { color: var(--text-muted); }
 
+        /* GLOW ACCENTS */
+        .stats-grid > div {
+            padding: 20px 12px;
+            border-radius: 12px;
+            transition: transform 0.3s, background 0.3s;
+        }
+        .stats-grid > div:hover {
+            transform: translateY(-4px);
+            background: rgba(46,95,212,0.06);
+        }
+        .bio-highlight {
+            transition: transform 0.3s, border-color 0.3s;
+        }
+        .bio-highlight:hover {
+            transform: translateY(-2px);
+            border-color: var(--border-hover);
+        }
+        .product-card {
+            transition: border-color 0.3s, transform 0.3s;
+        }
+        .product-card:hover {
+            transform: translateY(-3px);
+        }
+
         /* RESPONSIVE */
         @media (max-width: 768px) {
             nav { padding: 0 16px; }
@@ -349,9 +388,9 @@
 <!-- HERO -->
 <section class="hero" id="home">
     <div class="hero-content">
-        <div class="hero-badge">35+ Years of Engineering Innovation</div>
+        <div class="hero-badge">40 Years of Engineering Innovation</div>
         <h1>Software That <span class="gradient-text">Moves Industries</span></h1>
-        <p>From electric vehicle platforms to fleet telemetry, energy analytics to defence systems &mdash; we build the software behind the hardware.</p>
+        <p>From electric vehicle platforms to fleet telemetry, energy analytics to defence systems &mdash; AI-augmented engineering, from 1985 to today.</p>
         <div class="hero-buttons">
             <a href="#products" class="btn btn-primary">View Our Work</a>
             <a href="#contact" class="btn btn-outline">Get In Touch</a>
@@ -378,6 +417,10 @@
             <div>
                 <div class="stat-number gradient-text">ISO 26262</div>
                 <div class="stat-label">Safety-Critical Certified</div>
+            </div>
+            <div>
+                <div class="stat-number gradient-text">AI Since '85</div>
+                <div class="stat-label">Neural Nets &amp; Fuzzy Logic Pioneer</div>
             </div>
         </div>
     </div>
@@ -646,6 +689,10 @@
                     <div class="bio-highlight">
                         <strong>Embedded Operating Systems</strong>
                         <span>Peerium OS: 173,500+ line embedded C operating system for EV control on STM32F765 ARM Cortex-M7. CAN/J1939 protocol stacks with DBC signal mapping, bit-level parameter extraction, and endianness handling. DARTS telemetry system for real-time data acquisition, database storage, and analytics. 6 CAN buses, 435 message IDs, 54+ vehicle types.</span>
+                    </div>
+                    <div class="bio-highlight">
+                        <strong>AI &mdash; From 1985 to Today</strong>
+                        <span>AI pioneer: neural networks and fuzzy logic project in 1985&ndash;86, decades before the current wave. Deep learning, pattern recognition, and intelligent decision systems applied across automotive and defence domains. Today, AI-augmented engineering is integral to every project &mdash; using frontier AI models daily as a force-multiplier for architecture, code generation, analysis, and rapid prototyping.</span>
                     </div>
                     <div class="bio-highlight">
                         <strong>Early Innovations</strong>
