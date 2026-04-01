@@ -466,6 +466,152 @@
             transform: translateY(-3px);
         }
 
+        /* TECH STACK ORBITAL */
+        .tech-stack { background: var(--bg-dark); padding: 80px 24px; }
+        .orbit-container {
+            position: relative;
+            width: 740px; height: 740px;
+            margin: 0 auto;
+        }
+        .orbit-center {
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            width: 64px; height: 64px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, var(--primary), var(--accent-cyan));
+            display: flex; align-items: center; justify-content: center;
+            font-weight: 900; font-size: 1.1em; color: #fff;
+            box-shadow: 0 0 30px var(--primary-glow);
+            z-index: 5;
+        }
+        .orbit-ring {
+            position: absolute;
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 50%;
+            top: 50%; left: 50%;
+        }
+        .orbit-ring:hover { animation-play-state: paused !important; }
+        .orbit-ring:hover .oi-wrap { animation-play-state: paused !important; }
+        .ring-inner {
+            width: 220px; height: 220px;
+            margin: -110px 0 0 -110px;
+            animation: orbit-cw 60s linear infinite;
+        }
+        .ring-mid {
+            width: 380px; height: 380px;
+            margin: -190px 0 0 -190px;
+            animation: orbit-ccw 80s linear infinite;
+        }
+        .ring-outer {
+            width: 540px; height: 540px;
+            margin: -270px 0 0 -270px;
+            animation: orbit-cw 120s linear infinite;
+        }
+        .ring-leadership {
+            width: 700px; height: 700px;
+            margin: -350px 0 0 -350px;
+            animation: orbit-ccw 150s linear infinite;
+        }
+        @keyframes orbit-cw { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+        @keyframes orbit-ccw { from { transform: rotate(0deg); } to { transform: rotate(-360deg); } }
+        .orbit-item {
+            position: absolute;
+            padding: 5px 12px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            font-size: 0.75em;
+            font-weight: 600;
+            color: var(--text-muted);
+            white-space: nowrap;
+            opacity: 0.85;
+            transition: opacity 0.2s, border-color 0.2s, color 0.2s;
+            margin-left: -50px;
+            margin-top: -14px;
+            text-align: center;
+            min-width: 100px;
+        }
+        .orbit-item:hover {
+            opacity: 1;
+            border-color: var(--border-hover);
+            color: var(--accent-cyan);
+        }
+        /* Counter-rotate items to keep text upright */
+        .ring-inner .orbit-item { animation: orbit-ccw 60s linear infinite; }
+        .ring-mid .orbit-item { animation: orbit-cw 80s linear infinite; }
+        .ring-outer .orbit-item { animation: orbit-ccw 120s linear infinite; }
+        .ring-leadership .orbit-item { animation: orbit-cw 150s linear infinite; }
+        .ring-inner:hover .orbit-item,
+        .ring-mid:hover .orbit-item,
+        .ring-outer:hover .orbit-item,
+        .ring-leadership:hover .orbit-item { animation-play-state: paused !important; }
+        /* Inner ring - 12 items */
+        .ring-inner .oi-1 { top: 0%; left: 50%; }
+        .ring-inner .oi-2 { top: 7%; left: 75%; }
+        .ring-inner .oi-3 { top: 25%; left: 93%; }
+        .ring-inner .oi-4 { top: 50%; left: 100%; }
+        .ring-inner .oi-5 { top: 75%; left: 93%; }
+        .ring-inner .oi-6 { top: 93%; left: 75%; }
+        .ring-inner .oi-7 { top: 100%; left: 50%; }
+        .ring-inner .oi-8 { top: 93%; left: 25%; }
+        .ring-inner .oi-9 { top: 75%; left: 7%; }
+        .ring-inner .oi-10 { top: 50%; left: 0%; }
+        .ring-inner .oi-11 { top: 25%; left: 7%; }
+        .ring-inner .oi-12 { top: 7%; left: 25%; }
+        /* Mid ring - 12 items */
+        .ring-mid .oi-1 { top: 0%; left: 50%; }
+        .ring-mid .oi-2 { top: 7%; left: 75%; }
+        .ring-mid .oi-3 { top: 25%; left: 93%; }
+        .ring-mid .oi-4 { top: 50%; left: 100%; }
+        .ring-mid .oi-5 { top: 75%; left: 93%; }
+        .ring-mid .oi-6 { top: 93%; left: 75%; }
+        .ring-mid .oi-7 { top: 100%; left: 50%; }
+        .ring-mid .oi-8 { top: 93%; left: 25%; }
+        .ring-mid .oi-9 { top: 75%; left: 7%; }
+        .ring-mid .oi-10 { top: 50%; left: 0%; }
+        .ring-mid .oi-11 { top: 25%; left: 7%; }
+        .ring-mid .oi-12 { top: 7%; left: 25%; }
+        /* Outer ring - 12 items */
+        .ring-outer .oi-1 { top: 0%; left: 50%; }
+        .ring-outer .oi-2 { top: 7%; left: 75%; }
+        .ring-outer .oi-3 { top: 25%; left: 93%; }
+        .ring-outer .oi-4 { top: 50%; left: 100%; }
+        .ring-outer .oi-5 { top: 75%; left: 93%; }
+        .ring-outer .oi-6 { top: 93%; left: 75%; }
+        .ring-outer .oi-7 { top: 100%; left: 50%; }
+        .ring-outer .oi-8 { top: 93%; left: 25%; }
+        .ring-outer .oi-9 { top: 75%; left: 7%; }
+        .ring-outer .oi-10 { top: 50%; left: 0%; }
+        .ring-outer .oi-11 { top: 25%; left: 7%; }
+        .ring-outer .oi-12 { top: 7%; left: 25%; }
+        /* Leadership ring - 14 items */
+        .ring-leadership .oi-1 { top: 0%; left: 50%; }
+        .ring-leadership .oi-2 { top: 5%; left: 71%; }
+        .ring-leadership .oi-3 { top: 17%; left: 88%; }
+        .ring-leadership .oi-4 { top: 35%; left: 97%; }
+        .ring-leadership .oi-5 { top: 56%; left: 98%; }
+        .ring-leadership .oi-6 { top: 75%; left: 90%; }
+        .ring-leadership .oi-7 { top: 90%; left: 75%; }
+        .ring-leadership .oi-8 { top: 100%; left: 50%; }
+        .ring-leadership .oi-9 { top: 90%; left: 25%; }
+        .ring-leadership .oi-10 { top: 75%; left: 10%; }
+        .ring-leadership .oi-11 { top: 56%; left: 2%; }
+        .ring-leadership .oi-12 { top: 35%; left: 3%; }
+        .ring-leadership .oi-13 { top: 17%; left: 12%; }
+        .ring-leadership .oi-14 { top: 5%; left: 29%; }
+        /* Mobile fallback */
+        .tech-grid-mobile { display: none; }
+        .tech-grid-mobile h4 {
+            color: var(--primary); font-size: 0.8em; font-weight: 600;
+            letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 8px;
+        }
+        .tech-pills { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 20px; }
+        .tech-pills span {
+            padding: 4px 12px; background: var(--bg-card); border: 1px solid var(--border);
+            border-radius: 12px; font-size: 0.82em; color: var(--text-muted); font-weight: 500;
+        }
+
         /* RESPONSIVE */
         @media (max-width: 768px) {
             nav { padding: 0 16px; }
@@ -477,6 +623,8 @@
             .bio-grid { grid-template-columns: 1fr; }
             .bio-highlights { grid-template-columns: 1fr; }
             .stats-grid { grid-template-columns: repeat(2, 1fr); gap: 24px; }
+            .orbit-container { display: none; }
+            .tech-grid-mobile { display: block; }
         }
     </style>
 </head>
@@ -543,6 +691,108 @@
     </div>
 </div>
 
+<!-- TECH STACK -->
+<section class="tech-stack">
+    <div class="container">
+        <div class="section-header">
+            <div class="section-label">Expertise</div>
+            <h2 class="section-title">Technology <span class="gradient-text">Stack</span></h2>
+            <p class="section-subtitle">Four decades of languages, platforms, and protocols.</p>
+        </div>
+        <div class="orbit-container">
+            <div class="orbit-center">SL</div>
+            <div class="orbit-ring ring-inner">
+                <span class="orbit-item oi-1">C</span>
+                <span class="orbit-item oi-2">C++</span>
+                <span class="orbit-item oi-3">C#</span>
+                <span class="orbit-item oi-4">Python</span>
+                <span class="orbit-item oi-5">ASM</span>
+                <span class="orbit-item oi-6">PHP</span>
+                <span class="orbit-item oi-7">Java</span>
+                <span class="orbit-item oi-8">VHDL</span>
+                <span class="orbit-item oi-9">SE Linux</span>
+                <span class="orbit-item oi-10">JavaScript</span>
+                <span class="orbit-item oi-11">HTML/CSS</span>
+                <span class="orbit-item oi-12">JSON/XML</span>
+            </div>
+            <div class="orbit-ring ring-mid">
+                <span class="orbit-item oi-1">Unity3D</span>
+                <span class="orbit-item oi-2">STM32</span>
+                <span class="orbit-item oi-3">ARM Cortex</span>
+                <span class="orbit-item oi-4">Android</span>
+                <span class="orbit-item oi-5">OpenGL</span>
+                <span class="orbit-item oi-6">Linux</span>
+                <span class="orbit-item oi-7">ESP32</span>
+                <span class="orbit-item oi-8">Aurix</span>
+                <span class="orbit-item oi-9">Windows</span>
+                <span class="orbit-item oi-10">UI/HMI Design</span>
+                <span class="orbit-item oi-11">Grafana</span>
+                <span class="orbit-item oi-12">JTAG/SWD</span>
+            </div>
+            <div class="orbit-ring ring-outer">
+                <span class="orbit-item oi-1">BMS Design</span>
+                <span class="orbit-item oi-2">DCDC Design</span>
+                <span class="orbit-item oi-3">Charger Design</span>
+                <span class="orbit-item oi-4">EV Architecture</span>
+                <span class="orbit-item oi-5">CAN/CAN-FD</span>
+                <span class="orbit-item oi-6">J1939</span>
+                <span class="orbit-item oi-7">MISRA-C</span>
+                <span class="orbit-item oi-8">ISO 26262</span>
+                <span class="orbit-item oi-9">ONN/AI</span>
+                <span class="orbit-item oi-10">Cyber Security</span>
+                <span class="orbit-item oi-11">Fuel Cells</span>
+                <span class="orbit-item oi-12">MAVLink/DDS</span>
+            </div>
+            <div class="orbit-ring ring-leadership">
+                <span class="orbit-item oi-1">Company Director</span>
+                <span class="orbit-item oi-2">Project Management</span>
+                <span class="orbit-item oi-3">Board Leadership</span>
+                <span class="orbit-item oi-4">Team Building</span>
+                <span class="orbit-item oi-5">Technical Procurement</span>
+                <span class="orbit-item oi-6">Homologation</span>
+                <span class="orbit-item oi-7">Investor Relations</span>
+                <span class="orbit-item oi-8">R&amp;D Strategy</span>
+                <span class="orbit-item oi-9">Generators</span>
+                <span class="orbit-item oi-10">Physics Sim</span>
+                <span class="orbit-item oi-11">Motor Control</span>
+                <span class="orbit-item oi-12">Vehicle Dynamics</span>
+                <span class="orbit-item oi-13">Databases</span>
+                <span class="orbit-item oi-14">Mentoring</span>
+            </div>
+        </div>
+        <div class="tech-grid-mobile">
+            <h4>Languages</h4>
+            <div class="tech-pills">
+                <span>C</span><span>C++</span><span>C#</span><span>Python</span><span>ASM</span><span>PHP</span><span>Java</span><span>JavaScript</span><span>VHDL</span><span>Fortran</span><span>Pascal</span><span>COBOL</span>
+            </div>
+            <h4>Platforms &amp; Hardware</h4>
+            <div class="tech-pills">
+                <span>Unity3D</span><span>STM32</span><span>ESP32</span><span>ARM Cortex-M7</span><span>ARM 7-9</span><span>Android</span><span>OpenGL</span><span>Aurix</span><span>iMx6</span><span>iMx35</span><span>Linux</span><span>SE Linux</span><span>WinCE</span><span>Windows</span><span>Visual Studio</span><span>Git</span><span>SVN</span><span>JTAG/SWD</span>
+            </div>
+            <h4>Protocols &amp; Standards</h4>
+            <div class="tech-pills">
+                <span>CAN</span><span>CAN-FD</span><span>J1939</span><span>J1708</span><span>UDS</span><span>OBD-II</span><span>ISO-TP</span><span>Custom Protocols</span><span>MAVLink</span><span>DBC</span><span>MISRA-C</span><span>ISO 26262</span><span>IEC 61508</span><span>DO-178B</span><span>DDS</span><span>Ethernet</span><span>TCP/IP</span><span>SPI</span><span>LIN</span><span>USB</span><span>RS232</span><span>RS485</span><span>MQTT</span><span>NFC/RFID</span>
+            </div>
+            <h4>AI &amp; Algorithms</h4>
+            <div class="tech-pills">
+                <span>ONN</span><span>Neural Networks</span><span>Fuzzy Logic</span><span>Deep Learning</span><span>LLMs</span><span>Linear Regression</span><span>Pattern Recognition</span><span>Physics Simulation</span><span>Vehicle Dynamics</span><span>Torque Vectoring</span><span>Thermal Modelling</span>
+            </div>
+            <h4>Domains</h4>
+            <div class="tech-pills">
+                <span>EV Architecture</span><span>Component Selection</span><span>Motor Control (SVM/FOC)</span><span>BMS Design</span><span>DCDC Design</span><span>Charger Design (AC/DC)</span><span>Generators</span><span>Engine Control</span><span>Fuel Cells</span><span>Hydrogen Engines</span><span>ADAS</span><span>Cyber Security</span><span>AES/Diffie-Hellman</span><span>VR/AR</span><span>Telemetry</span><span>Safety-Critical</span><span>BSP Design</span><span>Homologation</span><span>System Architecture</span><span>Web Design</span><span>Databases</span><span>Physics Simulation</span><span>Vehicle Dynamics</span>
+            </div>
+            <h4>Leadership &amp; Management</h4>
+            <div class="tech-pills">
+                <span>Company Director (x3)</span><span>Board Leadership</span><span>Project Management</span><span>Team Building (4-34 staff)</span><span>R&amp;D Strategy</span><span>Technical Procurement</span><span>Investor Relations</span><span>International Presentations</span><span>Lean/Agile/V-Model</span><span>Mentoring &amp; Training</span>
+            </div>
+            <h4>Tools</h4>
+            <div class="tech-pills">
+                <span>Altium</span><span>Tasking</span><span>Solidworks</span><span>Polarion</span><span>LDRA</span><span>ODOO</span><span>TI CCS</span><span>GAPIDRAW</span><span>Simulink</span><span>Modelsim</span><span>Grafana</span><span>PCAN</span><span>Vector CANoe</span><span>SavvyCAN</span>
+            </div>
+        </div>
+    </div>
+</section>
+
 <!-- PRODUCTS -->
 <section class="products" id="products">
     <div class="container">
@@ -568,7 +818,8 @@
                 </ul>
             </div>
             <div>
-                <img src="img/octograph_usage.png" alt="OctoGraph Dashboard" class="product-screenshot">
+                <img src="img/octograph_usage.png" alt="OctoGraph Dashboard" class="product-screenshot" style="margin-bottom:12px;">
+                <img src="img/octograph_forecast.png" alt="OctoGraph Cost Forecast" class="product-screenshot">
             </div>
         </div>
 
@@ -609,7 +860,8 @@
             </div>
             <div>
                 <img src="img/drivefoundry_scope.png" alt="DriveFoundry CAN Scope" class="product-screenshot" style="margin-bottom:12px;">
-                <img src="img/drivefoundry_3d.png" alt="DriveFoundry 3D Vehicle View" class="product-screenshot">
+                <img src="img/drivefoundry_3d.png" alt="DriveFoundry 3D Vehicle View" class="product-screenshot" style="margin-bottom:12px;">
+                <img src="img/drivefoundry_physics.png" alt="DriveFoundry Vehicle Physics" class="product-screenshot">
             </div>
         </div>
 
@@ -941,6 +1193,7 @@
                 <div class="bio-avatar"><img src="img/greg_headshot.jpg" alt="Greg Starns"></div>
                 <div class="bio-name">Greg Starns</div>
                 <div class="bio-role">CTO & Founder</div>
+                <div style="color: var(--text-dim); font-size: 0.8em;">Est. 2018</div>
                 <div style="color:var(--text-muted);font-size:0.82em;line-height:1.6;">
                     West Sussex, UK
                 </div>
@@ -1060,7 +1313,7 @@
 </section>
 
 <footer>
-    <p>&copy; 2025 Starns Labs Ltd. All Rights Reserved.</p>
+    <p>&copy; 2018&ndash;2026 Starns Labs Ltd. All Rights Reserved.</p>
     <p style="margin-top: 8px;"><a href="privacy.html">Privacy Policy</a></p>
 </footer>
 
