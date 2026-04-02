@@ -1038,18 +1038,21 @@ renderer.setSize(container.clientWidth, container.clientHeight);
 renderer.setPixelRatio(window.devicePixelRatio);
 container.appendChild(renderer.domElement);
 
-// Lighting
-const ambientLight = new THREE.AmbientLight(0x404060, 1.5);
+// Lighting — bright and even
+const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
 scene.add(ambientLight);
-const dirLight1 = new THREE.DirectionalLight(0x3b82f6, 2);
-dirLight1.position.set(1, 2, 1);
+const dirLight1 = new THREE.DirectionalLight(0xffffff, 1.8);
+dirLight1.position.set(3, 5, 3);
 scene.add(dirLight1);
-const dirLight2 = new THREE.DirectionalLight(0x06b6d4, 1.5);
-dirLight2.position.set(-1, 1, -1);
+const dirLight2 = new THREE.DirectionalLight(0x88ccff, 1.2);
+dirLight2.position.set(-3, 4, -2);
 scene.add(dirLight2);
 const dirLight3 = new THREE.DirectionalLight(0xffffff, 0.8);
-dirLight3.position.set(0, -1, 0);
+dirLight3.position.set(0, -2, 3);
 scene.add(dirLight3);
+const dirLight4 = new THREE.DirectionalLight(0xffaa66, 0.5);
+dirLight4.position.set(-2, 1, 4);
+scene.add(dirLight4);
 
 // Controls
 const controls = new OrbitControls(camera, renderer.domElement);
@@ -1062,10 +1065,11 @@ controls.autoRotateSpeed = 1.5;
 const loader = new STLLoader();
 loader.load('images/tins-13-web.stl', function(geometry) {
   const material = new THREE.MeshPhongMaterial({
-    color: 0xd04020,
-    specular: 0x444444,
-    shininess: 30,
-    flatShading: false
+    color: 0xe85530,
+    specular: 0x888888,
+    shininess: 60,
+    flatShading: false,
+    side: THREE.DoubleSide
   });
   const mesh = new THREE.Mesh(geometry, material);
 
@@ -1082,8 +1086,11 @@ loader.load('images/tins-13-web.stl', function(geometry) {
   const scale = 200 / maxDim;
   mesh.scale.set(scale, scale, scale);
 
+  // Rotate to sit flat — STEP models often import sideways
+  mesh.rotation.x = -Math.PI / 2;
+
   scene.add(mesh);
-  camera.position.set(200, 150, 200);
+  camera.position.set(250, 180, 250);
   controls.target.set(0, 0, 0);
   controls.update();
 
