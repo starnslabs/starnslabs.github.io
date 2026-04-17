@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Karneth Strata — Team Documents</title>
+<style>
+  :root { --bg:#0a0f1a; --card:rgba(18,26,40,.92); --cyan:#38bdf8; --amber:#f59e0b; --green:#34d399; --red:#f87171; --text:#e2e8f0; --muted:#64748b; --border:#1e3a5f; }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{font-family:'Segoe UI',sans-serif;background:linear-gradient(145deg,#0a0f1a,#151d2b,#0a0f1a);color:var(--text);min-height:100vh;padding:40px 20px;}
+  .container{max-width:1200px;margin:0 auto;background:var(--card);border-radius:16px;padding:40px;border:1px solid var(--border);backdrop-filter:blur(12px);}
+  h1{font-size:28px;color:var(--cyan);margin-bottom:6px;}
+  .sub{color:var(--muted);font-size:14px;margin-bottom:30px;}
+  .meta{display:flex;gap:20px;margin-bottom:30px;flex-wrap:wrap;}
+  .chip{display:inline-block;padding:4px 12px;border-radius:12px;font-size:12px;font-weight:600;}
+  .chip.cyan{background:rgba(56,189,248,.15);color:var(--cyan);border:1px solid rgba(56,189,248,.3);}
+  .chip.green{background:rgba(52,211,153,.15);color:var(--green);border:1px solid rgba(52,211,153,.3);}
+  .chip.new{background:rgba(248,113,113,.2);color:var(--red);border:1px solid rgba(248,113,113,.3);}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:14px;}
+  .doc{background:rgba(15,23,42,.7);border:1px solid var(--border);border-radius:10px;padding:16px 18px;transition:border-color .2s,transform .15s;display:block;text-decoration:none;color:var(--text);}
+  .doc:hover{border-color:var(--cyan);transform:translateY(-2px);}
+  .doc .title{font-size:14px;font-weight:600;color:var(--cyan);margin-bottom:4px;}
+  .doc .desc{font-size:12px;color:var(--muted);line-height:1.5;}
+  .section-label{font-size:13px;color:var(--amber);font-weight:700;text-transform:uppercase;letter-spacing:1px;margin:28px 0 12px 0;border-bottom:1px solid rgba(245,158,11,.2);padding-bottom:6px;}
+  .section-label:first-of-type{margin-top:0;}
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>&#9650; Karneth Strata — Team Documents</h1>
+  <div class="sub">Internal technical documentation &middot; AES-256 encrypted</div>
+  <div class="meta">
+    <span class="chip cyan">30 documents</span>
+    <span class="chip green">Updated 2026-04-17</span>
+  </div>
+  <div class="section-label">&#9670; Strategy &amp; Roadmap</div>
+  <div class="grid">
+    <a class="doc" href="docs/KS_Roadmap_2026_2030.html"><div class="title">Roadmap 2026-2030</div><div class="desc">5-year product and business roadmap</div></a>
+    <a class="doc" href="docs/KS_Commercial_Applications.html"><div class="title">Commercial Applications</div><div class="desc">47 applications across 13 verticals</div></a>
+    <a class="doc" href="docs/KS_Future_Tech.html"><div class="title">Future Technology</div><div class="desc">6 validated technologies from R&D pipeline</div></a>
+    <a class="doc" href="docs/KS_Email_Brief.html"><div class="title">Email Brief</div><div class="desc">Executive summary for stakeholders</div></a>
+    <a class="doc" href="docs/KS_Monday_Agenda.html"><div class="title">Monday Agenda</div><div class="desc">Weekly meeting template</div></a>
+  </div>
+  <div class="section-label">&#9670; Architecture &amp; Technical</div>
+  <div class="grid">
+    <a class="doc" href="docs/KS_Software_Architecture.html"><div class="title">Software Architecture</div><div class="desc">System design, modules, data flow</div></a>
+    <a class="doc" href="docs/KS_DataModel_Protocol_Layers.html"><div class="title">Data Model &amp; Protocol Layers</div><div class="desc">DDS, MAVLink, ROS2 protocol stack</div></a>
+    <a class="doc" href="docs/KS_EMCON_Concept.html"><div class="title">EMCON Concept</div><div class="desc">Emissions control and comms-silent operations</div></a>
+    <a class="doc" href="docs/KS_PX4_Autonomous_Ground_Vehicle.html"><div class="title">PX4 Autonomous Ground Vehicle</div><div class="desc">PX4 integration for ground platforms</div></a>
+    <a class="doc" href="docs/KS_PiDog_Integration.html"><div class="title">PiDog Integration</div><div class="desc">Raspberry Pi robotic dog C2 integration</div></a>
+    <a class="doc" href="docs/KS_EV_Architecture_Tool.html"><div class="title">EV Architecture Tool <span class="chip new">NEW</span></div><div class="desc">EV/drone wiring tool concept</div></a>
+  </div>
+  <div class="section-label">&#9670; Algorithms &amp; Performance</div>
+  <div class="grid">
+    <a class="doc" href="docs/KS_NGZ_Avoidance_Algorithm.html"><div class="title">NGZ Avoidance Algorithm <span class="chip new">NEW</span></div><div class="desc">3-whisker raycast avoidance - technical reference</div></a>
+    <a class="doc" href="docs/KS_TacMap_Optimisation_Report.html"><div class="title">TacMap Optimisation Report <span class="chip new">NEW</span></div><div class="desc">6 to 37 FPS performance session results</div></a>
+    <a class="doc" href="docs/KS_NFZ_Logic.html"><div class="title">NFZ Logic</div><div class="desc">No-Fly Zone constraint implementation</div></a>
+    <a class="doc" href="docs/KS_NFZ_Exec_Summary.html"><div class="title">NFZ Executive Summary</div><div class="desc">NFZ system overview for stakeholders</div></a>
+  </div>
+  <div class="section-label">&#9670; Defence &amp; Analysis</div>
+  <div class="grid">
+    <a class="doc" href="docs/KS_Niko_C4ISR_Analysis.html"><div class="title">C4ISR &amp; Drone Warfare Analysis <span class="chip new">NEW</span></div><div class="desc">7-article literature digest - drone warfare, ISR, kill chain</div></a>
+    <a class="doc" href="docs/KS_Lattice_Comparison.html"><div class="title">Lattice Comparison</div><div class="desc">KS vs Anduril Lattice architecture analysis</div></a>
+    <a class="doc" href="docs/KS_Ukraine_Comparison.html"><div class="title">Ukraine Comparison</div><div class="desc">Lessons from Ukraine drone operations</div></a>
+    <a class="doc" href="docs/KARNETH_STRATA_TECHNICAL_RESPONSE.html"><div class="title">Technical Response</div><div class="desc">Full technical response document</div></a>
+    <a class="doc" href="docs/KS_Integration_Response.html"><div class="title">Integration Response</div><div class="desc">System integration capabilities</div></a>
+    <a class="doc" href="docs/RFI_GAP_PROGRESS_REPORT.html"><div class="title">RFI Gap Progress Report</div><div class="desc">Requirements gap analysis and progress</div></a>
+  </div>
+  <div class="section-label">&#9670; Mission Planning &amp; Demo</div>
+  <div class="grid">
+    <a class="doc" href="docs/KS_Mission_Planner_Plan_v1.html"><div class="title">Mission Planner Plan</div><div class="desc">Mission planning system design</div></a>
+    <a class="doc" href="docs/KS_Demo_Missions.html"><div class="title">Demo Missions</div><div class="desc">Pre-configured demo mission scenarios</div></a>
+    <a class="doc" href="docs/KS_Demo_Summary.html"><div class="title">Demo Summary</div><div class="desc">Demo session results and findings</div></a>
+    <a class="doc" href="docs/Demo_Prep_Workbook_v1.html"><div class="title">Demo Prep Workbook</div><div class="desc">Pre-demo checklist and preparation guide</div></a>
+  </div>
+  <div class="section-label">&#9670; Team &amp; Reference</div>
+  <div class="grid">
+    <a class="doc" href="docs/Staff_CVs_doc.html"><div class="title">Staff CVs</div><div class="desc">Team credentials and clearance levels</div></a>
+    <a class="doc" href="docs/Lorna_Starns_CV_KS_v1.html"><div class="title">Lorna Starns CV (KS)</div><div class="desc">Quality/NPI specialist CV</div></a>
+    <a class="doc" href="docs/Lorna_Starns_CV_v1.html"><div class="title">Lorna Starns CV (Full)</div><div class="desc">Complete CV with career history</div></a>
+    <a class="doc" href="docs/USER_MANUAL.html"><div class="title">User Manual</div><div class="desc">Platform operator manual</div></a>
+    <a class="doc" href="docs/GLOSSARY.html"><div class="title">Glossary</div><div class="desc">Military and technical acronym reference</div></a>
+  </div>
+</div>
+</body>
+</html>
