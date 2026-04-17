@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex,nofollow">
+<title>Karneth Strata — Secure Portal</title>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  html,body{height:100%}
+  body{
+    font-family:'Segoe UI','Roboto',system-ui,sans-serif;
+    line-height:1.7;
+    color:#e2e8f0;
+    background:linear-gradient(145deg,#0a0f1a 0%,#151d2b 50%,#0a0f1a 100%);
+    min-height:100vh;
+    padding:30px 20px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    position:relative;
+    overflow-x:hidden;
+  }
+  /* Decorative ambient glows */
+  body::before,body::after{
+    content:"";position:absolute;border-radius:50%;
+    filter:blur(110px);opacity:.32;pointer-events:none;z-index:0;
+  }
+  body::before{
+    width:520px;height:520px;
+    background:radial-gradient(circle,#38bdf8 0%,transparent 70%);
+    top:-180px;left:-160px;
+  }
+  body::after{
+    width:560px;height:560px;
+    background:radial-gradient(circle,#f59e0b 0%,transparent 70%);
+    bottom:-220px;right:-180px;
+  }
+  /* Subtle scanline grid */
+  .grid-bg{
+    position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.18;
+    background-image:
+      linear-gradient(rgba(56,189,248,.08) 1px,transparent 1px),
+      linear-gradient(90deg,rgba(56,189,248,.08) 1px,transparent 1px);
+    background-size:40px 40px;
+    mask-image:radial-gradient(ellipse at center,#000 30%,transparent 80%);
+    -webkit-mask-image:radial-gradient(ellipse at center,#000 30%,transparent 80%);
+  }
+  .container{
+    max-width:980px;width:100%;
+    background:rgba(18,26,40,.92);
+    backdrop-filter:blur(12px);
+    -webkit-backdrop-filter:blur(12px);
+    border-radius:24px;
+    padding:56px 60px 48px;
+    box-shadow:0 25px 60px rgba(0,0,0,.6),0 0 0 1px rgba(56,189,248,.08);
+    border:1px solid rgba(56,189,248,.12);
+    position:relative;z-index:1;
+  }
+  /* Header */
+  .header-block{
+    text-align:center;
+    padding-bottom:32px;
+    margin-bottom:36px;
+    border-bottom:2px solid #1e3a5f;
+    position:relative;
+  }
+  .header-block::after{
+    content:"";position:absolute;left:50%;bottom:-2px;
+    width:120px;height:2px;background:#f59e0b;
+    transform:translateX(-50%);
+  }
+  .logo-text{
+    font-size:.85rem;letter-spacing:6px;color:#64748b;
+    text-transform:uppercase;margin-bottom:14px;
+    display:inline-flex;align-items:center;gap:10px;
+  }
+  .logo-text .pulse{
+    width:8px;height:8px;border-radius:50%;background:#38bdf8;
+    box-shadow:0 0 12px #38bdf8;
+    animation:pulse 2.4s ease-in-out infinite;
+  }
+  @keyframes pulse{
+    0%,100%{opacity:.4;transform:scale(.9)}
+    50%{opacity:1;transform:scale(1.1)}
+  }
+  h1{
+    color:#38bdf8;font-weight:700;
+    font-size:clamp(2.4rem,5vw,3.4rem);
+    letter-spacing:-.02em;
+    text-shadow:0 0 30px rgba(56,189,248,.35);
+    margin-bottom:10px;line-height:1.05;
+  }
+  .subtitle{
+    color:#94a3b8;font-size:1.05rem;font-style:italic;
+    margin-bottom:18px;
+  }
+  .doc-meta{
+    display:flex;justify-content:center;gap:24px;flex-wrap:wrap;
+    font-size:.78rem;color:#64748b;
+    text-transform:uppercase;letter-spacing:1.5px;
+  }
+  .doc-meta span{display:inline-flex;align-items:center;gap:8px}
+  .doc-meta strong{color:#cbd5e1;font-weight:600}
+  .doc-meta .chip{
+    width:6px;height:6px;border-radius:50%;background:#38bdf8;display:inline-block;
+  }
+  .doc-meta .chip.amber{background:#f59e0b}
+  .doc-meta .chip.green{background:#34d399}
+  /* Portal grid */
+  .portals{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(360px,1fr));
+    gap:24px;margin-top:8px;
+  }
+  .portal{
+    display:flex;flex-direction:column;
+    text-decoration:none;color:#e2e8f0;
+    background:linear-gradient(160deg,rgba(56,189,248,.05) 0%,rgba(0,0,0,0) 70%),#1a2535;
+    border:1px solid #253545;
+    border-radius:18px;
+    padding:30px 30px 26px;
+    position:relative;overflow:hidden;
+    transition:transform .25s ease,border-color .25s ease,box-shadow .25s ease;
+  }
+  .portal::before{
+    content:"";position:absolute;left:0;right:0;top:0;height:3px;
+    background:linear-gradient(90deg,transparent,#38bdf8,transparent);
+    opacity:.7;
+  }
+  .portal.investor::before{
+    background:linear-gradient(90deg,transparent,#f59e0b,transparent);
+  }
+  .portal:hover{
+    transform:translateY(-4px);
+    border-color:rgba(56,189,248,.5);
+    box-shadow:0 14px 30px rgba(0,0,0,.45),0 0 0 1px rgba(56,189,248,.25);
+  }
+  .portal.investor:hover{
+    border-color:rgba(245,158,11,.5);
+    box-shadow:0 14px 30px rgba(0,0,0,.45),0 0 0 1px rgba(245,158,11,.3);
+  }
+  .portal .icon{
+    width:46px;height:46px;border-radius:12px;
+    background:rgba(56,189,248,.12);
+    display:flex;align-items:center;justify-content:center;
+    margin-bottom:18px;
+    border:1px solid rgba(56,189,248,.25);
+  }
+  .portal.investor .icon{
+    background:rgba(245,158,11,.12);
+    border-color:rgba(245,158,11,.3);
+  }
+  .portal .icon svg{width:22px;height:22px;stroke:#7dd3fc;fill:none;stroke-width:1.8}
+  .portal.investor .icon svg{stroke:#fbbf24}
+  .portal h2{
+    font-size:1.55rem;font-weight:600;color:#e2e8f0;
+    margin-bottom:8px;letter-spacing:-.01em;
+  }
+  .portal .desc{
+    color:#94a3b8;font-size:.95rem;line-height:1.6;margin-bottom:22px;flex:1;
+  }
+  .portal .cta{
+    display:inline-flex;align-items:center;gap:10px;
+    color:#7dd3fc;font-size:.82rem;font-weight:600;
+    text-transform:uppercase;letter-spacing:2.5px;
+    padding-top:14px;border-top:1px solid #253545;
+  }
+  .portal.investor .cta{color:#fbbf24}
+  .portal .cta .arrow{
+    transition:transform .2s ease;display:inline-block;font-family:monospace;
+  }
+  .portal:hover .cta .arrow{transform:translateX(6px)}
+  .portal .tag{
+    position:absolute;top:18px;right:20px;
+    font-family:'Consolas','SF Mono',monospace;
+    font-size:.68rem;color:#475569;letter-spacing:1.5px;
+  }
+  /* Footer */
+  footer{
+    margin-top:42px;padding-top:24px;
+    border-top:1px solid #1e3a5f;
+    text-align:center;color:#64748b;font-size:.78rem;
+    letter-spacing:2px;text-transform:uppercase;
+  }
+  footer .sep{margin:0 10px;color:#334155}
+  @media (max-width:560px){
+    .container{padding:40px 28px 32px;border-radius:18px}
+    .portal{padding:24px 22px}
+  }
+</style>
+</head>
+<body>
+<div class="grid-bg"></div>
+
+<div class="container">
+  <div class="header-block">
+    <div class="logo-text"><span class="pulse"></span>Classified &middot; Secure Portal</div>
+    <h1>KARNETH&nbsp;STRATA</h1>
+    <div class="subtitle">Autonomous Systems &middot; Defence &middot; Future Technology</div>
+    <div class="doc-meta">
+      <span><span class="chip"></span><strong>34</strong> documents</span>
+      <span><span class="chip amber"></span><strong>AES-256</strong> client-side</span>
+      <span><span class="chip green"></span>Updated <strong>2026-04-17</strong></span>
+    </div>
+  </div>
+
+  <div class="portals">
+    <a class="portal" href="team/">
+      <div class="tag">// TEAM</div>
+      <div class="icon">
+        <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 2 4 6v6c0 5 3.5 9 8 10 4.5-1 8-5 8-10V6l-8-4z"/>
+          <path d="M9 12l2 2 4-4"/>
+        </svg>
+      </div>
+      <h2>Team Portal</h2>
+      <p class="desc">Full internal documentation set: software architecture, mission planner, RFI responses, NFZ logic, demo briefs, user manuals, team CVs and the complete reference library.</p>
+      <span class="cta">Enter portal <span class="arrow">&rarr;</span></span>
+    </a>
+
+    <a class="portal investor" href="investors/">
+      <div class="tag">// INVESTORS</div>
+      <div class="icon">
+        <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3 21h18"/>
+          <path d="M5 21V10l7-5 7 5v11"/>
+          <path d="M9 21v-6h6v6"/>
+        </svg>
+      </div>
+      <h2>Investor Portal</h2>
+      <p class="desc">Curated strategic overview: five-year roadmap, commercial applications, future technology pillars, competitive positioning, capability summary and team credentials.</p>
+      <span class="cta">Enter portal <span class="arrow">&rarr;</span></span>
+    </a>
+  </div>
+
+  <footer>
+    Karneth Strata Ltd
+    <span class="sep">&bull;</span>
+    Authorised access only
+    <span class="sep">&bull;</span>
+    All content encrypted client-side
+  </footer>
+</div>
+</body>
+</html>
