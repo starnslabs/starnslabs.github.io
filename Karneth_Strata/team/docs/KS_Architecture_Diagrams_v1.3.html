@@ -1,0 +1,877 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Karneth Strata — Architecture Diagrams v1.3</title>
+<style>
+  :root {
+    --bg: #0a0e17;
+    --bg2: #111827;
+    --bg3: #1a2245;
+    --border: #2a3a55;
+    --text: #e2e8f0;
+    --text2: #94a3b8;
+    --text3: #64748b;
+    --accent: #3b82f6;
+    --accent2: #60a5fa;
+    --cyan: #06b6d4;
+    --green: #22c55e;
+    --amber: #f59e0b;
+    --red: #ef4444;
+    --purple: #a855f7;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    max-width: 1040px;
+    margin: 0 auto;
+    padding: 0 32px 80px;
+  }
+  .hero {
+    padding: 40px 0 24px;
+    border-bottom: 2px solid var(--border);
+    margin-bottom: 28px;
+  }
+  h1 {
+    font-size: 1.9em;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+    background: linear-gradient(135deg, var(--accent2), var(--cyan));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .sub { color: var(--text2); margin-top: 6px; font-size: 1em; }
+  .meta { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 14px; font-size: 0.82em; }
+  .chip {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 3px 10px;
+    color: var(--text2);
+  }
+  .chip.green { color: var(--green); border-color: rgba(34,197,94,0.3); }
+  .chip.cyan  { color: var(--cyan);  border-color: rgba(6,182,212,0.3); }
+  .chip.amber { color: var(--amber); border-color: rgba(245,158,11,0.3); }
+  .chip.red   { color: var(--red);   border-color: rgba(239,68,68,0.3); }
+  h2 {
+    font-size: 1.2em;
+    font-weight: 700;
+    color: var(--accent2);
+    margin-top: 34px;
+    margin-bottom: 10px;
+    border-left: 3px solid var(--accent);
+    padding-left: 10px;
+  }
+  h3 {
+    font-size: 0.95em;
+    font-weight: 700;
+    color: var(--text);
+    margin-top: 18px;
+    margin-bottom: 6px;
+  }
+  p { margin-bottom: 10px; font-size: 0.95em; }
+  p.note { color: var(--text2); font-size: 0.88em; }
+  ul { margin: 6px 0 10px 22px; }
+  li { margin-bottom: 3px; font-size: 0.92em; }
+  code {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    padding: 1px 6px;
+    font-size: 0.85em;
+    color: var(--cyan);
+  }
+  .diagram-wrap {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 18px 14px 10px;
+    margin: 14px 0 18px;
+    overflow-x: auto;
+  }
+  .caption {
+    font-size: 0.82em;
+    color: var(--text3);
+    text-align: center;
+    margin-top: 6px;
+  }
+  .legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px 20px;
+    margin: 8px 0 6px;
+    font-size: 0.82em;
+    color: var(--text2);
+    justify-content: center;
+  }
+  .legend span::before {
+    content: '';
+    display: inline-block;
+    width: 10px; height: 10px;
+    border-radius: 2px;
+    margin-right: 6px;
+    vertical-align: middle;
+  }
+  .leg-shipped::before { background: var(--green); }
+  .leg-partial::before { background: var(--amber); }
+  .leg-design::before  { background: var(--purple); }
+  .leg-external::before{ background: var(--text3); }
+  svg text {
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    fill: var(--text);
+  }
+  svg .lbl { font-size: 11px; font-weight: 600; }
+  svg .sub-lbl { font-size: 9px; fill: var(--text2); }
+  svg .tag { font-size: 8.5px; font-weight: 700; letter-spacing: 0.5px; }
+  svg .flow-lbl { font-size: 9px; fill: var(--text2); }
+  svg .arrow {
+    fill: none;
+    stroke: var(--text3);
+    stroke-width: 1.4;
+  }
+  svg .arrow.bold { stroke: var(--cyan); stroke-width: 2; }
+  svg .arrow.purple { stroke: var(--purple); stroke-width: 1.8; }
+  svg .arrow.red    { stroke: var(--red);    stroke-width: 1.6; stroke-dasharray: 6 3; }
+  svg rect.box-shipped { fill: #0f1e15; stroke: var(--green); stroke-width: 1.4; }
+  svg rect.box-partial { fill: #1f170a; stroke: var(--amber); stroke-width: 1.4; }
+  svg rect.box-design  { fill: #1a0f24; stroke: var(--purple); stroke-width: 1.4; }
+  svg rect.box-external{ fill: #121723; stroke: var(--text3); stroke-width: 1.2; stroke-dasharray: 4 3; }
+  svg rect.box-group   { fill: transparent; stroke: var(--border); stroke-width: 1; stroke-dasharray: 3 3; }
+  svg .group-lbl { font-size: 10px; font-weight: 700; fill: var(--text2); letter-spacing: 1.2px; }
+  footer {
+    margin-top: 60px;
+    padding-top: 16px;
+    border-top: 1px solid var(--border);
+    color: var(--text3);
+    font-size: 0.8em;
+    text-align: center;
+  }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <h1>Karneth Strata — Architecture Diagrams</h1>
+  <div class="sub">Six box-and-line diagrams for technical DD. Shipped vs design-only boundaries are colour-coded so the reader can separate evidence from plan.</div>
+  <div class="meta">
+    <span class="chip cyan">v1.3 · 2026-04-29</span>
+    <span class="chip">Author: Greg Starns</span>
+    <span class="chip green">Internal — DD reference</span>
+    <span class="chip red">Confidential</span>
+  </div>
+</div>
+
+<p class="note">
+  Companion to <i>KS_Software_Architecture</i>. Prose lives there; structure
+  lives here. This revision (v1.3, 2026-04-29) replaces the v1.0 system-only
+  view with the current intelligence layer: DetectionBus, EMCON gating,
+  multi-vehicle registry, Pi-side edge YOLO, and the proper EMCON SILENT
+  cut-the-RF behaviour shipped this week. If you read this doc alone, you
+  can still tell — at a glance — what is
+  <span style="color:var(--green)">shipped and running</span>,
+  what is <span style="color:var(--amber)">partially shipped</span>,
+  and what is <span style="color:var(--purple)">design-only spec</span>
+  awaiting capital or hardware.
+</p>
+
+<div class="legend">
+  <span class="leg-shipped">Shipped &amp; running</span>
+  <span class="leg-partial">Partial / experimental</span>
+  <span class="leg-design">Design only (specification-ware)</span>
+  <span class="leg-external">External / environment</span>
+</div>
+
+<!-- =========================================================== -->
+<h2>1. System topology</h2>
+<p>
+  Top-level view. Operator sits at the Unity client; the Unity client is
+  both the demo environment (simulated swarm) and the operational UI
+  (C2 + SA displays). One PiDog (Raspberry Pi 4B 8GB, 192.168.178.70)
+  on the same LAN closes the hardware-in-the-loop path — proving the UI
+  is not talking only to simulated vehicles. Multi-vehicle architecture
+  (Phase 1+2+3b shipped 2026-04-29) means a second PiDog or a non-PiDog
+  vehicle plugs into the same registry without code changes.
+</p>
+
+<div class="diagram-wrap">
+<svg viewBox="0 0 980 460" width="100%" style="max-width:980px;display:block;margin:0 auto;">
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto">
+      <path d="M0,0 L10,4 L0,8 z" fill="#64748b"/>
+    </marker>
+    <marker id="arrowhead-cyan" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto">
+      <path d="M0,0 L10,4 L0,8 z" fill="#06b6d4"/>
+    </marker>
+    <marker id="arrowhead-purple" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto">
+      <path d="M0,0 L10,4 L0,8 z" fill="#a855f7"/>
+    </marker>
+    <marker id="arrowhead-red" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto">
+      <path d="M0,0 L10,4 L0,8 z" fill="#ef4444"/>
+    </marker>
+  </defs>
+
+  <!-- Operator -->
+  <rect class="box-external" x="20" y="190" width="100" height="60" rx="6"/>
+  <text class="lbl" x="70" y="215" text-anchor="middle">Operator</text>
+  <text class="sub-lbl" x="70" y="230" text-anchor="middle">MissionCmdr / Pilot</text>
+  <text class="sub-lbl" x="70" y="242" text-anchor="middle">/ Observer</text>
+
+  <!-- Unity client group -->
+  <rect class="box-group" x="150" y="40" width="450" height="400" rx="8"/>
+  <text class="group-lbl" x="375" y="60" text-anchor="middle">UNITY CLIENT — operator console</text>
+
+  <!-- Header strip -->
+  <rect class="box-shipped" x="170" y="78" width="410" height="42" rx="5"/>
+  <text class="lbl" x="375" y="98" text-anchor="middle">DisplaySwitcher header strip</text>
+  <text class="sub-lbl" x="375" y="112" text-anchor="middle">Vehicle picker pill · EMCON pill · NEW INTEL · Connectivity</text>
+
+  <!-- C2 Display -->
+  <rect class="box-shipped" x="170" y="135" width="200" height="64" rx="6"/>
+  <text class="lbl" x="270" y="156" text-anchor="middle">C2 Display</text>
+  <text class="sub-lbl" x="270" y="170" text-anchor="middle">Fleet · Comms · Planner</text>
+  <text class="sub-lbl" x="270" y="182" text-anchor="middle">Operations · Authority · Handoff</text>
+  <text class="tag" x="270" y="195" text-anchor="middle" fill="#22c55e">U → D → A</text>
+
+  <!-- SA Display -->
+  <rect class="box-shipped" x="380" y="135" width="200" height="64" rx="6"/>
+  <text class="lbl" x="480" y="156" text-anchor="middle">SA Display</text>
+  <text class="sub-lbl" x="480" y="170" text-anchor="middle">TacMap · ISR Process · Computed</text>
+  <text class="sub-lbl" x="480" y="182" text-anchor="middle">Timeline · Auto/Exp · MAVLink · ROS2</text>
+  <text class="tag" x="480" y="195" text-anchor="middle" fill="#22c55e">U → D → A</text>
+
+  <!-- Intelligence layer -->
+  <rect class="box-shipped" x="170" y="215" width="410" height="56" rx="6"/>
+  <text class="lbl" x="375" y="237" text-anchor="middle">Intelligence layer (C2/Detection)</text>
+  <text class="sub-lbl" x="375" y="252" text-anchor="middle">DetectionBus → EmconCommsQueue → DetectionRosPublisher</text>
+  <text class="sub-lbl" x="375" y="264" text-anchor="middle">P0/P1/P2 priority tiers · dedupe-on-lift · /swarm/detections</text>
+
+  <!-- Vehicle registry -->
+  <rect class="box-shipped" x="170" y="287" width="200" height="56" rx="6"/>
+  <text class="lbl" x="270" y="308" text-anchor="middle">VehicleRegistry</text>
+  <text class="sub-lbl" x="270" y="322" text-anchor="middle">Per-vehicle config + status</text>
+  <text class="sub-lbl" x="270" y="334" text-anchor="middle">PiDog / MAVLink / ROS2-generic</text>
+
+  <!-- Mission planner / scene system -->
+  <rect class="box-shipped" x="380" y="287" width="200" height="56" rx="6"/>
+  <text class="lbl" x="480" y="308" text-anchor="middle">Scene + Mission planner</text>
+  <text class="sub-lbl" x="480" y="322" text-anchor="middle">SUBMIT · CANCEL · NFZ avoidance</text>
+  <text class="sub-lbl" x="480" y="334" text-anchor="middle">Launch gate · Sachseln scenes</text>
+
+  <!-- Simulated swarm -->
+  <rect class="box-shipped" x="170" y="360" width="410" height="56" rx="6"/>
+  <text class="lbl" x="375" y="381" text-anchor="middle">Simulated swarm</text>
+  <text class="sub-lbl" x="375" y="396" text-anchor="middle">UGVs (TinS-25G chassis) · UAVs (fixed-wing) · MALPs</text>
+  <text class="sub-lbl" x="375" y="408" text-anchor="middle">SimDetectionPublisher feeds DetectionBus (feed_id=sim_&lt;callsign&gt;)</text>
+
+  <!-- Hardware-in-the-loop group -->
+  <rect class="box-group" x="630" y="40" width="335" height="400" rx="8"/>
+  <text class="group-lbl" x="797" y="60" text-anchor="middle">HARDWARE-IN-THE-LOOP</text>
+
+  <!-- PiDog -->
+  <rect class="box-shipped" x="650" y="78" width="295" height="180" rx="6"/>
+  <text class="lbl" x="797" y="100" text-anchor="middle">PiDog (Raspberry Pi 4B 8GB)</text>
+  <text class="sub-lbl" x="797" y="116" text-anchor="middle">192.168.178.70 · 5 systemd services + Docker</text>
+  <text class="sub-lbl" x="797" y="135" text-anchor="middle">· pidog-camera (8080 MJPEG)</text>
+  <text class="sub-lbl" x="797" y="148" text-anchor="middle">· pidog-spy (8081 audio · DOA · TTS · LED)</text>
+  <text class="sub-lbl" x="797" y="161" text-anchor="middle">· pidog-walk (8082 SDK · pose · IMU)</text>
+  <text class="sub-lbl" x="797" y="174" text-anchor="middle">· pidog-slam (8084 COLMAP)</text>
+  <text class="sub-lbl" x="797" y="187" text-anchor="middle">· pidog-yolo (8085 YOLOv8m_defence)</text>
+  <text class="sub-lbl" x="797" y="200" text-anchor="middle">· ros2_bridge Docker (rosbridge :9090)</text>
+  <text class="tag" x="797" y="222" text-anchor="middle" fill="#22c55e">pi-deploy / pi-pull repo sync</text>
+  <text class="sub-lbl" x="797" y="240" text-anchor="middle">Future: TI Jacinto for new drone build</text>
+  <text class="sub-lbl" x="797" y="252" text-anchor="middle">(C7x DSP + MMA + R5F lockstep, ASIL)</text>
+
+  <!-- Future swarm / 2nd PiDog -->
+  <rect class="box-design" x="650" y="280" width="295" height="64" rx="6"/>
+  <text class="lbl" x="797" y="302" text-anchor="middle">2nd PiDog / fielded drone</text>
+  <text class="sub-lbl" x="797" y="318" text-anchor="middle">Phase 3a capability-gated panels (pending)</text>
+  <text class="sub-lbl" x="797" y="332" text-anchor="middle">Capital-converts scope · MAVLink/ROS2 target</text>
+
+  <!-- EMCON wedge -->
+  <rect class="box-design" x="650" y="360" width="295" height="64" rx="6"/>
+  <text class="lbl" x="797" y="382" text-anchor="middle">EMCON Phase C+D (Pi-side)</text>
+  <text class="sub-lbl" x="797" y="398" text-anchor="middle">emcon_gate.py mirror of EmconCommsQueue</text>
+  <text class="sub-lbl" x="797" y="412" text-anchor="middle">LED + TTS cues (Phase D shipped 2026-04-29)</text>
+
+  <!-- Arrows -->
+  <path class="arrow bold" d="M120,220 L168,220" marker-end="url(#arrowhead-cyan)"/>
+  <path class="arrow bold" d="M580,170 L648,170" marker-end="url(#arrowhead-cyan)"/>
+  <path class="arrow purple" d="M648,200 L580,240" marker-end="url(#arrowhead-purple)"/>
+  <path class="arrow" d="M797,258 L797,278" marker-end="url(#arrowhead)" stroke-dasharray="4 3"/>
+
+  <text class="flow-lbl" x="144" y="212" text-anchor="middle">Ops + input</text>
+  <text class="flow-lbl" x="614" y="160" text-anchor="middle">HTTP + WS</text>
+  <text class="flow-lbl" x="614" y="232" text-anchor="middle" fill="#a855f7">Pi YOLO burst</text>
+</svg>
+<div class="caption">Figure 1 — System topology as of 2026-04-29. Operator drives the Unity client; the Unity client holds C2, SA, the intelligence layer, the simulated swarm, and the multi-vehicle registry. One live PiDog on the LAN closes the HIL path. Purple arrow = Pi-side edge YOLO burst channel (EMCON-survivable). Dashed arrow to 2nd vehicle is where capital + Phase 3a capability gates convert.</div>
+</div>
+
+<!-- =========================================================== -->
+<h2>2. Detection / ISR data flow</h2>
+<p>
+  This is the spine of the operator's intelligence picture. Three
+  detector sources publish into a single in-process bus
+  (<code>DetectionBus</code>, main-thread pump, multicast). The bus is
+  consumed locally by the ISR Process Panel and the NEW INTEL badge,
+  and is gated by <code>EmconCommsQueue</code> before going on the wire
+  via <code>DetectionRosPublisher</code> to <code>/swarm/detections</code>
+  on rosbridge. Priority tiers (<strong>P0 Critical</strong>,
+  <strong>P1 High</strong>, <strong>P2 Low</strong>) drive both card
+  ordering and badge counting; Pi-burst cards get a purple border so
+  the operator can tell at a glance which detections survived the
+  EMCON-gated channel.
+</p>
+
+<div class="diagram-wrap">
+<svg viewBox="0 0 980 540" width="100%" style="max-width:980px;display:block;margin:0 auto;">
+  <!-- Column headers -->
+  <text class="group-lbl" x="100" y="30" text-anchor="middle">SOURCES</text>
+  <text class="group-lbl" x="380" y="30" text-anchor="middle">BUS</text>
+  <text class="group-lbl" x="650" y="30" text-anchor="middle">LOCAL CONSUMERS</text>
+  <text class="group-lbl" x="650" y="320" text-anchor="middle">OUTBOUND (EMCON-gated)</text>
+
+  <!-- Sources column (col 1, x=20..220) -->
+  <rect class="box-shipped" x="20" y="50" width="200" height="74" rx="6"/>
+  <text class="lbl" x="120" y="71" text-anchor="middle">PC YOLO</text>
+  <text class="sub-lbl" x="120" y="87" text-anchor="middle">PidogCameraFeed.cs</text>
+  <text class="sub-lbl" x="120" y="100" text-anchor="middle">YOLOv4-tiny COCO · OpenCvSharp</text>
+  <text class="sub-lbl" x="120" y="113" text-anchor="middle">on MJPEG · feed_id="pidog"</text>
+
+  <rect class="box-shipped" x="20" y="146" width="200" height="74" rx="6"/>
+  <text class="lbl" x="120" y="167" text-anchor="middle">Pi edge YOLO (burst)</text>
+  <text class="sub-lbl" x="120" y="183" text-anchor="middle">PidogLocalDetectionFeed.cs</text>
+  <text class="sub-lbl" x="120" y="196" text-anchor="middle">YOLOv8m_defence ONNX · 18 cls</text>
+  <text class="sub-lbl" x="120" y="209" text-anchor="middle">~0.2 fps · feed_id="pidog_local"</text>
+
+  <rect class="box-shipped" x="20" y="242" width="200" height="74" rx="6"/>
+  <text class="lbl" x="120" y="263" text-anchor="middle">Sim ground truth</text>
+  <text class="sub-lbl" x="120" y="279" text-anchor="middle">SimDetectionPublisher.cs</text>
+  <text class="sub-lbl" x="120" y="292" text-anchor="middle">3 Hz · range + frustum gate</text>
+  <text class="sub-lbl" x="120" y="305" text-anchor="middle">feed_id="sim_&lt;callsign&gt;"</text>
+
+  <rect class="box-design" x="20" y="338" width="200" height="60" rx="6"/>
+  <text class="lbl" x="120" y="361" text-anchor="middle">Future: drone gimbal CV</text>
+  <text class="sub-lbl" x="120" y="377" text-anchor="middle">MALP / fielded UAV detector</text>
+  <text class="sub-lbl" x="120" y="389" text-anchor="middle">same Detection schema</text>
+
+  <!-- DetectionBus (col 2, x=280..480) -->
+  <rect class="box-shipped" x="280" y="100" width="200" height="220" rx="6"/>
+  <text class="lbl" x="380" y="124" text-anchor="middle">DetectionBus (static)</text>
+  <text class="sub-lbl" x="380" y="140" text-anchor="middle">ConcurrentQueue → main-thread Pump</text>
+  <text class="sub-lbl" x="380" y="153" text-anchor="middle">multicast Action&lt;Detection&gt;</text>
+  <text class="sub-lbl" x="380" y="172" text-anchor="middle">Detection struct:</text>
+  <text class="sub-lbl" x="380" y="184" text-anchor="middle">FeedId · ClassLabel · Confidence</text>
+  <text class="sub-lbl" x="380" y="196" text-anchor="middle">BoxNorm · TimestampSec</text>
+  <text class="sub-lbl" x="380" y="208" text-anchor="middle">ThumbnailRgb24 (optional)</text>
+  <text class="sub-lbl" x="380" y="220" text-anchor="middle">FrameJpeg (Pi evidence frame)</text>
+  <text class="tag" x="380" y="246" text-anchor="middle" fill="#06b6d4">DetectionPriority.Of()</text>
+  <text class="sub-lbl" x="380" y="262" text-anchor="middle">P0 person/enemy_*/armed_*</text>
+  <text class="sub-lbl" x="380" y="276" text-anchor="middle">P1 pidog cam</text>
+  <text class="sub-lbl" x="380" y="290" text-anchor="middle">P2 sim friendly</text>
+  <text class="tag" x="380" y="308" text-anchor="middle" fill="#22c55e">Slice 5 · 2026-04-27</text>
+
+  <!-- Local consumers (col 3 top, x=540..760) -->
+  <rect class="box-shipped" x="540" y="50" width="220" height="62" rx="6"/>
+  <text class="lbl" x="650" y="73" text-anchor="middle">ISR Process Panel</text>
+  <text class="sub-lbl" x="650" y="89" text-anchor="middle">P0/P1/P2 prefix on cards</text>
+  <text class="sub-lbl" x="650" y="102" text-anchor="middle">purple border = Pi burst</text>
+
+  <rect class="box-shipped" x="540" y="128" width="220" height="50" rx="6"/>
+  <text class="lbl" x="650" y="149" text-anchor="middle">IsrIntelBadge</text>
+  <text class="sub-lbl" x="650" y="164" text-anchor="middle">Counts P0 + P1 unread</text>
+
+  <rect class="box-shipped" x="540" y="194" width="220" height="62" rx="6"/>
+  <text class="lbl" x="650" y="217" text-anchor="middle">PidogCameraFeed (UI)</text>
+  <text class="sub-lbl" x="650" y="233" text-anchor="middle">Evidence-frame swap</text>
+  <text class="sub-lbl" x="650" y="246" text-anchor="middle">~4 s hold · purple bbox</text>
+
+  <!-- EMCON queue (col 3 bottom, x=540..760) -->
+  <rect class="box-shipped" x="540" y="340" width="220" height="186" rx="6"/>
+  <text class="lbl" x="650" y="363" text-anchor="middle">EmconCommsQueue</text>
+  <text class="sub-lbl" x="650" y="380" text-anchor="middle">EMCON OFF: pass-through</text>
+  <text class="sub-lbl" x="650" y="393" text-anchor="middle">EMCON ON: ring buffer 256</text>
+  <text class="sub-lbl" x="650" y="408" text-anchor="middle">priority bypass per emcon_rules.json</text>
+  <text class="sub-lbl" x="650" y="422" text-anchor="middle">on lift: dedupe-on-(FeedId,Class)</text>
+  <text class="sub-lbl" x="650" y="435" text-anchor="middle">release in age order</text>
+  <text class="sub-lbl" x="650" y="450" text-anchor="middle">QueuedCount · DroppedCount</text>
+  <text class="sub-lbl" x="650" y="463" text-anchor="middle">BypassCount · ReleasedCount</text>
+  <text class="tag" x="650" y="486" text-anchor="middle" fill="#22c55e">Slice 6 · 2026-04-29</text>
+  <text class="sub-lbl" x="650" y="502" text-anchor="middle">Feature flag: Enabled=true</text>
+  <text class="sub-lbl" x="650" y="515" text-anchor="middle">Backout: flip false → legacy</text>
+
+  <!-- Outbound chain (col 4, x=820..960) -->
+  <rect class="box-shipped" x="820" y="380" width="140" height="58" rx="6"/>
+  <text class="lbl" x="890" y="402" text-anchor="middle">DetectionRosPublisher</text>
+  <text class="sub-lbl" x="890" y="416" text-anchor="middle">/swarm/detections</text>
+  <text class="sub-lbl" x="890" y="429" text-anchor="middle">std_msgs/String</text>
+
+  <rect class="box-shipped" x="820" y="458" width="140" height="58" rx="6"/>
+  <text class="lbl" x="890" y="480" text-anchor="middle">rosbridge_server</text>
+  <text class="sub-lbl" x="890" y="494" text-anchor="middle">ws://Pi:9090</text>
+  <text class="sub-lbl" x="890" y="507" text-anchor="middle">Docker on Pi</text>
+
+  <!-- Arrows: sources -> bus (clean horizontal/diagonal into the tall bus box) -->
+  <path class="arrow" d="M222,87 L278,150" marker-end="url(#arrowhead)"/>
+  <path class="arrow purple" d="M222,183 L278,195" marker-end="url(#arrowhead-purple)"/>
+  <path class="arrow" d="M222,279 L278,240" marker-end="url(#arrowhead)"/>
+  <path class="arrow" d="M222,368 L278,295" marker-end="url(#arrowhead)" stroke-dasharray="4 3"/>
+
+  <!-- Arrows: bus -> local consumers (clean horizontal, no crossings) -->
+  <path class="arrow" d="M482,82 L540,82" marker-end="url(#arrowhead)"/>
+  <path class="arrow" d="M482,153 L540,153" marker-end="url(#arrowhead)"/>
+  <path class="arrow" d="M482,225 L540,225" marker-end="url(#arrowhead)"/>
+
+  <!-- Arrow: bus -> EMCON queue (vertical, down the spine of column 3) -->
+  <path class="arrow bold" d="M380,322 L380,335 L538,335" marker-end="url(#arrowhead-cyan)"/>
+
+  <!-- Arrow: EMCON queue -> publisher -->
+  <path class="arrow bold" d="M762,409 L818,409" marker-end="url(#arrowhead-cyan)"/>
+
+  <!-- Arrow: publisher -> rosbridge -->
+  <path class="arrow bold" d="M890,440 L890,456" marker-end="url(#arrowhead-cyan)"/>
+
+  <!-- EMCON SILENT severance: red dashed arrow that visually crosses the wire path -->
+  <path class="arrow red" d="M380,420 L380,500 L818,500 L818,495" marker-end="url(#arrowhead-red)"/>
+
+  <!-- Flow labels (placed clear of arrow lines) -->
+  <text class="flow-lbl" x="511" y="76" text-anchor="middle" fill="#9ca3af">subscribe</text>
+  <text class="flow-lbl" x="438" y="328" text-anchor="middle" fill="#06b6d4">queue gate</text>
+  <text class="flow-lbl" x="790" y="404" text-anchor="middle" fill="#06b6d4">if released</text>
+  <text class="flow-lbl" x="600" y="514" text-anchor="middle" fill="#ef4444">EMCON SILENT severs WS</text>
+</svg>
+<div class="caption">Figure 2 — Detection / ISR flow. Three detector sources fan into DetectionBus. Local UI subscribers (Process Panel, NEW INTEL badge, evidence-frame swap on the cam panel) read the bus directly. Outbound traffic is gated by EmconCommsQueue so EMCON SILENT cuts the wire without going blind locally. Red dashed arrow = EMCON SILENT assertion severs the rosbridge websocket; queued events are dedupe-released on lift.</div>
+</div>
+
+<!-- =========================================================== -->
+<h2>3. Multi-vehicle registry &amp; namespacing</h2>
+<p>
+  Phase 1+2+3b shipped 2026-04-29 (single commit-day, on master). The
+  prior single-Pi assumption — <code>192.168.178.70</code> hardcoded
+  across PidogCameraFeed / PidogRosBridge / PidogConnectionMonitor —
+  was retired. <code>VehicleRegistry</code> persists configs to
+  <code>vehicles.json</code> in <code>persistentDataPath</code>;
+  <code>VehicleDiscovery</code> runs a parallel /24 LAN scan that
+  fingerprints PiDog (<code>:8082/health</code>), MAVLink drones
+  (<code>:14550</code> heartbeat), and generic ROS2
+  (<code>:9090</code> rosbridge). The header <code>VehiclePickerPill</code>
+  + <code>VehicleConnectDialog</code> let the operator switch vehicles
+  live; ROS topics are namespaced per vehicle (e.g.
+  <code>/pidog/detections</code> vs <code>/pidog2/detections</code>).
+</p>
+
+<div class="diagram-wrap">
+<svg viewBox="0 0 980 380" width="100%" style="max-width:980px;display:block;margin:0 auto;">
+  <!-- Persistent storage -->
+  <rect class="box-external" x="20" y="40" width="200" height="60" rx="6"/>
+  <text class="lbl" x="120" y="62" text-anchor="middle">persistentDataPath</text>
+  <text class="sub-lbl" x="120" y="78" text-anchor="middle">vehicles.json (debounced 1 Hz)</text>
+  <text class="sub-lbl" x="120" y="90" text-anchor="middle">survives reinstall · operator-editable</text>
+
+  <rect class="box-external" x="20" y="115" width="200" height="60" rx="6"/>
+  <text class="lbl" x="120" y="137" text-anchor="middle">StreamingAssets seed</text>
+  <text class="sub-lbl" x="120" y="153" text-anchor="middle">vehicles.json (first-run copy)</text>
+  <text class="sub-lbl" x="120" y="165" text-anchor="middle">emcon_rules.json (priority table)</text>
+
+  <!-- Registry -->
+  <rect class="box-shipped" x="280" y="60" width="220" height="120" rx="6"/>
+  <text class="lbl" x="390" y="84" text-anchor="middle">VehicleRegistry</text>
+  <text class="sub-lbl" x="390" y="100" text-anchor="middle">Active : VehicleConfig</text>
+  <text class="sub-lbl" x="390" y="113" text-anchor="middle">All : List&lt;VehicleConfig&gt;</text>
+  <text class="sub-lbl" x="390" y="128" text-anchor="middle">RosTopic("detections") →</text>
+  <text class="sub-lbl" x="390" y="140" text-anchor="middle">"/pidog/detections" (namespaced)</text>
+  <text class="tag" x="390" y="160" text-anchor="middle" fill="#22c55e">Phase 1 + 3b</text>
+  <text class="sub-lbl" x="390" y="172" text-anchor="middle">VehicleType: PiDog / MAVLink / ROS2</text>
+
+  <!-- Discovery -->
+  <rect class="box-shipped" x="280" y="200" width="220" height="84" rx="6"/>
+  <text class="lbl" x="390" y="222" text-anchor="middle">VehicleDiscovery</text>
+  <text class="sub-lbl" x="390" y="238" text-anchor="middle">Parallel /24 scan (off-thread)</text>
+  <text class="sub-lbl" x="390" y="251" text-anchor="middle">Fingerprint :8082 / :14550 / :9090</text>
+  <text class="sub-lbl" x="390" y="264" text-anchor="middle">Upsert via main-thread queue</text>
+  <text class="sub-lbl" x="390" y="276" text-anchor="middle">Status: Online · Offline · Stale</text>
+
+  <!-- Operator UI -->
+  <rect class="box-shipped" x="560" y="40" width="200" height="60" rx="6"/>
+  <text class="lbl" x="660" y="62" text-anchor="middle">VehiclePickerPill</text>
+  <text class="sub-lbl" x="660" y="78" text-anchor="middle">Header strip · live switch</text>
+  <text class="sub-lbl" x="660" y="90" text-anchor="middle">Active vehicle name + status</text>
+
+  <rect class="box-shipped" x="560" y="115" width="200" height="60" rx="6"/>
+  <text class="lbl" x="660" y="137" text-anchor="middle">VehicleConnectDialog</text>
+  <text class="sub-lbl" x="660" y="153" text-anchor="middle">List · scan · add · connect</text>
+  <text class="sub-lbl" x="660" y="165" text-anchor="middle">No scrim · row layout · contrast</text>
+
+  <rect class="box-design" x="560" y="195" width="200" height="60" rx="6"/>
+  <text class="lbl" x="660" y="217" text-anchor="middle">Phase 3a (pending)</text>
+  <text class="sub-lbl" x="660" y="233" text-anchor="middle">Capability-gated panels</text>
+  <text class="sub-lbl" x="660" y="245" text-anchor="middle">PiDog→IMU/cam · drone→airspeed</text>
+
+  <!-- Consumers -->
+  <rect class="box-shipped" x="820" y="40" width="140" height="74" rx="6"/>
+  <text class="lbl" x="890" y="62" text-anchor="middle">PidogRosBridge</text>
+  <text class="sub-lbl" x="890" y="78" text-anchor="middle">ws://Active.IP:9090</text>
+  <text class="sub-lbl" x="890" y="92" text-anchor="middle">reconnect on switch</text>
+  <text class="sub-lbl" x="890" y="105" text-anchor="middle">backoff 1→30 s</text>
+
+  <rect class="box-shipped" x="820" y="130" width="140" height="74" rx="6"/>
+  <text class="lbl" x="890" y="152" text-anchor="middle">PidogCameraFeed</text>
+  <text class="sub-lbl" x="890" y="168" text-anchor="middle">http://Active.IP:8080</text>
+  <text class="sub-lbl" x="890" y="182" text-anchor="middle">/stream MJPEG</text>
+  <text class="sub-lbl" x="890" y="195" text-anchor="middle">PC YOLO on frames</text>
+
+  <rect class="box-shipped" x="820" y="220" width="140" height="64" rx="6"/>
+  <text class="lbl" x="890" y="242" text-anchor="middle">PidogConnectionMonitor</text>
+  <text class="sub-lbl" x="890" y="258" text-anchor="middle">HTTP probe :8080/.81/.82</text>
+  <text class="sub-lbl" x="890" y="272" text-anchor="middle">Connectivity badge</text>
+
+  <!-- Arrows: storage -> registry (clean diagonals into left side of registry) -->
+  <path class="arrow" d="M222,70 L278,90" marker-end="url(#arrowhead)"/>
+  <path class="arrow" d="M222,140 L278,110" marker-end="url(#arrowhead)" stroke-dasharray="4 3"/>
+
+  <!-- Arrows: registry -> middle column (operator UI), short clean diagonals -->
+  <path class="arrow" d="M502,120 L558,70" marker-end="url(#arrowhead)"/>
+  <path class="arrow" d="M502,140 L558,140" marker-end="url(#arrowhead)"/>
+  <path class="arrow" d="M502,170 L558,220" marker-end="url(#arrowhead)" stroke-dasharray="4 3"/>
+
+  <!-- Arrows: registry -> right column (Pi-side consumers).
+       Routed orthogonally through the gap ABOVE / BETWEEN middle-column boxes
+       so they don't cross VehiclePickerPill / VehicleConnectDialog / Phase 3a.
+       Gutter A: y=24 above all middle boxes. Gutter B: y=107 between row1/2.
+       Gutter C: y=185 between row2/3. Vertical channel x=540 (left gutter)
+       and x=790 (right gutter, between middle col and Pi col). -->
+  <path class="arrow" d="M500,80 L540,80 L540,24 L790,24 L790,72 L818,72" marker-end="url(#arrowhead)"/>
+  <path class="arrow" d="M500,120 L540,120 L540,107 L790,107 L790,160 L818,160" marker-end="url(#arrowhead)"/>
+  <path class="arrow" d="M500,160 L540,160 L540,185 L790,185 L790,250 L818,250" marker-end="url(#arrowhead)"/>
+
+  <!-- Discovery upserts BACK into Registry. Loop on the right side of the
+       middle column so it doesn't collide with the storage->registry arrows
+       on the left. Right edge of Discovery (500,242) -> up the gutter at
+       x=525 -> back into right edge of Registry (500,150). -->
+  <path class="arrow bold" d="M500,242 L525,242 L525,150 L502,150" marker-end="url(#arrowhead-cyan)"/>
+  <text class="flow-lbl" x="555" y="200" fill="#06b6d4">UpsertEntry()</text>
+
+  <text class="flow-lbl" x="244" y="62" text-anchor="middle">load</text>
+  <text class="flow-lbl" x="244" y="132" text-anchor="middle">first-run seed</text>
+  <text class="flow-lbl" x="765" y="14" fill="#94a3b8">read Active (Pi-side consumers)</text>
+</svg>
+<div class="caption">Figure 3 — Multi-vehicle registry. Persistent + StreamingAssets seed feed VehicleRegistry; VehicleDiscovery upserts entries from a parallel /24 scan with 3 fingerprints. Header pill + connect dialog drive operator switching. All Pi-side consumers read Active for IP and call RosTopic(…) for namespaced topics. Phase 3a (capability-gated panels) is the design step that lights up when a non-PiDog vehicle physically arrives.</div>
+</div>
+
+<!-- =========================================================== -->
+<h2>4. EMCON SILENT — what severs when asserted</h2>
+<p>
+  EMCON spec lives in <code>Assets/Docs/KS_EMCON_Concept.html</code>;
+  the spec defines three modes (SILENT / BURST / COVERT) plus a
+  Last-Gasp self-destruct. SILENT means <strong>zero RF in both
+  directions</strong> — not just "stop publishing detections". As of
+  2026-04-29, asserting EMCON in the Unity client severs every
+  Unity↔Pi channel atomically. The forward-looking default per the
+  spec is SILENT; the operational default today is OPEN until the
+  authority/policy layer drives the transition automatically.
+</p>
+
+<div class="diagram-wrap">
+<svg viewBox="0 0 980 420" width="100%" style="max-width:980px;display:block;margin:0 auto;">
+  <!-- Operator -->
+  <rect class="box-shipped" x="20" y="180" width="160" height="60" rx="6"/>
+  <text class="lbl" x="100" y="202" text-anchor="middle">EmconHeaderPill</text>
+  <text class="sub-lbl" x="100" y="218" text-anchor="middle">click → Toggle()</text>
+  <text class="sub-lbl" x="100" y="230" text-anchor="middle">red pulse when asserted</text>
+
+  <!-- State -->
+  <rect class="box-shipped" x="220" y="180" width="160" height="60" rx="6"/>
+  <text class="lbl" x="300" y="202" text-anchor="middle">EmconState (static)</text>
+  <text class="sub-lbl" x="300" y="218" text-anchor="middle">IsAsserted · OnChanged</text>
+  <text class="sub-lbl" x="300" y="230" text-anchor="middle">SetAsserted(bool)</text>
+
+  <!-- Subscribers (the things that get severed) -->
+  <text class="group-lbl" x="660" y="35" text-anchor="middle">UNITY-SIDE SEVER ON ASSERT</text>
+
+  <rect class="box-shipped" x="430" y="55" width="260" height="56" rx="6"/>
+  <text class="lbl" x="560" y="77" text-anchor="middle">PidogRosBridge</text>
+  <text class="sub-lbl" x="560" y="92" text-anchor="middle">Close WS · _shuttingDown=true</text>
+  <text class="sub-lbl" x="560" y="104" text-anchor="middle">heartbeat / detections / IMU / DOA dark</text>
+
+  <rect class="box-shipped" x="430" y="125" width="260" height="56" rx="6"/>
+  <text class="lbl" x="560" y="147" text-anchor="middle">PidogCameraFeed</text>
+  <text class="sub-lbl" x="560" y="162" text-anchor="middle">Cancel _requestCts mid-MJPEG</text>
+  <text class="sub-lbl" x="560" y="174" text-anchor="middle">Mini-cams bound to _frameTex → NO SIGNAL</text>
+
+  <rect class="box-shipped" x="430" y="195" width="260" height="56" rx="6"/>
+  <text class="lbl" x="560" y="217" text-anchor="middle">PidogAudioDoaFeed</text>
+  <text class="sub-lbl" x="560" y="232" text-anchor="middle">Cancel audio TCP read</text>
+  <text class="sub-lbl" x="560" y="244" text-anchor="middle">No audio level / DOA pings</text>
+
+  <rect class="box-shipped" x="430" y="265" width="260" height="56" rx="6"/>
+  <text class="lbl" x="560" y="287" text-anchor="middle">PidogConnectionMonitor</text>
+  <text class="sub-lbl" x="560" y="302" text-anchor="middle">Force-mark all 3 services Disconnected</text>
+  <text class="sub-lbl" x="560" y="314" text-anchor="middle">Skip next probe round</text>
+
+  <rect class="box-shipped" x="430" y="335" width="260" height="56" rx="6"/>
+  <text class="lbl" x="560" y="357" text-anchor="middle">EmconCommsQueue</text>
+  <text class="sub-lbl" x="560" y="372" text-anchor="middle">Buffer detections in ring · no publish</text>
+  <text class="sub-lbl" x="560" y="384" text-anchor="middle">On lift: dedupe + burst-release</text>
+
+  <!-- Pi side -->
+  <text class="group-lbl" x="850" y="35" text-anchor="middle">PI-SIDE BEHAVIOUR</text>
+
+  <rect class="box-shipped" x="730" y="55" width="240" height="100" rx="6"/>
+  <text class="lbl" x="850" y="78" text-anchor="middle">Phase D shipped</text>
+  <text class="sub-lbl" x="850" y="94" text-anchor="middle">YOLO TTS callouts ("tank detected")</text>
+  <text class="sub-lbl" x="850" y="106" text-anchor="middle">EMCON LED cues on assert/lift</text>
+  <text class="sub-lbl" x="850" y="120" text-anchor="middle">EMCON TTS announce ("EMCON silent")</text>
+  <text class="sub-lbl" x="850" y="134" text-anchor="middle">No Pi RF transmit while spec evolves</text>
+  <text class="sub-lbl" x="850" y="146" text-anchor="middle">(WS sub from Pi side: Phase C)</text>
+
+  <rect class="box-design" x="730" y="170" width="240" height="100" rx="6"/>
+  <text class="lbl" x="850" y="193" text-anchor="middle">Phase C (pending)</text>
+  <text class="sub-lbl" x="850" y="208" text-anchor="middle">pidog/yolo_service/emcon_gate.py</text>
+  <text class="sub-lbl" x="850" y="222" text-anchor="middle">Mirror EmconCommsQueue rules</text>
+  <text class="sub-lbl" x="850" y="236" text-anchor="middle">Buffer-and-burst-on-lift</text>
+  <text class="sub-lbl" x="850" y="250" text-anchor="middle">Subscribe /pidog/emcon_state</text>
+  <text class="sub-lbl" x="850" y="262" text-anchor="middle">Pi-edge transmit authority</text>
+
+  <rect class="box-design" x="730" y="285" width="240" height="100" rx="6"/>
+  <text class="lbl" x="850" y="308" text-anchor="middle">EMCON BURST / COVERT (spec)</text>
+  <text class="sub-lbl" x="850" y="322" text-anchor="middle">SILENT = full RF blackout</text>
+  <text class="sub-lbl" x="850" y="336" text-anchor="middle">BURST = scheduled compressed update</text>
+  <text class="sub-lbl" x="850" y="350" text-anchor="middle">COVERT = continuous low-rate trickle</text>
+  <text class="sub-lbl" x="850" y="364" text-anchor="middle">Last-Gasp = self-destruct on capture</text>
+  <text class="sub-lbl" x="850" y="378" text-anchor="middle">spec § KS_EMCON_Concept.html</text>
+
+  <!-- Arrows -->
+  <path class="arrow bold" d="M180,210 L218,210" marker-end="url(#arrowhead-cyan)"/>
+  <path class="arrow" d="M380,200 L428,80" marker-end="url(#arrowhead)"/>
+  <path class="arrow" d="M380,210 L428,150" marker-end="url(#arrowhead)"/>
+  <path class="arrow" d="M380,220 L428,220" marker-end="url(#arrowhead)"/>
+  <path class="arrow" d="M380,230 L428,290" marker-end="url(#arrowhead)"/>
+  <path class="arrow" d="M380,240 L428,360" marker-end="url(#arrowhead)"/>
+
+  <path class="arrow purple" d="M692,82 L728,82" marker-end="url(#arrowhead-purple)" stroke-dasharray="4 3"/>
+  <text class="flow-lbl" x="710" y="74" text-anchor="middle" fill="#a855f7">today: client-side gate</text>
+
+  <text class="flow-lbl" x="404" y="180" fill="#94a3b8">OnChanged broadcast</text>
+</svg>
+<div class="caption">Figure 4 — EMCON SILENT sever points. Operator clicks the header pill; EmconState broadcasts; five Unity-side subscribers each rip their socket / cancel their CTS / force their badge offline within one frame. Pi-side Phase D (LED + TTS cues + YOLO callouts) shipped 2026-04-29; Phase C (Pi-side transmit gate via emcon_gate.py) is pending. BURST / COVERT modes specified in KS_EMCON_Concept.html, not yet wired.</div>
+</div>
+
+<!-- =========================================================== -->
+<h2>5. PiDog service stack + repo ↔ Pi sync</h2>
+<p>
+  The live PiDog is repo-managed. Canonical Python lives in the
+  ks_drone repo under <code>pidog/</code> and is deployed via
+  base64-over-plink (<code>pi-deploy.sh</code> — refuses to run
+  against a dirty repo, prevents aspirational-commit drift) and
+  audited via <code>pi-pull.sh</code> (live tar over plink, diff vs
+  repo, exit-2 on drift). Six runtime units supervise the services:
+  five systemd units (camera / spy / walk / slam / yolo) plus the
+  rosbridge_server <strong>Docker container</strong>. Pi-side files
+  themselves are <em>not</em> git-tracked; the repo is the source of
+  truth, the Pi is a deployment target.
+</p>
+
+<div class="diagram-wrap">
+<svg viewBox="0 0 980 480" width="100%" style="max-width:980px;display:block;margin:0 auto;">
+  <defs>
+    <marker id="arrowhead-g" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto">
+      <path d="M0,0 L10,4 L0,8 z" fill="#22c55e"/>
+    </marker>
+  </defs>
+
+  <!-- Dev box group -->
+  <rect class="box-group" x="20" y="30" width="280" height="430" rx="8"/>
+  <text class="group-lbl" x="160" y="50" text-anchor="middle">DEV BOX (Windows / Unity / git)</text>
+
+  <rect class="box-shipped" x="40" y="75" width="240" height="60" rx="6"/>
+  <text class="lbl" x="160" y="98" text-anchor="middle">ks_drone repo</text>
+  <text class="sub-lbl" x="160" y="113" text-anchor="middle">pidog/yolo_service/* · pidog/systemd/*</text>
+  <text class="sub-lbl" x="160" y="125" text-anchor="middle">pidog/cam_server/* · spy/* · walk/* · slam/*</text>
+
+  <rect class="box-shipped" x="40" y="155" width="240" height="80" rx="6"/>
+  <text class="lbl" x="160" y="177" text-anchor="middle">pi-deploy.sh</text>
+  <text class="sub-lbl" x="160" y="193" text-anchor="middle">· refuse-on-dirty-repo</text>
+  <text class="sub-lbl" x="160" y="207" text-anchor="middle">· base64-over-plink push (no pscp)</text>
+  <text class="sub-lbl" x="160" y="221" text-anchor="middle">· build_and_run.sh on Pi for Docker</text>
+
+  <rect class="box-shipped" x="40" y="255" width="240" height="80" rx="6"/>
+  <text class="lbl" x="160" y="277" text-anchor="middle">pi-pull.sh</text>
+  <text class="sub-lbl" x="160" y="293" text-anchor="middle">· snapshot live Pi tree (tar+plink)</text>
+  <text class="sub-lbl" x="160" y="307" text-anchor="middle">· diff vs repo · exit 2 on drift</text>
+  <text class="sub-lbl" x="160" y="321" text-anchor="middle">· backups/pidog_sync_&lt;UTC&gt;/</text>
+
+  <rect class="box-shipped" x="40" y="355" width="240" height="60" rx="6"/>
+  <text class="lbl" x="160" y="377" text-anchor="middle">git commit/push (auto)</text>
+  <text class="sub-lbl" x="160" y="392" text-anchor="middle">remote · weekly NAS archive (Y:)</text>
+  <text class="sub-lbl" x="160" y="404" text-anchor="middle">KsGitSync editor menu</text>
+
+  <!-- Pi box group -->
+  <rect class="box-group" x="320" y="30" width="640" height="430" rx="8"/>
+  <text class="group-lbl" x="640" y="50" text-anchor="middle">RASPBERRY PI 4B 8GB · 192.168.178.70</text>
+
+  <!-- systemd -->
+  <rect class="box-shipped" x="340" y="75" width="600" height="36" rx="5"/>
+  <text class="lbl" x="640" y="98" text-anchor="middle">systemd — supervises 5 services · Restart=always · journald logs</text>
+
+  <!-- Services row 1 -->
+  <rect class="box-shipped" x="340" y="130" width="290" height="80" rx="5"/>
+  <text class="lbl" x="485" y="152" text-anchor="middle">pidog-camera (8080)</text>
+  <text class="sub-lbl" x="485" y="168" text-anchor="middle">server.py · MJPEG /stream</text>
+  <text class="sub-lbl" x="485" y="180" text-anchor="middle">/snapshot.jpg · /ir_toggle</text>
+  <text class="sub-lbl" x="485" y="194" text-anchor="middle">Threaded JPEG · ~30 fps</text>
+
+  <rect class="box-shipped" x="650" y="130" width="290" height="80" rx="5"/>
+  <text class="lbl" x="795" y="152" text-anchor="middle">pidog-spy (8081)</text>
+  <text class="sub-lbl" x="795" y="168" text-anchor="middle">spy_server.py</text>
+  <text class="sub-lbl" x="795" y="180" text-anchor="middle">/doa /level /tts /led · 5-mic array</text>
+  <text class="sub-lbl" x="795" y="194" text-anchor="middle">Piper TTS (medium tier)</text>
+
+  <!-- Services row 2 -->
+  <rect class="box-shipped" x="340" y="220" width="290" height="80" rx="5"/>
+  <text class="lbl" x="485" y="242" text-anchor="middle">pidog-walk (8082)</text>
+  <text class="sub-lbl" x="485" y="258" text-anchor="middle">walk_server.py</text>
+  <text class="sub-lbl" x="485" y="270" text-anchor="middle">/pose /gait /stop /level /health</text>
+  <text class="sub-lbl" x="485" y="284" text-anchor="middle">12 DOF · IMU raw + filt</text>
+
+  <rect class="box-partial" x="650" y="220" width="290" height="80" rx="5"/>
+  <text class="lbl" x="795" y="242" text-anchor="middle">pidog-slam (8084)</text>
+  <text class="sub-lbl" x="795" y="258" text-anchor="middle">slam_service.py</text>
+  <text class="sub-lbl" x="795" y="270" text-anchor="middle">/slam/capture · /slam/build · /slam/splat</text>
+  <text class="sub-lbl" x="795" y="284" text-anchor="middle">COLMAP mono SfM · stereo planned</text>
+
+  <!-- Services row 3 -->
+  <rect class="box-shipped" x="340" y="310" width="290" height="80" rx="5"/>
+  <text class="lbl" x="485" y="332" text-anchor="middle">pidog-yolo (8085)</text>
+  <text class="sub-lbl" x="485" y="348" text-anchor="middle">yolo_worker.py · 777 lines</text>
+  <text class="sub-lbl" x="485" y="360" text-anchor="middle">YOLOv8m_defence ONNX · 18 cls</text>
+  <text class="sub-lbl" x="485" y="374" text-anchor="middle">conf=0.25 · ~0.2 fps · /pidog/detections</text>
+
+  <rect class="box-shipped" x="650" y="310" width="290" height="80" rx="5"/>
+  <text class="lbl" x="795" y="332" text-anchor="middle">ros2_bridge (Docker)</text>
+  <text class="sub-lbl" x="795" y="348" text-anchor="middle">rosbridge_server WS :9090</text>
+  <text class="sub-lbl" x="795" y="360" text-anchor="middle">Bridge dashboard :8084</text>
+  <text class="sub-lbl" x="795" y="374" text-anchor="middle">build_and_run.sh on Pi</text>
+
+  <!-- Storage / future -->
+  <rect class="box-shipped" x="340" y="400" width="290" height="50" rx="5"/>
+  <text class="lbl" x="485" y="422" text-anchor="middle">tmpfs /opt/pidog-slam/workspace</text>
+  <text class="sub-lbl" x="485" y="438" text-anchor="middle">2 GB RAM-disk · COLMAP scratch · transient</text>
+
+  <rect class="box-design" x="650" y="400" width="290" height="50" rx="5"/>
+  <text class="lbl" x="795" y="422" text-anchor="middle">Future: TI Jacinto compute</text>
+  <text class="sub-lbl" x="795" y="438" text-anchor="middle">C7x DSP + MMA + R5F lockstep · ASIL</text>
+
+  <!-- Arrows -->
+  <path class="arrow" d="M285,195 L338,160" stroke="#22c55e" marker-end="url(#arrowhead-g)"/>
+  <path class="arrow" d="M338,295 L285,295" stroke="#22c55e" marker-end="url(#arrowhead-g)" stroke-dasharray="4 3"/>
+  <text class="flow-lbl" x="310" y="178" fill="#22c55e">deploy (push)</text>
+  <text class="flow-lbl" x="310" y="312" fill="#22c55e">audit (pull)</text>
+</svg>
+<div class="caption">Figure 5 — PiDog service stack + repo-sync tooling. Repo is source of truth; pi-deploy.sh and pi-pull.sh enforce the invariant. Five systemd services + the rosbridge_server Docker container run on the Pi today. The yolo service was added 2026-04-29 (Slice 7 Phase A); SLAM (amber) is functional mono-SfM with stereo on the roadmap.</div>
+</div>
+
+<!-- =========================================================== -->
+<h2>6. Comms &amp; security layers</h2>
+<p>
+  The communications stack is layered by concern: physical link at the
+  bottom, protocol adapters in the middle, authority and cryptography
+  on top. <strong>Two paths Pi↔Unity</strong>: rosbridge_server
+  WebSocket on Pi:9090 is the primary path (ROS2 native messages
+  tunnelled JSON); HTTP fallbacks exist for camera (MJPEG :8080),
+  audio/level/TTS/LED (:8081), pose/IMU (:8082), SLAM (:8084), YOLO
+  health (:8085). Every fallback is used when rosbridge is
+  disconnected. EMCON SILENT severs both paths.
+</p>
+
+<div class="diagram-wrap">
+<svg viewBox="0 0 980 420" width="100%" style="max-width:980px;display:block;margin:0 auto;">
+  <!-- Layer labels left -->
+  <text class="group-lbl" x="10" y="55" fill="#60a5fa">AUTH / POLICY</text>
+  <text class="group-lbl" x="10" y="130" fill="#60a5fa">CRYPTO</text>
+  <text class="group-lbl" x="10" y="205" fill="#60a5fa">PROTOCOL</text>
+  <text class="group-lbl" x="10" y="280" fill="#60a5fa">LINK</text>
+  <text class="group-lbl" x="10" y="345" fill="#60a5fa">EMCON</text>
+
+  <!-- Row 1 AUTH / POLICY -->
+  <rect class="box-shipped" x="140" y="30" width="220" height="55" rx="5"/>
+  <text class="lbl" x="250" y="54" text-anchor="middle">RBAC · 4 roles</text>
+  <text class="sub-lbl" x="250" y="70" text-anchor="middle">Observer · Pilot · MissionCmdr · SysAdmin</text>
+  <rect class="box-shipped" x="380" y="30" width="220" height="55" rx="5"/>
+  <text class="lbl" x="490" y="54" text-anchor="middle">Approval workflow</text>
+  <text class="sub-lbl" x="490" y="70" text-anchor="middle">10 permissions · handoff audit</text>
+  <rect class="box-shipped" x="620" y="30" width="220" height="55" rx="5"/>
+  <text class="lbl" x="730" y="54" text-anchor="middle">Explainability record</text>
+  <text class="sub-lbl" x="730" y="70" text-anchor="middle">Per-decision log · cryptographically signable</text>
+
+  <!-- Row 2 CRYPTO -->
+  <rect class="box-shipped" x="140" y="105" width="340" height="55" rx="5"/>
+  <text class="lbl" x="310" y="129" text-anchor="middle">AES-256-GCM per-packet</text>
+  <text class="sub-lbl" x="310" y="145" text-anchor="middle">DDS Rev 42 · 8 pre-shared keys · channel isolation</text>
+  <rect class="box-shipped" x="500" y="105" width="340" height="55" rx="5"/>
+  <text class="lbl" x="670" y="129" text-anchor="middle">Kyber768 hybrid PQC</text>
+  <text class="sub-lbl" x="670" y="145" text-anchor="middle">Post-quantum session-key derivation · EU-AI-Act aligned</text>
+
+  <!-- Row 3 PROTOCOL -->
+  <rect class="box-shipped" x="140" y="180" width="160" height="55" rx="5"/>
+  <text class="lbl" x="220" y="204" text-anchor="middle">DDS</text>
+  <text class="sub-lbl" x="220" y="220" text-anchor="middle">Swarm fabric · STANAG-flavour</text>
+  <rect class="box-shipped" x="320" y="180" width="160" height="55" rx="5"/>
+  <text class="lbl" x="400" y="204" text-anchor="middle">MAVLink v2</text>
+  <text class="sub-lbl" x="400" y="220" text-anchor="middle">13 message types</text>
+  <rect class="box-shipped" x="500" y="180" width="160" height="55" rx="5"/>
+  <text class="lbl" x="580" y="204" text-anchor="middle">rosbridge WS (PRIMARY)</text>
+  <text class="sub-lbl" x="580" y="220" text-anchor="middle">Pi:9090 · ROS2 tunnelled JSON</text>
+  <rect class="box-shipped" x="680" y="180" width="160" height="55" rx="5"/>
+  <text class="lbl" x="760" y="204" text-anchor="middle">HTTP (fallback)</text>
+  <text class="sub-lbl" x="760" y="220" text-anchor="middle">Camera/TTS/IMU debug paths</text>
+
+  <!-- Row 4 LINK -->
+  <rect class="box-shipped" x="140" y="255" width="340" height="55" rx="5"/>
+  <text class="lbl" x="310" y="279" text-anchor="middle">UDP · WSL bridge · LAN</text>
+  <text class="sub-lbl" x="310" y="295" text-anchor="middle">MAVProxy 14550 · Pi rosbridge :9090</text>
+  <rect class="box-partial" x="500" y="255" width="340" height="55" rx="5"/>
+  <text class="lbl" x="670" y="279" text-anchor="middle">RF / fielded link (planned)</text>
+  <text class="sub-lbl" x="670" y="295" text-anchor="middle">Mesh options · EMCON-aware switching · design</text>
+
+  <!-- EMCON overlay -->
+  <rect class="box-shipped" x="140" y="325" width="350" height="55" rx="5"/>
+  <text class="lbl" x="315" y="349" text-anchor="middle">EMCON SILENT — wired (Unity side)</text>
+  <text class="sub-lbl" x="315" y="365" text-anchor="middle">5 sever points · EmconCommsQueue + dedupe-on-lift</text>
+
+  <rect class="box-design" x="500" y="325" width="340" height="55" rx="5"/>
+  <text class="lbl" x="670" y="349" text-anchor="middle">EMCON BURST / COVERT / Last-Gasp</text>
+  <text class="sub-lbl" x="670" y="365" text-anchor="middle">Spec in KS_EMCON_Concept v1.2 · Pi Phase C pending</text>
+</svg>
+<div class="caption">Figure 6 — Comms &amp; security stack. Top-down: authority/policy → crypto → protocol adapters → physical link. rosbridge WS is now the documented primary path with HTTP fallbacks; EMCON SILENT is shipped on the Unity side and wired through every sever point. BURST / COVERT modes and the Pi-side transmit gate (Phase C) are designed and awaiting capital / hardware.</div>
+</div>
+
+<!-- =========================================================== -->
+<h2>How to read these diagrams as a DD reviewer</h2>
+
+<ul>
+  <li><strong>Count the purple boxes.</strong> Purple is specification-ware — designed, architecturally sound, but not yet shipped. If a category has <em>any</em> green boxes, the foundations are there and capital converts the rest. Phase 3a (capability-gated panels), Pi-side EMCON transmit gate (Phase C), and BURST/COVERT modes are the obvious purple-to-green conversions.</li>
+  <li><strong>Amber means partial.</strong> Something runs but is not yet production-grade. SLAM is the live example — Pi-side COLMAP mono-SfM works and produces usable reconstructions; stereo is the next promotion.</li>
+  <li><strong>Dashed arrows are planned flows.</strong> Solid arrows are running today. Red dashed arrow in Figure 2 is the EMCON SILENT severance — operationally critical but adversarial to other architecture diagrams that assume always-on links.</li>
+  <li><strong>Scale signals.</strong> Figure 1 tells you the operator console is now multi-vehicle, not single-Pi. Figure 2 tells you the intelligence layer is bus-architected with clean source/queue/publisher seams. Figure 5 tells you the Pi is six runtime units with repo-managed deployment, not one hack script.</li>
+  <li><strong>Headline data points.</strong> 22 commits on 2026-04-29 (heaviest day in the corpus) shipped: multi-vehicle Phase 1+2+3b, ISR Slice 5+6+7 (sim publisher + EMCON queue + Pi edge YOLO), NEW INTEL badge, evidence-frame swap, P0/P1/P2 priority tiers, Pi-side EMCON LED+TTS cues. Diagrams 1–4 are direct readouts of that day's work.</li>
+</ul>
+
+<p class="note" style="margin-top:12px;">
+  For prose walkthroughs, see <i>KS_Software_Architecture</i>. For the
+  EMCON modes spec including SILENT / BURST / COVERT / Last-Gasp, see
+  <i>KS_EMCON_Concept</i>. For the intelligence-layer doctrine framing
+  (C4ISR processed-vs-raw), see <i>KS_Glass_Brain</i>. For the evidence
+  that the code behind these boxes is measurably disciplined, see
+  <i>KS_Code_Evidence</i>.
+</p>
+
+<footer>
+  Karneth Strata — Architecture Diagrams — v1.3 — 2026-04-29 — internal / DD reference
+</footer>
+
+</body>
+</html>
