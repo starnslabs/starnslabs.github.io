@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Karneth Strata — Feasibility Study (Seed) — v1.0</title>
+<style>
+  :root{
+    --bg:#0a0e17; --panel:#111827; --panel2:#0f1724; --border:#1e293b;
+    --heading:#eef2f8; --sub:#93a3b8; --body:#a9b3c2; --muted:#6b7a90;
+    --accent:#06b6d4; --warm:#f59e0b; --good:#10b981; --red:#ef4444; --blue:#3b82f6;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;padding:0;background:var(--bg);color:var(--body);font-family:'Segoe UI',system-ui,sans-serif;line-height:1.62;font-size:15.5px}
+  .wrap{max-width:960px;margin:0 auto;padding:40px 36px 80px}
+
+  header.cover{
+    position:relative;
+    background:linear-gradient(140deg,#0a1324 0%,#0a0e17 55%,#14202f 100%);
+    border:1px solid var(--border);
+    border-left:4px solid var(--accent);
+    padding:56px 48px;
+    border-radius:6px;
+    margin-bottom:28px;
+  }
+  .cover-logo{position:absolute;top:28px;right:32px;width:96px;height:auto;filter:invert(1) brightness(1.6);opacity:0.92}
+  header.cover .tag{display:inline-block;padding:4px 12px;background:rgba(6,182,212,0.15);color:var(--accent);font-size:11px;letter-spacing:2.5px;text-transform:uppercase;border:1px solid rgba(6,182,212,0.45);margin-bottom:20px;font-weight:600}
+  header.cover h1{font-size:3em;color:var(--heading);margin:0 0 10px 0;letter-spacing:-0.8px;line-height:1.08;font-weight:700}
+  header.cover h1 small{display:block;font-size:0.38em;color:var(--sub);font-weight:500;letter-spacing:1.6px;text-transform:uppercase;margin-top:14px}
+  header.cover .thesis{font-size:1.25em;color:#d4dde8;margin:0 0 28px 0;letter-spacing:0.1px;max-width:820px;line-height:1.5}
+  header.cover .meta{display:flex;flex-wrap:wrap;gap:22px;font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:1.6px;border-top:1px solid rgba(148,163,184,0.15);padding-top:20px}
+  header.cover .meta b{color:#b8c3d2;font-weight:600}
+
+  section{background:var(--panel);border:1px solid var(--border);border-radius:5px;padding:32px 36px;margin-bottom:22px}
+  section.lead{border-left:3px solid var(--accent)}
+  section.warm{border-left:3px solid var(--warm)}
+  section.good{border-left:3px solid var(--good)}
+  section.red-edge{border-left:3px solid var(--red)}
+  section.blue-edge{border-left:3px solid var(--blue)}
+
+  h2{font-size:1.55em;color:var(--heading);margin:0 0 4px 0;letter-spacing:-0.3px;font-weight:600}
+  h2 .num{color:var(--muted);font-weight:400;margin-right:14px;font-variant-numeric:tabular-nums}
+  .kicker{font-size:11px;letter-spacing:2.5px;text-transform:uppercase;color:var(--sub);margin-bottom:10px;font-weight:600}
+  h3{font-size:1.12em;color:var(--heading);margin:22px 0 8px 0;letter-spacing:0;font-weight:600}
+  h4{font-size:0.85em;color:var(--sub);margin:14px 0 6px 0;text-transform:uppercase;letter-spacing:1.8px;font-weight:600}
+  p{margin:0 0 14px 0}
+  strong{color:#e4ebf3;font-weight:600}
+  em{color:#d0d8e2}
+
+  ul,ol{margin:8px 0 14px 0;padding-left:22px}
+  li{margin:6px 0}
+  a{color:var(--accent);text-decoration:none}
+
+  .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+  .grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px}
+  .grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+  @media (max-width:800px){.grid-2,.grid-3,.grid-4{grid-template-columns:1fr}}
+
+  .card{background:var(--panel2);border:1px solid var(--border);padding:20px 22px;border-radius:4px}
+  .card.accent{border-left:3px solid var(--accent)}
+  .card.warm{border-left:3px solid var(--warm)}
+  .card.good{border-left:3px solid var(--good)}
+  .card.blue{border-left:3px solid var(--blue)}
+
+  .stat{background:var(--panel2);border:1px solid var(--border);border-radius:4px;padding:18px 20px;text-align:center}
+  .stat .v{font-size:2.1em;color:var(--heading);font-weight:700;letter-spacing:-0.5px;line-height:1.1}
+  .stat .k{font-size:0.72em;color:var(--muted);text-transform:uppercase;letter-spacing:1.5px;margin-top:6px}
+  .stat .n{font-size:0.85em;color:var(--sub);margin-top:4px}
+
+  .callout{background:rgba(6,182,212,0.06);border:1px solid rgba(6,182,212,0.3);border-left:4px solid var(--accent);padding:16px 22px;margin:18px 0;border-radius:4px}
+  .callout-warm{background:rgba(245,158,11,0.05);border:1px solid rgba(245,158,11,0.3);border-left:4px solid var(--warm);padding:16px 22px;margin:18px 0;border-radius:4px}
+  .callout-good{background:rgba(16,185,129,0.05);border:1px solid rgba(16,185,129,0.3);border-left:4px solid var(--good);padding:16px 22px;margin:18px 0;border-radius:4px}
+
+  table{width:100%;border-collapse:collapse;margin:14px 0;font-size:0.94em}
+  th,td{border:1px solid var(--border);padding:10px 13px;text-align:left;vertical-align:top}
+  th{background:#0d1422;color:var(--heading);text-transform:uppercase;letter-spacing:1.2px;font-size:0.76em;font-weight:600}
+  tr:nth-child(even) td{background:rgba(255,255,255,0.012)}
+
+  .pullquote{font-size:1.3em;color:#d4dde8;font-style:italic;border-left:3px solid var(--accent);padding:14px 22px;margin:20px 0;background:rgba(6,182,212,0.04);border-radius:3px;line-height:1.45}
+  .pullquote cite{display:block;margin-top:8px;font-size:0.62em;color:var(--muted);font-style:normal;text-transform:uppercase;letter-spacing:1.5px}
+
+  .page-break{height:1px;margin:40px 0 36px;background:linear-gradient(to right,transparent,rgba(148,163,184,0.25),transparent)}
+
+  footer{margin-top:30px;padding:26px 32px;background:var(--panel2);border:1px solid var(--border);border-radius:5px;color:var(--muted);font-size:0.86em;line-height:1.65}
+  footer strong{color:#b8c3d2}
+  .eod{margin-top:36px;padding:18px;text-align:center;color:var(--muted);font-size:0.78em;letter-spacing:3px;text-transform:uppercase;border-top:1px solid var(--border)}
+
+  /* ============ PRINT / PDF ============ */
+  @media print {
+    @page { margin: 16mm 14mm; }
+    body { background:#fff; color:#1a202c; font-size:11.5pt; line-height:1.5 }
+    .wrap { max-width:100%; padding:0; margin:0 }
+    p, li, dd { color:#1a202c }
+    h1, h2, h3 { color:#0a0e17 }
+    h4, .kicker { color:#4a5568 }
+    strong { color:#000 }
+    em { color:#1a202c }
+    a { color:#1a202c; text-decoration:none }
+
+    header.cover { padding:32px 24px; page-break-after:always; break-after:page }
+    .cover-logo { filter:none; opacity:1; width:80px; top:18px; right:20px }
+    header.cover h1 { color:#0a0e17 }
+    header.cover h1 small { color:#4a5568 }
+    header.cover .thesis { color:#1a202c }
+    header.cover .meta { color:#4a5568; border-top-color:#d1d5db }
+    header.cover .meta b { color:#1a202c }
+    header.cover .tag { color:#0a0e17; border-color:#94a3b8 }
+
+    section, .card, .pullquote,
+    .callout, .callout-warm, .callout-good,
+    table, .stat, footer {
+      page-break-inside:avoid; break-inside:avoid;
+    }
+    section { padding:18px 20px; margin-bottom:16px }
+    .card { padding:14px 16px }
+
+    .stat .v { color:#0a0e17 }
+    .stat .k, .stat .n { color:#4a5568 }
+
+    tr:nth-child(even) td { background:transparent }
+    th { background:#f3f4f6; color:#0a0e17 }
+
+    .page-break { display:none }
+    .eod { color:#4a5568; border-top-color:#d1d5db }
+    footer { background:transparent; color:#4a5568 }
+    footer strong { color:#1a202c }
+
+    /* Headings shouldn't be the last thing on a page */
+    h2, h3 { page-break-after:avoid; break-after:avoid }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<!-- ================ COVER ================ -->
+<header class="cover">
+  <img class="cover-logo" src="graphics%20assets/Karneth%20Logo%20Frei.png" alt="Karneth Strata">
+  <span class="tag">Feasibility Study · Seed · v1.0 · May 2026</span>
+  <h1>Karneth Strata
+    <small>Technical &amp; Industrial Feasibility — Executive Summary</small>
+  </h1>
+  <p class="thesis">A two-tier feasibility pack for investors evaluating the Karneth Strata Series-A. This document is the executive summary; the companion <em>Technical Pack v1.0</em> carries the underlying engineering evidence.</p>
+  <div class="meta">
+    <span><b>Companion document:</b> KS_Feasibility_Seed_Technical_Pack_v1.0</span>
+    <span><b>Read alongside:</b> KS Investor Brief v1.1</span>
+    <span><b>Classification:</b> Shareable executive summary</span>
+  </div>
+  <div class="meta" style="margin-top:10px;gap:26px">
+    <span><b>Nikolaos Papakostas · CEO:</b> niko@karnethstrata.com</span>
+    <span><b>Thomas Mayer · COO:</b> thomas@karnethstrata.com</span>
+    <span><b>Greg Starns · CTO:</b> greg@karnethstrata.com</span>
+  </div>
+</header>
+
+<!-- ================ 1 · THE QUESTION ================ -->
+<section class="lead">
+  <div class="kicker">§1 · The question this answers</div>
+  <h2><span class="num">1</span>Can Karneth Strata actually be built?</h2>
+
+  <p>The Investor Brief sets out <em>what</em> Karneth Strata is and <em>why now</em> is the right moment. The natural next question from any serious investor is the feasibility question: <strong>can the company actually build what it describes, on a timeline that matches the funding it is asking for, with the people it has, in the regulatory and supply environment it must operate in?</strong></p>
+
+  <p>This document answers that question across three dimensions:</p>
+
+  <div class="grid-3">
+    <div class="stat"><div class="v">1</div><div class="k">Technology feasibility</div><div class="n">The core architecture already runs as a working demonstrator</div></div>
+    <div class="stat"><div class="v">2</div><div class="k">Team feasibility</div><div class="n">CTO + COO have shipped at this scale before, in adjacent industries</div></div>
+    <div class="stat"><div class="v">3</div><div class="k">Industrial feasibility</div><div class="n">Production ramp anchored by a COO who has done 7-to-250 in twelve months</div></div>
+  </div>
+
+  <p>Each dimension is evidenced in the companion Technical Pack with code, demonstrator screenshots, architectural diagrams, employment records, and risk-register detail. This executive summary is the headline finding from that work.</p>
+
+  <div class="callout">
+    <strong>The one-line answer:</strong> the technical risk is bounded by an already-running demonstrator; the industrial risk is bounded by a COO whose prior career is the exact pattern the company needs to repeat; the procurement risk is mitigated by sovereign-stack positioning that the team has been engineering for from the start, not retrofitting.
+  </div>
+</section>
+
+<!-- ================ 2 · TECHNOLOGY ================ -->
+<section class="blue-edge">
+  <div class="kicker">§2 · Technology feasibility</div>
+  <h2><span class="num">2</span>The demonstrator is real, and it works</h2>
+
+  <p>The Karneth Strata command layer exists today as a running simulation platform with hardware-in-the-loop integration. It is not a slide deck; it is a system that an operator can sit down at, command a mixed fleet from, and watch execute autonomous missions in real time. The same code path that runs the simulator drives the live robotic-platform integration used for partner demonstrations.</p>
+
+  <h3>What is demonstrable today</h3>
+  <div class="grid-2">
+    <div class="card blue">
+      <h4>Single-operator multi-platform command</h4>
+      <p>One operator station commanding mixed air and ground unmanned platforms through a unified tactical map, with autonomous mission execution and operator-by-exception intervention.</p>
+    </div>
+    <div class="card blue">
+      <h4>Emissions-controlled (EMCON) operation</h4>
+      <p>Full operator displays continue to function under enforced radio silence — every shown value is gated to transmitted-only telemetry, validated end-to-end against an independent audit pass. Defence-grade communications discipline, not a screensaver effect.</p>
+    </div>
+    <div class="card blue">
+      <h4>Resilient mesh datalink</h4>
+      <p>The platform-to-platform communications layer (BURST MESH) sustains command coherence when individual links are degraded or jammed. State is propagated as transmitted serialised diffs, not as shared simulator memory — the architecture is portable to real radios.</p>
+    </div>
+    <div class="card blue">
+      <h4>Hardware-in-the-loop integration</h4>
+      <p>Live robotic integration with PiDog-class ground platforms, including audio direction-of-arrival sensing, distributed kill-chain coordination, and operator-grade after-action review. Demonstrable to visiting partners.</p>
+    </div>
+  </div>
+
+  <p>The reviewer can take three things from this. First, the architectural risk is bounded — the hard problems (mixed-platform command, EMCON-coherent operator displays, resilient mesh communications) are not future work, they are demonstrable. Second, the team's engineering discipline shows in the codebase — explicit safety clamps, embedded-grade allocation discipline, audit trails by construction. Third, the path from simulator to fielded system is short because the simulator was built from the start to share code with the real system, not as a separate prototype.</p>
+
+  <p>The Technical Pack provides specific evidence for each claim above — code references, demonstrator screenshots, telemetry traces, and the auditing methodology used to verify EMCON discipline.</p>
+</section>
+
+<!-- ================ 3 · TEAM ================ -->
+<section class="good">
+  <div class="kicker">§3 · Team feasibility</div>
+  <h2><span class="num">3</span>The leadership has shipped at this scale before</h2>
+
+  <p>An autonomous-systems software company at Series-A stage needs three credible answers at the top of the house: <strong>can it engineer the product, can it industrialise it, and can it sell it to defence and regulated buyers?</strong> The Karneth Strata leadership maps to those three answers cleanly.</p>
+
+  <div class="grid-3">
+    <div class="card good">
+      <h4>Nikolaos Papakostas — CEO</h4>
+      <p>Strategy, corporate structure, investor and customer engagement. Authored the company's strategic capital and positioning work. Detail in the Investor Brief and the SIV / Strategic Capital documents.</p>
+    </div>
+    <div class="card good">
+      <h4>Thomas Mayer — COO</h4>
+      <p>Operations and industrialisation. ETH Zurich (Industrial Management &amp; Manufacturing Engineering) plus MIT Sloan and IMD Lausanne executive programmes. Career detailed in §4.</p>
+    </div>
+    <div class="card good">
+      <h4>Greg Starns — CTO</h4>
+      <p>Engineering and product. Forty years of shipped products in embedded automotive, electric vehicles, autonomous systems, and safety-critical software. Track record detailed in the <em>Engineering Track Record</em> document.</p>
+    </div>
+  </div>
+
+  <p>Below the leadership, the engineering bench is a small senior team that has worked together across multiple companies and decades. Continuity at this depth is unusual at Series-A stage and materially reduces team-formation risk in the first eighteen months of the round. The Investor Brief covers this in §4.</p>
+
+  <div class="pullquote">
+    The leadership team is not a meeting of strangers organised around a pitch. It is three people whose prior careers have already executed the three jobs the company needs done.
+    <cite>— internal diligence framing</cite>
+  </div>
+</section>
+
+<!-- ================ 4 · INDUSTRIAL ================ -->
+<section class="warm">
+  <div class="kicker">§4 · Industrial feasibility</div>
+  <h2><span class="num">4</span>Why the COO appointment de-risks the ramp</h2>
+
+  <p>Most defence-software Series-A pitches treat industrialisation as a downstream problem — something to worry about after the technology lands. Karneth Strata is treating it as a present-tense problem because the COO appointment is already in place and the COO's prior career is the exact pattern the company needs to repeat.</p>
+
+  <p>Thomas Mayer's career is unusually well-aligned to the KS industrial profile:</p>
+
+  <div class="grid-2">
+    <div class="card warm">
+      <h4>Bombardier Transportation — turnaround pedigree</h4>
+      <p>As General Manager of Bombardier's Siegen site — Europe's largest bogie manufacturing site, over 500 employees, 2,500-bogie annual output — turned the site from loss-making to industry-best in <strong>one year</strong>. Subsequently Head of Operations across sites in Germany, France, Poland, Hungary, India and China. Implemented lean / Kaizen production system across the entire industrial network.</p>
+    </div>
+    <div class="card warm">
+      <h4>Lotus F1 Team — high-precision manufacturing under cadence</h4>
+      <p>Chief Operating Officer at Lotus F1 / Renault Sport Formula One. Full operative scope: production engineering, procurement, production, logistics, IT, ERP and PLM rollout, board-level budgeting, cash planning with CFO. Carbon-fibre, titanium, aluminium precision manufacturing at race-week cadence — the closest civil-industry analogue to defence-grade unmanned-systems production.</p>
+    </div>
+    <div class="card warm">
+      <h4>Manor Racing F1 — pure scale-up</h4>
+      <p>Chief Executive Officer. Resurrected a Formula One team and scaled it from <strong>seven employees to 250 in twelve months</strong>. First cloud-only F1 operation, with the whole value-add chain run through sub-suppliers. The exact playbook a sovereign-stack drone company needs in years two and three of Series-A capital.</p>
+    </div>
+    <div class="card warm">
+      <h4>M&amp;A, due diligence, cross-border tech transfer</h4>
+      <p>Multi-million-Euro restructuring programmes, the LEAP global turnaround at Adtranz / Bombardier (~&euro;1B savings over three years), and cross-border technology-transfer projects across Italy, Germany, Poland, India, China, Iran and Russia. Board-level experience at Solaris Bus &amp; Coach.</p>
+    </div>
+  </div>
+
+  <p>Earlier career roles include Chief Executive Officer at PeerByte AG / Emobyus, R-Universe (SMTV Holding, Aston Martin dealership and R-Reforged hypercar manufacturing facility in Warwick), and Ecotive / Bristol Superlight — sustainable-mobility commercial-vehicle ventures.</p>
+
+  <div class="callout-warm">
+    <strong>What this means for the Series-A reviewer:</strong> the industrial ramp from demonstrator to fielded production is the single largest execution risk in any defence-tech Series-A. KS has the proven pattern in-house already. The COO appointment is not a future hire — it is a present capability.
+  </div>
+</section>
+
+<!-- ================ 5 · SOVEREIGN STACK ================ -->
+<section class="lead">
+  <div class="kicker">§5 · Sovereign feasibility</div>
+  <h2><span class="num">5</span>The sovereign positioning is engineered, not branded</h2>
+
+  <p>European defence procurement is moving rapidly away from Chinese-controlled supply chains and US-hosted AI inference. The political pressure is real and irreversible; the supply alternatives are scarce. Karneth Strata is one of the few European defence-software ventures whose architecture is sovereign from the foundation rather than retrofitted around it.</p>
+
+  <p>That foundation has four parts, each of which is engineered rather than asserted:</p>
+
+  <ol>
+    <li><strong>Software.</strong> Codebase developed entirely in-house by the KS engineering team. No third-party autonomy-stack dependencies that originate in non-aligned jurisdictions.</li>
+    <li><strong>AI methodology.</strong> The Lead-Box methodology (Investor Brief &sect;5) keeps models, weights, prompts, source code, mission data, and customer payload local. UK MoD, US ITAR, NATO equivalents, and most primes' subcontract terms forbid customer-touching code from being processed by US-hosted AI APIs. KS can bid on this work; most AI-augmented startups cannot.</li>
+    <li><strong>Hardware integration.</strong> Platform-agnostic command layer. Customers choose their own airframes, ground platforms, and maritime hulls from aligned suppliers. KS does not lock the buyer to a single hardware vendor.</li>
+    <li><strong>Industrialisation discipline.</strong> Production ramp planned to Swiss / European industrial standards under a COO whose entire career is European industrial scale-up. Not a contract-assembly play.</li>
+  </ol>
+
+  <p>The result is a procurement story that is easy for a defence buyer to sign off internally: every layer of the stack is in jurisdictions the buyer can actually inspect, audit, and regulate. This is what European procurement leaders have been asking suppliers for. Few suppliers have it.</p>
+</section>
+
+<!-- ================ 6 · WHAT THIS SEED UNLOCKS ================ -->
+<section class="blue-edge">
+  <div class="kicker">§6 · Next step</div>
+  <h2><span class="num">6</span>What this seed unlocks in the reviewer's process</h2>
+
+  <p>This executive summary is the front tier of a two-tier feasibility pack. It is designed to be readable in under fifteen minutes by a non-technical decision-maker and to give that reader enough confidence in feasibility to commit time to the deeper technical evidence.</p>
+
+  <p>The companion document — <em>KS Feasibility Seed Technical Pack v1.0</em> — carries the engineering evidence behind each headline above: architectural diagrams, demonstrator state, sim-to-real validation methodology, regulatory and safety story, technical roadmap, and a technical-only risk register. It is designed for review by an investor's technical adviser or in-house engineering reviewer.</p>
+
+  <div class="grid-3">
+    <div class="card accent">
+      <h4>Reader: investor principal</h4>
+      <p>This document is enough. Use it to decide whether the technical and industrial feasibility is convincing enough to commit a deeper review.</p>
+    </div>
+    <div class="card accent">
+      <h4>Reader: technical adviser</h4>
+      <p>Proceed to the Technical Pack. The headline claims above are evidenced there with code references, telemetry traces, and architecture diagrams.</p>
+    </div>
+    <div class="card accent">
+      <h4>Reader: due-diligence team</h4>
+      <p>Read both documents alongside the Investor Brief v1.1. The full specialist corpus is then available under extended NDA — see Investor Brief &sect;9.</p>
+    </div>
+  </div>
+
+  <div class="callout-good">
+    <strong>The feasibility conclusion in one line:</strong> the engineering exists, the COO has run this scale-up pattern before, and the sovereign positioning is structural. The Series-A is buying execution, not invention.
+  </div>
+</section>
+
+<footer>
+  <p><strong>Document:</strong> KS_Feasibility_Seed_v1.0.html — Executive Summary (Front Tier)<br>
+  <strong>Companion:</strong> KS_Feasibility_Seed_Technical_Pack_v1.0.html — Engineering Evidence (Back Tier)<br>
+  <strong>Read alongside:</strong> KS_Investor_Brief_v1.1.html<br>
+  <strong>Issued:</strong> May 2026 &middot; <strong>Classification:</strong> Shareable executive summary<br>
+  <strong>Contact:</strong> niko@karnethstrata.com &middot; thomas@karnethstrata.com &middot; greg@karnethstrata.com</p>
+</footer>
+
+<div class="eod">— End of document —</div>
+
+</div>
+</body>
+</html>
