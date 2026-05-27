@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Karneth Strata — Feasibility Study Technical Pack — v1.0</title>
+<style>
+  :root{
+    --bg:#0a0e17; --panel:#111827; --panel2:#0f1724; --border:#1e293b;
+    --heading:#eef2f8; --sub:#93a3b8; --body:#a9b3c2; --muted:#6b7a90;
+    --accent:#06b6d4; --warm:#f59e0b; --good:#10b981; --red:#ef4444; --blue:#3b82f6;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;padding:0;background:var(--bg);color:var(--body);font-family:'Segoe UI',system-ui,sans-serif;line-height:1.62;font-size:15.5px}
+  .wrap{max-width:960px;margin:0 auto;padding:40px 36px 80px}
+
+  header.cover{
+    position:relative;
+    background:linear-gradient(140deg,#0a1324 0%,#0a0e17 55%,#14202f 100%);
+    border:1px solid var(--border);
+    border-left:4px solid var(--accent);
+    padding:56px 48px;
+    border-radius:6px;
+    margin-bottom:28px;
+  }
+  .cover-logo{position:absolute;top:28px;right:32px;width:96px;height:auto;filter:invert(1) brightness(1.6);opacity:0.92}
+  header.cover .tag{display:inline-block;padding:4px 12px;background:rgba(6,182,212,0.15);color:var(--accent);font-size:11px;letter-spacing:2.5px;text-transform:uppercase;border:1px solid rgba(6,182,212,0.45);margin-bottom:20px;font-weight:600}
+  header.cover h1{font-size:2.6em;color:var(--heading);margin:0 0 10px 0;letter-spacing:-0.8px;line-height:1.1;font-weight:700}
+  header.cover h1 small{display:block;font-size:0.44em;color:var(--sub);font-weight:500;letter-spacing:1.6px;text-transform:uppercase;margin-top:14px}
+  header.cover .thesis{font-size:1.2em;color:#d4dde8;margin:0 0 28px 0;letter-spacing:0.1px;max-width:820px;line-height:1.5}
+  header.cover .meta{display:flex;flex-wrap:wrap;gap:22px;font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:1.6px;border-top:1px solid rgba(148,163,184,0.15);padding-top:20px}
+  header.cover .meta b{color:#b8c3d2;font-weight:600}
+
+  nav.toc{background:var(--panel2);border:1px solid var(--border);border-left:3px solid var(--accent);padding:24px 32px;margin-bottom:22px;border-radius:5px}
+  nav.toc h4{margin:0 0 10px 0}
+  nav.toc ol{margin:6px 0 0 0;padding-left:24px;columns:2;column-gap:30px;font-size:0.95em}
+  nav.toc li{margin:5px 0;break-inside:avoid}
+  nav.toc a{color:var(--body)}
+  nav.toc a:hover{color:var(--accent)}
+
+  section{background:var(--panel);border:1px solid var(--border);border-radius:5px;padding:32px 36px;margin-bottom:22px}
+  section.lead{border-left:3px solid var(--accent)}
+  section.warm{border-left:3px solid var(--warm)}
+  section.good{border-left:3px solid var(--good)}
+  section.red-edge{border-left:3px solid var(--red)}
+  section.blue-edge{border-left:3px solid var(--blue)}
+
+  h2{font-size:1.55em;color:var(--heading);margin:0 0 4px 0;letter-spacing:-0.3px;font-weight:600}
+  h2 .num{color:var(--muted);font-weight:400;margin-right:14px;font-variant-numeric:tabular-nums}
+  .kicker{font-size:11px;letter-spacing:2.5px;text-transform:uppercase;color:var(--sub);margin-bottom:10px;font-weight:600}
+  h3{font-size:1.12em;color:var(--heading);margin:22px 0 8px 0;letter-spacing:0;font-weight:600}
+  h4{font-size:0.85em;color:var(--sub);margin:14px 0 6px 0;text-transform:uppercase;letter-spacing:1.8px;font-weight:600}
+  p{margin:0 0 14px 0}
+  strong{color:#e4ebf3;font-weight:600}
+  em{color:#d0d8e2}
+  code{background:#0a1220;border:1px solid var(--border);padding:1px 6px;border-radius:3px;font-family:'Consolas','Monaco',monospace;font-size:0.86em;color:#cbd5e1}
+
+  ul,ol{margin:8px 0 14px 0;padding-left:22px}
+  li{margin:6px 0}
+  a{color:var(--accent);text-decoration:none}
+
+  .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+  .grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px}
+  .grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+  @media (max-width:800px){.grid-2,.grid-3,.grid-4{grid-template-columns:1fr}}
+
+  .card{background:var(--panel2);border:1px solid var(--border);padding:20px 22px;border-radius:4px}
+  .card.accent{border-left:3px solid var(--accent)}
+  .card.warm{border-left:3px solid var(--warm)}
+  .card.good{border-left:3px solid var(--good)}
+  .card.blue{border-left:3px solid var(--blue)}
+  .card.red{border-left:3px solid var(--red)}
+
+  .stat{background:var(--panel2);border:1px solid var(--border);border-radius:4px;padding:18px 20px;text-align:center}
+  .stat .v{font-size:2.1em;color:var(--heading);font-weight:700;letter-spacing:-0.5px;line-height:1.1}
+  .stat .k{font-size:0.72em;color:var(--muted);text-transform:uppercase;letter-spacing:1.5px;margin-top:6px}
+  .stat .n{font-size:0.85em;color:var(--sub);margin-top:4px}
+
+  .callout{background:rgba(6,182,212,0.06);border:1px solid rgba(6,182,212,0.3);border-left:4px solid var(--accent);padding:16px 22px;margin:18px 0;border-radius:4px}
+  .callout-warm{background:rgba(245,158,11,0.05);border:1px solid rgba(245,158,11,0.3);border-left:4px solid var(--warm);padding:16px 22px;margin:18px 0;border-radius:4px}
+  .callout-red{background:rgba(239,68,68,0.05);border:1px solid rgba(239,68,68,0.3);border-left:4px solid var(--red);padding:16px 22px;margin:18px 0;border-radius:4px}
+  .callout-good{background:rgba(16,185,129,0.05);border:1px solid rgba(16,185,129,0.3);border-left:4px solid var(--good);padding:16px 22px;margin:18px 0;border-radius:4px}
+
+  table{width:100%;border-collapse:collapse;margin:14px 0;font-size:0.94em}
+  th,td{border:1px solid var(--border);padding:10px 13px;text-align:left;vertical-align:top}
+  th{background:#0d1422;color:var(--heading);text-transform:uppercase;letter-spacing:1.2px;font-size:0.76em;font-weight:600}
+  tr:nth-child(even) td{background:rgba(255,255,255,0.012)}
+
+  .arch-diagram{background:var(--panel2);border:1px solid var(--border);border-radius:4px;padding:22px;margin:18px 0;font-family:'Consolas','Monaco',monospace;font-size:0.78em;color:#cbd5e1;white-space:pre-wrap;line-height:1.5}
+
+  .glossary dt{color:var(--heading);font-weight:600;margin-top:12px;letter-spacing:0.2px}
+  .glossary dd{margin:4px 0 0 0;color:var(--body);font-size:0.94em}
+
+  .page-break{height:1px;margin:40px 0 36px;background:linear-gradient(to right,transparent,rgba(148,163,184,0.25),transparent)}
+
+  footer{margin-top:30px;padding:26px 32px;background:var(--panel2);border:1px solid var(--border);border-radius:5px;color:var(--muted);font-size:0.86em;line-height:1.65}
+  footer strong{color:#b8c3d2}
+  .eod{margin-top:36px;padding:18px;text-align:center;color:var(--muted);font-size:0.78em;letter-spacing:3px;text-transform:uppercase;border-top:1px solid var(--border)}
+
+  /* ============ PRINT / PDF ============ */
+  @media print {
+    @page { margin: 16mm 14mm; }
+    body { background:#fff; color:#1a202c; font-size:11.5pt; line-height:1.5 }
+    .wrap { max-width:100%; padding:0; margin:0 }
+    p, li, dd { color:#1a202c }
+    h1, h2, h3 { color:#0a0e17 }
+    h4, .kicker { color:#4a5568 }
+    strong { color:#000 }
+    em { color:#1a202c }
+    code { color:#1a202c; background:#f3f4f6; border-color:#d1d5db }
+    a { color:#1a202c; text-decoration:none }
+
+    header.cover { padding:32px 24px; page-break-after:always; break-after:page }
+    .cover-logo { filter:none; opacity:1; width:80px; top:18px; right:20px }
+    header.cover h1 { color:#0a0e17 }
+    header.cover h1 small { color:#4a5568 }
+    header.cover .thesis { color:#1a202c }
+    header.cover .meta { color:#4a5568; border-top-color:#d1d5db }
+    header.cover .meta b { color:#1a202c }
+    header.cover .tag { color:#0a0e17; border-color:#94a3b8 }
+
+    nav.toc { background:transparent; page-break-after:always; break-after:page }
+    nav.toc a { color:#1a202c }
+
+    section, .card, .pullquote,
+    .callout, .callout-warm, .callout-red, .callout-good,
+    .arch-diagram, table, .stat, footer {
+      page-break-inside:avoid; break-inside:avoid;
+    }
+    section { padding:18px 20px; margin-bottom:16px }
+    .card { padding:14px 16px }
+
+    .stat .v { color:#0a0e17 }
+    .stat .k, .stat .n { color:#4a5568 }
+
+    tr:nth-child(even) td { background:transparent }
+    th { background:#f3f4f6; color:#0a0e17 }
+
+    .arch-diagram { color:#1a202c; font-size:9pt; background:#f7f8fa }
+
+    .page-break { display:none }
+    .eod { color:#4a5568; border-top-color:#d1d5db }
+    footer { background:transparent; color:#4a5568 }
+    footer strong { color:#1a202c }
+
+    /* Headings shouldn't be the last thing on a page */
+    h2, h3 { page-break-after:avoid; break-after:avoid }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<!-- ================ COVER ================ -->
+<header class="cover">
+  <img class="cover-logo" src="graphics%20assets/Karneth%20Logo%20Frei.png" alt="Karneth Strata">
+  <span class="tag">Feasibility Study · Technical Pack · v1.0 · May 2026</span>
+  <h1>Karneth Strata
+    <small>Engineering Evidence Behind the Feasibility Claim</small>
+  </h1>
+  <p class="thesis">The back tier of the Karneth Strata feasibility pack. Engineering evidence, architecture, sim-to-real validation methodology, regulatory posture, technical roadmap, technical risk register, and a glossary. Designed for review by an investor's technical adviser.</p>
+  <div class="meta">
+    <span><b>Front tier:</b> KS_Feasibility_Seed_v1.0</span>
+    <span><b>Read alongside:</b> KS Investor Brief v1.1</span>
+    <span><b>Classification:</b> Shareable technical pack</span>
+  </div>
+</header>
+
+<!-- ================ TOC ================ -->
+<nav class="toc">
+  <h4>Contents</h4>
+  <ol>
+    <li><a href="#s1">Architecture &amp; stack</a></li>
+    <li><a href="#s2">Demonstrator state today</a></li>
+    <li><a href="#s3">Sim-to-real validation methodology</a></li>
+    <li><a href="#s4">Industrial scale-up plan</a></li>
+    <li><a href="#s5">Regulatory &amp; safety posture</a></li>
+    <li><a href="#s6">Sovereign IP &amp; moat</a></li>
+    <li><a href="#s7">Technical roadmap — 6 / 12 / 24 month</a></li>
+    <li><a href="#s8">Risk register (technical only)</a></li>
+    <li><a href="#s9">Glossary</a></li>
+  </ol>
+</nav>
+
+<!-- ================ 1 · ARCHITECTURE ================ -->
+<section id="s1" class="lead">
+  <div class="kicker">&sect;1 · Architecture &amp; stack</div>
+  <h2><span class="num">1</span>How the system is composed</h2>
+
+  <p>Karneth Strata is built in four horizontal layers and three orthogonal cross-cuts. The horizontal layers concern data flow from sensor to operator decision; the cross-cuts concern properties the whole system must hold simultaneously (sovereignty, safety, auditability).</p>
+
+  <div class="arch-diagram">
+  OPERATOR          [ Operator station, tactical map, mission planner ]
+                                       |
+  DECISION          [ Mission planning, kill-chain, EMCON policy,
+                      fire-request governance, evasion budget, NFZ ]
+                                       |
+  COMMS             [ BURST MESH - transmitted diffs, resilient,
+                      EMCON-aware, portable to real radios ]
+                                       |
+  PLATFORM ADAPTER  [ PX4, MAVLink, PiDog, ground vehicles,
+                      maritime (future) - JSON vehicle profiles ]
+                                       v
+  HARDWARE          [ Air / ground / maritime - any aligned supplier ]
+
+  CROSS-CUTS (apply at every layer):
+    -  SAFETY     altitude clamps, NFZ, evasion bounds, emergency
+    -  SOVEREIGN  Lead-Box AI, in-house code, audited supply chain
+    -  AUDIT      inspectable record of every decision, replayable
+  </div>
+
+  <p>This separation is the architectural payoff of the team's discipline. Each layer has narrow, inspectable interfaces. Adding a new platform is a Platform Adapter exercise that does not perturb the Decision or Operator layers. Adding a new mission type is a Decision Layer exercise that does not perturb the Comms or Platform layers. Adding a new comms transport (e.g. a new radio) is a Comms Layer swap that does not perturb anything above it.</p>
+
+  <h3>Key design choices that matter for feasibility</h3>
+  <ul>
+    <li><strong>Simulator shares code with the real system.</strong> The simulator is not a parallel prototype; it drives the same Decision and Comms layers used in live integration. This is what allows demonstrator confidence to transfer to fielded confidence — a property most defence-tech demos cannot claim.</li>
+    <li><strong>Transmitted-diffs, not shared memory.</strong> Cross-platform state propagates as serialised diffs over the BURST MESH queue. The architecture is portable to real radios because nothing relies on the simulator's shared memory; the wire format is the contract.</li>
+    <li><strong>EMCON is enforced at the display level.</strong> Operator displays read from a transmitted-only telemetry view, not from source values. Radio-silence discipline is a code property, not an operator-discipline expectation.</li>
+    <li><strong>JSON-driven vehicle profiles.</strong> Per-platform parameters (chassis dimensions, clearance, NavMesh radius, icon assets) live in a single configuration file, not hardcoded. Adding a new platform class is a configuration change, not a code change.</li>
+    <li><strong>Centralised helpers, embedded-grade allocation discipline.</strong> Hot paths are pre-allocated; the engineering reviewer will find the same memory-discipline patterns familiar from automotive ECU and embedded RTOS work.</li>
+  </ul>
+</section>
+
+<!-- ================ 2 · DEMONSTRATOR ================ -->
+<section id="s2" class="blue-edge">
+  <div class="kicker">&sect;2 · Demonstrator state today</div>
+  <h2><span class="num">2</span>What runs, what has been validated</h2>
+
+  <p>The demonstrator is a Unity-based simulator that drives the same KS decision and comms code that runs in the live PiDog-class hardware integration. The list below covers capabilities that are demonstrable to a visiting reviewer today, not roadmap items.</p>
+
+  <div class="grid-2">
+    <div class="card blue">
+      <h4>EMCON v1.0 (transmitted-only operator displays)</h4>
+      <p>Under enforced radio silence, every operator-visible value flows through central <code>GetDisplay*</code> accessors backed by the transmitted-telemetry view. Validated end-to-end against an independent telepathy / RF-silence sweep on 22 May 2026. State propagation, codecs, and per-agent MAVLink emission gating are all on the transmitted path. This is the defence-grade discipline auditors want to see.</p>
+    </div>
+    <div class="card blue">
+      <h4>BURST MESH resilient datalink</h4>
+      <p>Platform-to-platform state propagation as serialised diffs over a burst-queued mesh. Demonstrably resilient under partial link degradation. Architectural choice deliberately mirrors what a real radio mesh will look like — the wire format is portable; the simulator's "two RF" was a sim artefact, not a hidden data plane.</p>
+    </div>
+    <div class="card blue">
+      <h4>Swarm coordination &amp; kill-chain</h4>
+      <p>Distributed kill-chain coordination across multiple platforms, with operator-in-the-loop authority levels and per-agent emission gates. Demonstrable swarm-destroy scenarios with full after-action audit record.</p>
+    </div>
+    <div class="card blue">
+      <h4>PiDog hardware integration</h4>
+      <p>Live integration with PiDog-class quadruped ground platform — audio direction-of-arrival sensing, distributed tactical-map awareness, and operator-grade after-action review. Used as a partner demonstrator. Repo is source of truth; deployment is repo-to-Pi, never edited in-place.</p>
+    </div>
+    <div class="card blue">
+      <h4>Tactical-map operator surface</h4>
+      <p>Multi-display tactical map with ghost / uncertainty rendering for transmitted positions under EMCON, dead-reckoned forward markers, and 32&times;32 imagery thumbnails. UI follows a consistent "hacker-2010 sci-fi" aesthetic: dark background, neon-accent panels, every tab built through a shared C2UIHelper for visual consistency.</p>
+    </div>
+    <div class="card blue">
+      <h4>Mission planner &amp; fire-request governance</h4>
+      <p>Operator-driven mission planning with explicit fire-request governance, evasion-budget tracking, and NFZ (no-fly zone) enforcement. Demo missions cover urban survey, swarm-destroy, BDA (battle damage assessment), and EV / ground-vehicle scenarios.</p>
+    </div>
+  </div>
+
+  <h3>Independent verification</h3>
+  <p>The codebase is held to an honest-caveat audit discipline. Multi-agent dry-runs (an in-house QA technique that hypothetically traces user data across the full codebase with 5-8 parallel scenarios) routinely surface dozens of edge-case findings per session. Each cycle is re-run against patched code to catch issues introduced by the fixes themselves. The Karneth Strata Technical Response (KARNETH_STRATA_TECHNICAL_RESPONSE) documents the methodology and a representative finding-and-fix pass.</p>
+
+  <div class="callout">
+    <strong>Reviewer takeaway:</strong> the demonstrator is not stage-managed. It is the same code that will fly on real hardware, exercised with a QA discipline that the team applies to its own work without being asked to. This is the strongest available signal that the company will not surprise an investor with hidden architectural debt at Series-A close.
+  </div>
+</section>
+
+<!-- ================ 3 · SIM-TO-REAL ================ -->
+<section id="s3" class="good">
+  <div class="kicker">&sect;3 · Sim-to-real validation</div>
+  <h2><span class="num">3</span>How the simulator de-risks each hardware milestone</h2>
+
+  <p>The standard failure mode for a defence-tech demonstrator is the "simulator gap": the demo runs beautifully in the sim, then collapses on real hardware because the sim hid the hard parts (real radios, real latency, real noise, real safety constraints). Karneth Strata's simulator is engineered against that failure mode from the start.</p>
+
+  <table>
+    <thead><tr><th>Hardware milestone</th><th>What the simulator de-risks</th><th>What real hardware adds</th></tr></thead>
+    <tbody>
+      <tr>
+        <td><strong>Single-platform autonomy</strong></td>
+        <td>Mission planning, NFZ enforcement, evasion budget, kill-chain authority levels — all exercised in sim with the same decision code that will run on the real platform.</td>
+        <td>Real flight dynamics, real sensor noise, real battery / endurance constraints.</td>
+      </tr>
+      <tr>
+        <td><strong>Multi-platform swarm</strong></td>
+        <td>BURST MESH propagation, EMCON-coherent state, transmitted-only telemetry, distributed coordination, operator-grade audit record.</td>
+        <td>Real radio range, real jamming environment, real link quality variance.</td>
+      </tr>
+      <tr>
+        <td><strong>Hardware-in-the-loop integration</strong></td>
+        <td>The Platform Adapter pattern is exercised live against PiDog-class hardware today.</td>
+        <td>Per-platform integration burn-in; on-vehicle compute envelope; real safety-cutout integration.</td>
+      </tr>
+      <tr>
+        <td><strong>Operator-station ergonomics</strong></td>
+        <td>Full tactical-map, mission-planner, after-action review surfaces validated against demo missions today.</td>
+        <td>Field ruggedisation, multi-display power envelope, ITAR-controlled distribution discipline.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p>The validation methodology is explicit: each hardware milestone has named simulator coverage <em>and</em> named gaps. Investor and partner reviewers can see exactly what is being claimed and exactly what is not.</p>
+</section>
+
+<!-- ================ 4 · INDUSTRIAL ================ -->
+<section id="s4" class="warm">
+  <div class="kicker">&sect;4 · Industrial scale-up plan</div>
+  <h2><span class="num">4</span>From demonstrator to fielded production</h2>
+
+  <p>This section anchors on the COO's prior career (covered in the Executive Summary &sect;4) and projects it onto the specific KS industrial profile. Three phases.</p>
+
+  <div class="grid-3">
+    <div class="card warm">
+      <h4>Phase 1 — Pilot-customer deployment</h4>
+      <p>First named operator partner running KS on real hardware. Team scaling biased toward integration engineers and certification engineers. Industrial discipline modelled on Bombardier's lean / Kaizen production-system rollout: defined processes from day one, not retrofitted.</p>
+    </div>
+    <div class="card warm">
+      <h4>Phase 2 — Multi-customer ramp</h4>
+      <p>Reference customer anchors the commercial pipeline; additional customers onboarded via the Platform Adapter pattern. Headcount ramp modelled on the Manor Racing precedent — seven-to-250 in twelve months, with sub-supplier value chain for non-core work. The COO has run this ramp before.</p>
+    </div>
+    <div class="card warm">
+      <h4>Phase 3 — Production discipline</h4>
+      <p>Certification package complete; field validation alongside pilot customers; production cadence stable. ERP / PLM rollout modelled on the COO's prior introduction at Lotus F1 — the biggest process change in fifteen years at that organisation, executed without disrupting race-week cadence.</p>
+    </div>
+  </div>
+
+  <p>Capital ask, headcount ramp curve, and use-of-funds breakdown are in the financial model held under NDA (Investor Brief &sect;7 / &sect;9). This section is concerned with the <em>shape</em> of the industrialisation, not its commercial-confidential terms.</p>
+</section>
+
+<!-- ================ 5 · REGULATORY ================ -->
+<section id="s5" class="lead">
+  <div class="kicker">&sect;5 · Regulatory &amp; safety posture</div>
+  <h2><span class="num">5</span>Designed-in compliance, not retrofitted</h2>
+
+  <p>The regulatory landscape for autonomous defence systems is the largest single source of execution risk for any defence-tech Series-A. Karneth Strata's posture is to engineer for it from the start, on three fronts.</p>
+
+  <h3>Functional-safety heritage</h3>
+  <p>The CTO's four-decade career in embedded automotive and electric-vehicle control includes deep experience with ISO 26262 functional-safety methodology (ASIL A through D), MISRA C compliance, and Safety Element out of Context (SEooC) discipline on real-time embedded operating systems. The same reflexes show in the KS C# codebase: pre-allocation discipline, explicit safety clamps (altitude, NFZ, evasion bounds), watchdogs, and emergency-mode bounds that cannot be bypassed without explicit operator authority.</p>
+
+  <p>This is not branding. It is what an embedded engineer who has shipped at ASIL-D writes by default. A technical reviewer will recognise it on the first read of any hot-path file.</p>
+
+  <h3>EMCON, MAVLink, and defence comms discipline</h3>
+  <p>EMCON v1.0 enforcement (see &sect;2) is the explicit defence-grade analogue of the embedded safety-clamp discipline. Per-agent MAVLink emission gating is in place; transmitted-only operator displays are verified end-to-end; the architecture treats radio-silence as a code property, not a procedural one.</p>
+
+  <h3>EU AI Act &amp; national doctrine fit</h3>
+  <p>The Lead-Box methodology (Investor Brief &sect;5) is the company's structural answer to EU AI Act compliance, sovereign data residency, and the national-doctrine constraints that European primes operate under. Companion documents <em>KS National Doctrine Fit v1.2</em> and <em>KS EU AI Act Moat v1.0</em> set this out in detail.</p>
+
+  <div class="callout-good">
+    <strong>The compliance discipline is a moat.</strong> Defence and regulated buyers cannot procure from suppliers who treat safety and compliance as afterthoughts. The KS team's instinct is the opposite: design in, document, test, audit. That instinct is harder to teach than the engineering itself, and few competing Series-A teams have it.
+  </div>
+</section>
+
+<!-- ================ 6 · SOVEREIGN IP ================ -->
+<section id="s6" class="good">
+  <div class="kicker">&sect;6 · Sovereign IP &amp; moat</div>
+  <h2><span class="num">6</span>What KS owns and why it is defensible</h2>
+
+  <p>The IP that Karneth Strata UK Ltd owns falls into four categories. All four were developed in-house by the KS engineering team; chain of title is clean.</p>
+
+  <div class="grid-2">
+    <div class="card good">
+      <h4>Command-and-decision codebase</h4>
+      <p>The full ks_drone simulator and live-integration codebase: Operator, Decision, Comms, and Platform Adapter layers. C# / Unity for the operator station and simulator; native bridges to PX4 / MAVLink and PiDog-class hardware. Architecture and module catalogue documented internally.</p>
+    </div>
+    <div class="card good">
+      <h4>BURST MESH protocol</h4>
+      <p>The transmitted-diff propagation pattern that lets the architecture survive moving from simulator to real radios without redesign. Wire format, EMCON gating, and resilient-burst discipline are KS-original.</p>
+    </div>
+    <div class="card good">
+      <h4>EMCON v1.0 enforcement model</h4>
+      <p>The display-level enforcement pattern (operator displays read from transmitted-only views, not source values) is a defence-grade discipline asset. Codified, audited, and demonstrable.</p>
+    </div>
+    <div class="card good">
+      <h4>Lead-Box methodology</h4>
+      <p>The sovereign AI-engineering environment described in Investor Brief &sect;5. Capital-efficient, compliance-defensible, and a procurement enabler for ITAR / UK MoD / NATO-aligned buyers. Detail in the <em>Lead-Box Methodology v1.0</em> companion document.</p>
+    </div>
+  </div>
+
+  <p>Defensibility comes from four sources combined: (1) the four-decade embedded heritage of the engineering team — a tacit asset that does not transfer with a code dump; (2) the architectural discipline of the codebase, which compounds over time and is hard for a from-scratch competitor to replicate; (3) the COO's industrial-scale-up record, which is a separately-rare asset; (4) the sovereign-stack positioning, which closes off the procurement-eligibility path that most Series-A competitors will follow.</p>
+</section>
+
+<!-- ================ 7 · ROADMAP ================ -->
+<section id="s7" class="blue-edge">
+  <div class="kicker">&sect;7 · Technical roadmap</div>
+  <h2><span class="num">7</span>Six, twelve, and twenty-four month gates</h2>
+
+  <p>This is the technical-only view of the roadmap; commercial milestones and contract timing are in the Investor Brief &sect;6. Gate criteria are capability-based, not calendar-based — the dates below assume a Series-A close in the stated window.</p>
+
+  <table>
+    <thead><tr><th>Window</th><th>Capability gate</th><th>Demonstrable evidence</th></tr></thead>
+    <tbody>
+      <tr>
+        <td><strong>0 &ndash; 6 months</strong></td>
+        <td>Pilot-customer integration ready. First named platform partner onboarded through the Platform Adapter pattern. EMCON v1.1 (with hardware-radio test article).</td>
+        <td>Live integration sessions with the partner platform. Updated demonstrator screenshots and telemetry traces. Second-platform adapter merged.</td>
+      </tr>
+      <tr>
+        <td><strong>6 &ndash; 12 months</strong></td>
+        <td>Multi-platform swarm on mixed hardware. Operator-station hardening for partner-site deployment. Compliance package draft for European defence procurement.</td>
+        <td>End-to-end mixed-fleet mission with operator station at partner site. Compliance draft circulated to procurement reviewers.</td>
+      </tr>
+      <tr>
+        <td><strong>12 &ndash; 24 months</strong></td>
+        <td>Field validation. Maritime platform extension (funded post-Series-A). Certification work toward European defence-procurement requirements. ERP / PLM rollout completed alongside production-discipline cadence.</td>
+        <td>Field-trial after-action reports. Maritime demonstrator. Certification package version 1.0. Production cadence metrics.</td>
+      </tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ================ 8 · RISK ================ -->
+<section id="s8" class="red-edge">
+  <div class="kicker">&sect;8 · Technical risk register</div>
+  <h2><span class="num">8</span>What could go wrong, technically</h2>
+
+  <p>This is the technical-only risk view. Commercial, capital, and procurement-timing risks are covered in the Investor Brief &sect;8 and are deliberately not duplicated here.</p>
+
+  <div class="grid-2">
+    <div class="card red">
+      <h4>Sim-to-real gap (residual)</h4>
+      <p><strong>Risk:</strong> hardware behaviour diverges from simulator behaviour in a way the architecture did not anticipate.<br>
+      <strong>Mitigation:</strong> the architecture is engineered specifically against this failure mode (&sect;3). Each hardware milestone has named simulator coverage and named gaps. Live PiDog integration already exercises the Platform Adapter pattern on real hardware.</p>
+    </div>
+    <div class="card red">
+      <h4>Real-radio mesh behaviour</h4>
+      <p><strong>Risk:</strong> BURST MESH propagation under real-radio jamming and range constraints is harder than the simulator suggests.<br>
+      <strong>Mitigation:</strong> the wire format is portable by design; transmitted-diffs, not shared memory. Hardware-radio test article planned in the 0&ndash;6 month gate. Comms-layer swap is a layer-scoped change, not a system rewrite.</p>
+    </div>
+    <div class="card red">
+      <h4>Platform-adapter onboarding cost</h4>
+      <p><strong>Risk:</strong> each new platform partner imposes more integration cost than the architecture predicts.<br>
+      <strong>Mitigation:</strong> the JSON-driven vehicle-profile pattern keeps per-platform code surface small. PiDog and PX4 integrations already exercise the adapter pattern. Integration-engineering headcount is an explicit Series-A use-of-funds line.</p>
+    </div>
+    <div class="card red">
+      <h4>Certification timeline drift</h4>
+      <p><strong>Risk:</strong> European defence-procurement certification takes longer than projected.<br>
+      <strong>Mitigation:</strong> the safety-and-compliance discipline is designed in from the start. The CTO's ISO 26262 / MISRA / SEooC heritage matters here in a way that a less-experienced team cannot replicate quickly. Compliance work begins inside the 6&ndash;12 month window, not as a Phase-3 surprise.</p>
+    </div>
+    <div class="card red">
+      <h4>Key-person dependency on CTO</h4>
+      <p><strong>Risk:</strong> the CTO's four-decade heritage is irreplaceable in the near term.<br>
+      <strong>Mitigation:</strong> the engineering bench includes several engineers who have worked with the CTO across multiple companies and decades; continuity reduces single-point-of-failure exposure. Documentation discipline (the internal corpus) captures architectural decisions explicitly.</p>
+    </div>
+    <div class="card red">
+      <h4>Compute envelope on small platforms</h4>
+      <p><strong>Risk:</strong> the on-vehicle compute envelope for small unmanned platforms constrains what the Decision layer can do locally.<br>
+      <strong>Mitigation:</strong> the architecture splits decision authority between operator station and platform; on-vehicle compute requirements are explicit per Platform Adapter. Embedded-grade allocation discipline keeps the on-vehicle footprint small by default.</p>
+    </div>
+  </div>
+
+  <div class="callout-red">
+    <strong>What is not on this list, deliberately:</strong> we do not believe the core architectural risk is novel. The hard problems (mixed-platform command, EMCON-coherent operator displays, resilient mesh comms) are understood and demonstrably built. The risks above are execution risks on a known architecture, not invention risks on an unknown one.
+  </div>
+</section>
+
+<!-- ================ 9 · GLOSSARY ================ -->
+<section id="s9" class="lead">
+  <div class="kicker">&sect;9 · Glossary</div>
+  <h2><span class="num">9</span>Terms used in this document</h2>
+
+  <p>Defence-tech vocabulary is dense and acronym-heavy. This glossary covers the terms used in this document and in the Investor Brief; it is intended for non-specialist readers as much as for specialists who want to be sure the company uses these terms in their standard sense.</p>
+
+  <dl class="glossary">
+    <dt>ASIL (A&ndash;D)</dt>
+    <dd>Automotive Safety Integrity Level. The four hazard-classification tiers under ISO 26262. ASIL-D is the most stringent. The KS engineering reflexes are drawn from ASIL-A through ASIL-D embedded automotive work.</dd>
+
+    <dt>BDA</dt>
+    <dd>Battle Damage Assessment. Post-engagement evaluation of effect against a target. Demonstrable in the KS demonstrator as a swarm-destroy scenario with after-action review.</dd>
+
+    <dt>BURST MESH</dt>
+    <dd>The Karneth Strata platform-to-platform datalink protocol. Propagates state as transmitted serialised diffs over a burst-queued mesh; resilient under degraded link conditions; EMCON-aware; portable to real radios.</dd>
+
+    <dt>C2</dt>
+    <dd>Command and Control. The decision and authority layer of a defence system. KS is a C2 software platform.</dd>
+
+    <dt>C4ISR</dt>
+    <dd>Command, Control, Communications, Computers, Intelligence, Surveillance, Reconnaissance. The broader operational-systems-of-systems category that KS sits within.</dd>
+
+    <dt>DDS</dt>
+    <dd>Data Distribution Service. A real-time pub/sub middleware standard used in defence and autonomous-systems work, including with encrypted pre-shared-key channels.</dd>
+
+    <dt>EMCON</dt>
+    <dd>Emissions Control. Operational discipline of restricting or silencing radio emissions to avoid detection. KS EMCON v1.0 enforces this at the operator-display level: every shown value reads from a transmitted-only view, not the source.</dd>
+
+    <dt>HIL</dt>
+    <dd>Hardware-in-the-Loop. Integration discipline in which real hardware is exercised against the live software stack rather than a simulator-only path. KS PiDog integration is a HIL exercise.</dd>
+
+    <dt>ISO 26262</dt>
+    <dd>The international functional-safety standard for road vehicles. The methodology (hazard analysis, ASIL classification, SEooC discipline) is a transferable engineering reflex; the KS team carries it from prior automotive work.</dd>
+
+    <dt>ITAR</dt>
+    <dd>International Traffic in Arms Regulations. US export-control regime that constrains how defence-related software and data may be processed and where. ITAR forbids most US-hosted AI inference for customer-touching code, which is why the Lead-Box methodology matters.</dd>
+
+    <dt>Kill chain</dt>
+    <dd>The sequence of decisions and authorities involved in engaging a target: find, fix, track, target, engage, assess. KS implements distributed kill-chain coordination with explicit operator-in-the-loop authority levels.</dd>
+
+    <dt>Lead-Box methodology</dt>
+    <dd>The KS sovereign AI-engineering environment. Locally-hosted compute keeps models, weights, prompts, code, mission data, and customer payload data inside the engineering boundary. Procurement enabler for ITAR / UK MoD / NATO-aligned buyers. Detailed in <em>Lead-Box Methodology v1.0</em>.</dd>
+
+    <dt>MAVLink</dt>
+    <dd>The de-facto open communications protocol for unmanned aerial vehicles. KS implements per-agent emission gating on MAVLink as part of EMCON discipline.</dd>
+
+    <dt>MISRA C</dt>
+    <dd>A widely-adopted coding-discipline standard for safety-critical embedded C. Compliance is required for most automotive and many defence embedded projects. The KS team's MISRA fluency from prior automotive work transfers as a general code-discipline reflex.</dd>
+
+    <dt>NFZ</dt>
+    <dd>No-Fly Zone. Operator-defined airspace constraints; KS enforces NFZ at the Decision Layer and surfaces violations explicitly to the operator with a stated reason.</dd>
+
+    <dt>PiDog</dt>
+    <dd>A quadruped robotic ground-platform class used as the KS demonstrator hardware partner. Live HIL integration today, including audio direction-of-arrival sensing.</dd>
+
+    <dt>PX4</dt>
+    <dd>An open-source flight-control software stack for unmanned aircraft. One of the platforms exercised through the KS Platform Adapter pattern.</dd>
+
+    <dt>SEooC</dt>
+    <dd>Safety Element out of Context. An ISO 26262 design pattern for reusable safety components specified without binding to a single vehicle programme. A transferable engineering discipline from automotive into autonomous-systems work.</dd>
+
+    <dt>Sovereign stack</dt>
+    <dd>A defence-software stack whose components — software, AI methodology, hardware integration, industrial production discipline — are all in jurisdictions the buyer can inspect, audit, and regulate. The structural KS positioning, not a marketing line.</dd>
+
+    <dt>Sub-supplier value chain</dt>
+    <dd>Industrial pattern in which a small core organisation orchestrates a wide network of specialist suppliers for non-core work. Demonstrably used by the COO at Manor Racing F1 and is the model KS expects to scale through.</dd>
+  </dl>
+</section>
+
+<footer>
+  <p><strong>Document:</strong> KS_Feasibility_Seed_Technical_Pack_v1.0.html — Engineering Evidence (Back Tier)<br>
+  <strong>Front tier:</strong> KS_Feasibility_Seed_v1.0.html — Executive Summary<br>
+  <strong>Read alongside:</strong> KS_Investor_Brief_v1.1.html<br>
+  <strong>Issued:</strong> May 2026 &middot; <strong>Classification:</strong> Shareable technical pack<br>
+  <strong>Contact:</strong> niko@karnethstrata.com &middot; thomas@karnethstrata.com &middot; greg@karnethstrata.com</p>
+</footer>
+
+<div class="eod">— End of document —</div>
+
+</div>
+</body>
+</html>
